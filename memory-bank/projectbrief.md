@@ -12,11 +12,13 @@ Este é um projeto Android que visa criar um aplicativo para que os usuários po
 - Separação das técnicas por modalidades de artes marciais
 - Funcionalidades CRUD (Criar, Ler, Atualizar, Deletar) para cada técnica
 - Tela dedicada para cada técnica com seus detalhes
+- **Documentação visual**: Previews do Jetpack Compose para todas as telas
 
 ## Success Criteria
 - Aplicativo Android funcional para registro e consulta de técnicas
 - Capacidade de salvar diferentes formatos de mídia (texto, voz, foto, vídeo) por técnica
 - Organização clara das técnicas por modalidade
+- **Documentação visual completa** com previews de todas as telas
 - POC (Prova de Conceito): 2 semanas
 
 ## Scope
@@ -25,6 +27,7 @@ Este é um projeto Android que visa criar um aplicativo para que os usuários po
 - Implementação de CRUD para técnicas de artes marciais
 - Suporte para diferentes tipos de mídia (texto, voz, foto, vídeo) para cada técnica
 - Organização por modalidades
+- **Previews do Jetpack Compose** para documentação visual das telas
 - Foco na arquitetura MVVM, Clean Code, Use Case, Mock, Testes Unitários e Testes de UI, Jetpack Compose
 
 ### Out of Scope

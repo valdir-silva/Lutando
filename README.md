@@ -64,6 +64,68 @@ app/
 - **Prazo**: 2 semanas
 - **Progresso**: 5% (Setup inicial completo)
 
+## 📱 Screenshots das Telas
+
+> **Requisito**: Todas as telas do aplicativo devem incluir previews do Jetpack Compose para documentação visual.
+
+### Tela Principal (HomeScreen)
+
+#### Preview Compose
+```kotlin
+@Preview(showBackground = true)
+@Composable
+fun HomeScreenPreview() {
+    LutandoTheme {
+        HomeScreen(
+            onMartialArtClick = {},
+            onAddMartialArtClick = {}
+        )
+    }
+}
+```
+
+#### Printscreen real
+> ![Print da HomeScreen](docs/screenshots/home_screen.png)
+
+### Telas Planejadas
+- [ ] **Tela de Login/Perfil** - Gerenciamento de perfil do usuário
+- [ ] **Lista de Modalidades** - Visualização das artes marciais disponíveis
+- [ ] **Lista de Técnicas** - Técnicas por modalidade selecionada
+- [ ] **Detalhes da Técnica** - Visualização completa com mídia
+- [ ] **Adicionar/Editar Técnica** - Formulário para CRUD de técnicas
+- [ ] **Visualizador de Mídia** - Player para fotos, vídeos e áudios
+
+### Como Gerar Screenshots
+```kotlin
+@Preview(showBackground = true)
+@Composable
+fun TelaExemploPreview() {
+    LutandoTheme {
+        TelaExemplo()
+    }
+}
+```
+
+### Exemplo de Implementação
+```kotlin
+@Preview(
+    name = "Tela Principal - Modo Claro",
+    showBackground = true,
+    backgroundColor = 0xFFFFFFFF
+)
+@Preview(
+    name = "Tela Principal - Modo Escuro",
+    showBackground = true,
+    backgroundColor = 0xFF121212
+)
+@Composable
+fun TelaPrincipalPreview() {
+    LutandoTheme {
+        TelaPrincipal()
+    }
+}
+```
+
 ## 🧪 Testes
 
 ```bash
