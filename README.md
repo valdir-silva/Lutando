@@ -12,136 +12,45 @@ O **Lutando** é um aplicativo Android desenvolvido para ajudar praticantes de a
 - **Organização por Modalidades**: Separação clara por tipos de artes marciais
 - **Interface Moderna**: Desenvolvido com Jetpack Compose
 
-## 🛠️ Tecnologias
+## 🤖 Desenvolvimento com Cursor + Framework RIPER
 
-- **Linguagem**: Kotlin
-- **UI Framework**: Jetpack Compose
-- **Arquitetura**: Clean Architecture + MVVM
-- **Database**: Room Database
-- **Injeção de Dependência**: Hilt
-- **Testes**: JUnit, Mockito, Espresso, Compose Testing
+Este projeto utiliza o **Cursor IDE** em conjunto com o **Framework RIPER** para desenvolvimento estruturado e eficiente.
 
-## 📋 Pré-requisitos
+### Framework RIPER
+O **RIPER** é um framework de desenvolvimento que organiza o trabalho em 5 modos:
 
-- Android Studio Hedgehog ou superior
-- Android SDK API 24+ (Android 7.0)
-- Kotlin 1.9+
-- JDK 11
+- **🔍 RESEARCH**: Análise e coleta de informações
+- **💡 INNOVATE**: Brainstorming e geração de ideias
+- **📋 PLAN**: Planejamento detalhado e especificações
+- **⚡ EXECUTE**: Implementação e codificação
+- **✅ REVIEW**: Revisão e validação
 
-## 🚀 Como Executar
-
-1. Clone o repositório:
+### Comandos Disponíveis
 ```bash
-git clone [URL_DO_REPOSITORIO]
-cd Lutando
+/research    # Entrar no modo de pesquisa
+/innovate    # Entrar no modo de inovação
+/plan        # Entrar no modo de planejamento
+/execute     # Entrar no modo de execução
+/review      # Entrar no modo de revisão
+/start       # Iniciar fase de setup do projeto
 ```
 
-2. Abra o projeto no Android Studio
+### Memory Bank
+O projeto mantém um **Memory Bank** com arquivos de contexto:
+- `projectbrief.md` - Requisitos e objetivos do projeto
+- `systemPatterns.md` - Arquitetura e padrões técnicos
+- `techContext.md` - Tecnologias e configurações
+- `activeContext.md` - Contexto atual de trabalho
+- `progress.md` - Progresso e próximos passos
 
-3. Sincronize o Gradle e aguarde o download das dependências
-
-4. Execute o app em um emulador ou dispositivo físico
-
-## 🏗️ Estrutura do Projeto
-
-```
-app/
-├── src/
-│   ├── main/
-│   │   ├── java/com/example/lutando/
-│   │   │   ├── data/           # Camada de dados
-│   │   │   ├── domain/         # Camada de domínio
-│   │   │   ├── presentation/   # Camada de apresentação
-│   │   │   └── di/            # Injeção de dependência
-│   │   └── res/               # Recursos
-│   ├── test/                  # Testes unitários
-│   └── androidTest/           # Testes de UI
-```
+### Subtasks
+O desenvolvimento segue um plano incremental definido em `SUBTASKS.md`, implementando bibliotecas uma por vez para garantir estabilidade.
 
 ## 📊 Status do Projeto
 
 - **Fase**: POC (Prova de Conceito)
 - **Prazo**: 2 semanas
 - **Progresso**: 5% (Setup inicial completo)
-
-## 📱 Screenshots das Telas
-
-> **Requisito**: Todas as telas do aplicativo devem incluir previews do Jetpack Compose para documentação visual.
-
-### Tela Principal (HomeScreen)
-
-#### Preview Compose
-```kotlin
-@Preview(showBackground = true)
-@Composable
-fun HomeScreenPreview() {
-    LutandoTheme {
-        HomeScreen(
-            onMartialArtClick = {},
-            onAddMartialArtClick = {}
-        )
-    }
-}
-```
-
-#### Printscreen real
-> ![Print da HomeScreen](docs/screenshots/home_screen.png)
-
-### Telas Planejadas
-- [ ] **Tela de Login/Perfil** - Gerenciamento de perfil do usuário
-- [ ] **Lista de Modalidades** - Visualização das artes marciais disponíveis
-- [ ] **Lista de Técnicas** - Técnicas por modalidade selecionada
-- [ ] **Detalhes da Técnica** - Visualização completa com mídia
-- [ ] **Adicionar/Editar Técnica** - Formulário para CRUD de técnicas
-- [ ] **Visualizador de Mídia** - Player para fotos, vídeos e áudios
-
-### Como Gerar Screenshots
-```kotlin
-@Preview(showBackground = true)
-@Composable
-fun TelaExemploPreview() {
-    LutandoTheme {
-        TelaExemplo()
-    }
-}
-```
-
-### Exemplo de Implementação
-```kotlin
-@Preview(
-    name = "Tela Principal - Modo Claro",
-    showBackground = true,
-    backgroundColor = 0xFFFFFFFF
-)
-@Preview(
-    name = "Tela Principal - Modo Escuro",
-    showBackground = true,
-    backgroundColor = 0xFF121212
-)
-@Composable
-fun TelaPrincipalPreview() {
-    LutandoTheme {
-        TelaPrincipal()
-    }
-}
-```
-
-## 🧪 Testes
-
-```bash
-# Executar testes unitários
-./gradlew test
-
-# Executar testes de UI
-./gradlew connectedAndroidTest
-
-# Executar todos os testes
-./gradlew check
-```
-
-## 📝 Licença
-
-Este projeto é desenvolvido para fins educacionais e pessoais.
 
 ## 👨‍💻 Desenvolvedor
 
