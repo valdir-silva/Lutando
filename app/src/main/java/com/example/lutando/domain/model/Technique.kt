@@ -1,5 +1,8 @@
 package com.example.lutando.domain.model
 
+import androidx.room.Entity
+import androidx.room.PrimaryKey
+
 /**
  * Modelo que representa uma técnica de arte marcial.
  * 
@@ -7,20 +10,30 @@ package com.example.lutando.domain.model
  * @property name Nome da técnica
  * @property description Descrição detalhada da técnica
  * @property martialArtId ID da modalidade de arte marcial
- * @property notes Notas adicionais do usuário
- * @property mediaFiles Lista de arquivos de mídia associados (fotos, vídeos, áudios)
+ * @property hasVideo Indica se a técnica possui vídeo
+ * @property hasPhoto Indica se a técnica possui foto
+ * @property hasAudio Indica se a técnica possui áudio
+ * @property videoPath Caminho do arquivo de vídeo
+ * @property photoPath Caminho do arquivo de foto
+ * @property audioPath Caminho do arquivo de áudio
  * @property createdAt Data de criação da técnica
  * @property updatedAt Data da última atualização da técnica
  */
+@Entity(tableName = "techniques")
 data class Technique(
+    @PrimaryKey(autoGenerate = true)
     val id: Long = 0,
     val name: String,
     val description: String = "",
     val martialArtId: Long,
-    val notes: String = "",
-    val mediaFiles: String = "", // JSON string com lista de MediaFile
-    val createdAt: Long = System.currentTimeMillis(),
-    val updatedAt: Long = System.currentTimeMillis()
+    val hasVideo: Boolean = false,
+    val hasPhoto: Boolean = false,
+    val hasAudio: Boolean = false,
+    val videoPath: String = "",
+    val photoPath: String = "",
+    val audioPath: String = "",
+    val createdAt: String = "",
+    val updatedAt: String = ""
 )
 
 /**

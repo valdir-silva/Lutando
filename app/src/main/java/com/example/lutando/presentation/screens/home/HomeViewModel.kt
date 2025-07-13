@@ -3,6 +3,7 @@ package com.example.lutando.presentation.screens.home
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.lutando.domain.model.MartialArt
+import com.example.lutando.domain.usecase.GetAllMartialArtsUseCase
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -12,7 +13,9 @@ import kotlinx.coroutines.launch
 /**
  * ViewModel da tela principal.
  */
-class HomeViewModel() : ViewModel() {
+class HomeViewModel(
+    private val getAllMartialArtsUseCase: GetAllMartialArtsUseCase
+) : ViewModel() {
     
     private val _uiState = MutableStateFlow(HomeUiState())
     val uiState: StateFlow<HomeUiState> = _uiState.asStateFlow()
@@ -25,37 +28,23 @@ class HomeViewModel() : ViewModel() {
         viewModelScope.launch {
             _uiState.update { it.copy(isLoading = true) }
             
-            // TODO: Implementar quando adicionar Room Database
-            // Por enquanto, vamos simular dados
-            kotlinx.coroutines.delay(1000) // Simular delay de rede
-            
-            val mockMartialArts = listOf(
-                MartialArt(
-                    id = 1,
-                    name = "Jiu-Jitsu",
-                    description = "Arte marcial brasileira focada em luta no chão",
-                    color = "#FF5722"
-                ),
-                MartialArt(
-                    id = 2,
-                    name = "Muay Thai",
-                    description = "Arte marcial tailandesa conhecida como boxe tailandês",
-                    color = "#FF9800"
-                ),
-                MartialArt(
-                    id = 3,
-                    name = "Boxe",
-                    description = "Esporte de combate usando apenas os punhos",
-                    color = "#2196F3"
-                )
-            )
-            
-            _uiState.update { 
-                it.copy(
-                    isLoading = false,
-                    martialArts = mockMartialArts,
-                    error = null
-                )
+            try {
+                getAllMartialArtsUseCase().collect { martialArts ->
+                    _uiState.update { 
+                        it.copy(
+                            isLoading = false,
+                            martialArts = martialArts,
+                            error = null
+                        )
+                    }
+                }
+            } catch (e: Exception) {
+                _uiState.update { 
+                    it.copy(
+                        isLoading = false,
+                        error = e.message ?: "Erro ao carregar modalidades"
+                    )
+                }
             }
         }
     }

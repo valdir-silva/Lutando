@@ -21,6 +21,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.lutando.domain.model.MartialArt
 import com.example.lutando.presentation.components.MartialArtCard
+import org.koin.androidx.compose.koinViewModel
 
 /**
  * Tela principal do aplicativo Lutando.
@@ -30,7 +31,7 @@ import com.example.lutando.presentation.components.MartialArtCard
 fun HomeScreen(
     onMartialArtClick: (Long) -> Unit,
     onAddMartialArtClick: () -> Unit,
-    viewModel: HomeViewModel = HomeViewModel()
+    viewModel: HomeViewModel = koinViewModel()
 ) {
     val uiState by viewModel.uiState.collectAsState()
     

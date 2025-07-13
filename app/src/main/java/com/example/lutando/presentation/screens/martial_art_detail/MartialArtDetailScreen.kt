@@ -1,0 +1,288 @@
+package com.example.lutando.presentation.screens.martial_art_detail
+
+import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.filled.MoreVert
+import androidx.compose.material3.*
+import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import com.example.lutando.domain.model.MartialArt
+import com.example.lutando.domain.model.Technique
+import org.koin.androidx.compose.koinViewModel
+
+/**
+ * Tela de detalhes da modalidade de arte marcial.
+ */
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun MartialArtDetailScreen(
+    martialArt: MartialArt,
+    onBackClick: () -> Unit,
+    onAddTechniqueClick: () -> Unit,
+    onTechniqueClick: (Long) -> Unit,
+    viewModel: MartialArtDetailViewModel = koinViewModel()
+) {
+    val uiState by viewModel.uiState.collectAsState()
+    
+    // Carregar dados quando a tela é criada
+    LaunchedEffect(martialArt) {
+        viewModel.setMartialArt(martialArt)
+    }
+    
+    Scaffold(
+        topBar = {
+            TopAppBar(
+                title = {
+                    Text(
+                        text = martialArt.name,
+                        fontSize = 20.sp,
+                        fontWeight = FontWeight.SemiBold
+                    )
+                },
+                navigationIcon = {
+                    IconButton(onClick = onBackClick) {
+                        Icon(
+                            imageVector = Icons.Default.ArrowBack,
+                            contentDescription = "Voltar"
+                        )
+                    }
+                },
+                actions = {
+                    IconButton(onClick = { /* TODO: Menu de opções */ }) {
+                        Icon(
+                            imageVector = Icons.Default.MoreVert,
+                            contentDescription = "Mais opções"
+                        )
+                    }
+                }
+            )
+        },
+        floatingActionButton = {
+            FloatingActionButton(
+                onClick = onAddTechniqueClick,
+                containerColor = MaterialTheme.colorScheme.primary
+            ) {
+                Icon(
+                    imageVector = Icons.Default.Add,
+                    contentDescription = "Adicionar técnica",
+                    tint = Color.White
+                )
+            }
+        }
+    ) { paddingValues ->
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(paddingValues)
+        ) {
+            when {
+                uiState.isLoading -> {
+                    CircularProgressIndicator(
+                        modifier = Modifier.align(Alignment.Center)
+                    )
+                }
+                uiState.error != null -> {
+                    ErrorState(
+                        error = uiState.error!!,
+                        onRetry = { viewModel.refreshTechniques() },
+                        modifier = Modifier.align(Alignment.Center)
+                    )
+                }
+                uiState.techniques.isEmpty() -> {
+                    EmptyTechniquesState(
+                        martialArtName = martialArt.name,
+                        modifier = Modifier.align(Alignment.Center)
+                    )
+                }
+                else -> {
+                    LazyColumn(
+                        modifier = Modifier.fillMaxSize(),
+                        contentPadding = PaddingValues(16.dp),
+                        verticalArrangement = Arrangement.spacedBy(12.dp)
+                    ) {
+                        items(uiState.techniques) { technique ->
+                            TechniqueCard(
+                                technique = technique,
+                                onClick = { onTechniqueClick(technique.id) }
+                            )
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+@Composable
+private fun TechniqueCard(
+    technique: Technique,
+    onClick: () -> Unit
+) {
+    Card(
+        modifier = Modifier
+            .fillMaxWidth()
+            .clickable(onClick = onClick),
+        elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
+    ) {
+        Column(
+            modifier = Modifier.padding(16.dp)
+        ) {
+            Text(
+                text = technique.name,
+                style = MaterialTheme.typography.titleMedium,
+                fontWeight = FontWeight.SemiBold
+            )
+            
+            Spacer(modifier = Modifier.height(8.dp))
+            
+            if (technique.description.isNotBlank()) {
+                Text(
+                    text = technique.description,
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    maxLines = 2
+                )
+                Spacer(modifier = Modifier.height(8.dp))
+            }
+            
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Text(
+                    text = "Criado em ${technique.createdAt}",
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                )
+                
+                // Indicadores de mídia
+                Row(
+                    horizontalArrangement = Arrangement.spacedBy(4.dp)
+                ) {
+                    if (technique.hasVideo) {
+                        MediaIndicator(
+                            text = "Vídeo",
+                            backgroundColor = MaterialTheme.colorScheme.primary
+                        )
+                    }
+                    if (technique.hasPhoto) {
+                        MediaIndicator(
+                            text = "Foto",
+                            backgroundColor = MaterialTheme.colorScheme.secondary
+                        )
+                    }
+                    if (technique.hasAudio) {
+                        MediaIndicator(
+                            text = "Áudio",
+                            backgroundColor = MaterialTheme.colorScheme.tertiary
+                        )
+                    }
+                }
+            }
+        }
+    }
+}
+
+@Composable
+private fun MediaIndicator(
+    text: String,
+    backgroundColor: Color
+) {
+    Box(
+        modifier = Modifier
+            .clip(RoundedCornerShape(4.dp))
+            .background(backgroundColor)
+            .padding(horizontal = 6.dp, vertical = 2.dp)
+    ) {
+        Text(
+            text = text,
+            style = MaterialTheme.typography.labelSmall,
+            color = Color.White
+        )
+    }
+}
+
+@Composable
+private fun EmptyTechniquesState(
+    martialArtName: String,
+    modifier: Modifier = Modifier
+) {
+    Column(
+        modifier = modifier,
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Text(
+            text = "Nenhuma técnica encontrada",
+            style = MaterialTheme.typography.titleMedium,
+            fontWeight = FontWeight.SemiBold
+        )
+        Spacer(modifier = Modifier.height(8.dp))
+        Text(
+            text = "Adicione sua primeira técnica de $martialArtName",
+            style = MaterialTheme.typography.bodyMedium,
+            color = MaterialTheme.colorScheme.onSurfaceVariant
+        )
+    }
+}
+
+@Composable
+private fun ErrorState(
+    error: String,
+    onRetry: () -> Unit,
+    modifier: Modifier = Modifier
+) {
+    Column(
+        modifier = modifier,
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Text(
+            text = "Erro ao carregar técnicas",
+            style = MaterialTheme.typography.titleMedium,
+            fontWeight = FontWeight.SemiBold
+        )
+        Spacer(modifier = Modifier.height(8.dp))
+        Text(
+            text = error,
+            style = MaterialTheme.typography.bodyMedium,
+            color = MaterialTheme.colorScheme.error
+        )
+        Spacer(modifier = Modifier.height(16.dp))
+        Button(onClick = onRetry) {
+            Text("Tentar novamente")
+        }
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun MartialArtDetailScreenPreview() {
+    val sampleMartialArt = MartialArt(
+        id = 1L,
+        name = "Jiu-Jitsu",
+        description = "Arte marcial brasileira"
+    )
+    
+    MaterialTheme {
+        MartialArtDetailScreen(
+            martialArt = sampleMartialArt,
+            onBackClick = {},
+            onAddTechniqueClick = {},
+            onTechniqueClick = {}
+        )
+    }
+} 

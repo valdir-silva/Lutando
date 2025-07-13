@@ -1,32 +1,31 @@
 package com.example.lutando.data.local
 
-// import androidx.room.TypeConverter
-// import com.google.gson.Gson
-// import com.google.gson.reflect.TypeToken
-// import com.example.lutando.domain.model.MediaFile
+import androidx.room.TypeConverter
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
+import com.example.lutando.domain.model.MediaFile
 
 /**
  * Conversores para o banco de dados Room.
- * TEMPORARIAMENTE COMENTADO - será reativado quando implementar Room
  */
-// class Converters {
+class Converters {
     
-//     private val gson = Gson()
+    private val gson = Gson()
     
-//     /**
-//      * Converte lista de MediaFile para JSON string.
-//      */
-//     @TypeConverter
-//     fun fromMediaFileList(value: List<MediaFile>?): String {
-//         return gson.toJson(value ?: emptyList<MediaFile>())
-//     }
+    /**
+     * Converte lista de MediaFile para JSON string.
+     */
+    @TypeConverter
+    fun fromMediaFileList(value: List<MediaFile>?): String {
+        return gson.toJson(value ?: emptyList<MediaFile>())
+    }
     
-//     /**
-//      * Converte JSON string para lista de MediaFile.
-//      */
-//     @TypeConverter
-//     fun toMediaFileList(value: String): List<MediaFile> {
-//         val listType = object : TypeToken<List<MediaFile>>() {}.type
-//         return gson.fromJson(value, listType) ?: emptyList()
-//     }
-// } 
+    /**
+     * Converte JSON string para lista de MediaFile.
+     */
+    @TypeConverter
+    fun toMediaFileList(value: String): List<MediaFile> {
+        val listType = object : TypeToken<List<MediaFile>>() {}.type
+        return gson.fromJson(value, listType) ?: emptyList()
+    }
+} 
