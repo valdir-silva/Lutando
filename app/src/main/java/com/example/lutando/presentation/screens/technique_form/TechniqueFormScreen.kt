@@ -18,24 +18,27 @@ import org.koin.androidx.compose.koinViewModel
 
 /**
  * Tela de formulário para adicionar/editar técnicas.
+ * Versão atualizada para usar com Navigation Compose.
  */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun TechniqueFormScreen(
-    martialArtId: Long,
-    techniqueId: Long? = null,
-    onBackClick: () -> Unit,
-    onSaveSuccess: () -> Unit,
+    martialArtId: Int? = null,
+    techniqueId: Int? = null,
+    onSaveClick: () -> Unit,
+    onCancelClick: () -> Unit,
     viewModel: TechniqueFormViewModel = koinViewModel()
 ) {
     val uiState by viewModel.uiState.collectAsState()
     
     // Configurar martialArtId e carregar técnica se for edição
     LaunchedEffect(martialArtId, techniqueId) {
-        viewModel.setMartialArtId(martialArtId)
+        martialArtId?.let { id ->
+            viewModel.setMartialArtId(id.toLong())
+        }
         techniqueId?.let { id ->
-            if (id > 0L) {
-                viewModel.loadTechniqueForEdit(id)
+            if (id > 0) {
+                viewModel.loadTechniqueForEdit(id.toLong())
             }
         }
     }
@@ -43,7 +46,7 @@ fun TechniqueFormScreen(
     // Observar sucesso e navegar de volta
     LaunchedEffect(uiState.isSuccess) {
         if (uiState.isSuccess) {
-            onSaveSuccess()
+            onSaveClick()
         }
     }
     
@@ -52,16 +55,16 @@ fun TechniqueFormScreen(
             TopAppBar(
                 title = {
                     Text(
-                        text = if (techniqueId != null && techniqueId > 0L) "Editar Técnica" else "Nova Técnica",
+                        text = if (techniqueId != null && techniqueId > 0) "Editar Técnica" else "Nova Técnica",
                         fontSize = 20.sp,
                         fontWeight = FontWeight.SemiBold
                     )
                 },
                 navigationIcon = {
-                    IconButton(onClick = onBackClick) {
+                    IconButton(onClick = onCancelClick) {
                         Icon(
                             imageVector = Icons.Default.ArrowBack,
-                            contentDescription = "Voltar"
+                            contentDescription = "Cancelar"
                         )
                     }
                 },
@@ -247,9 +250,9 @@ private fun MediaSection(
 fun TechniqueFormScreenPreview() {
     MaterialTheme {
         TechniqueFormScreen(
-            martialArtId = 1L,
-            onBackClick = {},
-            onSaveSuccess = {}
+            martialArtId = 1,
+            onSaveClick = {},
+            onCancelClick = {}
         )
     }
 } 

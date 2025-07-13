@@ -48,7 +48,7 @@ val appModule = module {
     
     // ViewModels
     viewModel { HomeViewModel(get()) }
-    viewModel { MartialArtDetailViewModel(get()) }
+    viewModel { MartialArtDetailViewModel(get(), get()) }
     viewModel { TechniqueDetailViewModel(get()) }
     viewModel { TechniqueFormViewModel(get()) }
 }

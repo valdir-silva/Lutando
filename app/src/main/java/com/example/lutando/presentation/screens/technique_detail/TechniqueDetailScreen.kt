@@ -24,13 +24,14 @@ import org.koin.androidx.compose.koinViewModel
 
 /**
  * Tela de detalhes da técnica.
+ * Versão atualizada para usar com Navigation Compose.
  */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun TechniqueDetailScreen(
-    techniqueId: Long,
+    techniqueId: Int,
     onBackClick: () -> Unit,
-    onEditClick: () -> Unit,
+    onEditClick: (Int) -> Unit,
     onDeleteClick: () -> Unit,
     viewModel: TechniqueDetailViewModel = koinViewModel()
 ) {
@@ -38,7 +39,7 @@ fun TechniqueDetailScreen(
     
     // Carregar técnica quando a tela é criada
     LaunchedEffect(techniqueId) {
-        viewModel.loadTechnique(techniqueId)
+        viewModel.loadTechnique(techniqueId.toLong())
     }
     
     Scaffold(
@@ -60,7 +61,7 @@ fun TechniqueDetailScreen(
                     }
                 },
                 actions = {
-                    IconButton(onClick = onEditClick) {
+                    IconButton(onClick = { onEditClick(techniqueId) }) {
                         Icon(
                             imageVector = Icons.Default.Edit,
                             contentDescription = "Editar"
@@ -90,7 +91,7 @@ fun TechniqueDetailScreen(
                 uiState.error != null -> {
                     ErrorState(
                         error = uiState.error!!,
-                        onRetry = { viewModel.loadTechnique(techniqueId) },
+                        onRetry = { viewModel.loadTechnique(techniqueId.toLong()) },
                         modifier = Modifier.align(Alignment.Center)
                     )
                 }
@@ -372,9 +373,9 @@ fun TechniqueDetailScreenPreview() {
     
     MaterialTheme {
         TechniqueDetailScreen(
-            techniqueId = 1L,
+            techniqueId = 1,
             onBackClick = {},
-            onEditClick = {},
+            onEditClick = { _ -> },
             onDeleteClick = {}
         )
     }

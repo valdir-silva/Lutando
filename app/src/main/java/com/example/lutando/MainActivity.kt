@@ -8,7 +8,8 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
-import com.example.lutando.presentation.screens.home.HomeScreen
+import androidx.navigation.compose.rememberNavController
+import com.example.lutando.presentation.navigation.LutandoNavigation
 import com.example.lutando.ui.theme.LutandoTheme
 
 class MainActivity : ComponentActivity() {
@@ -21,14 +22,8 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    HomeScreen(
-                        onMartialArtClick = { martialArtId ->
-                            // TODO: Navegar para tela de técnicas da modalidade
-                        },
-                        onAddMartialArtClick = {
-                            // TODO: Navegar para tela de adicionar modalidade
-                        }
-                    )
+                    val navController = rememberNavController()
+                    LutandoNavigation(navController = navController)
                 }
             }
         }

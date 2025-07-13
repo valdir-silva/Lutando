@@ -26,21 +26,22 @@ import org.koin.androidx.compose.koinViewModel
 
 /**
  * Tela de detalhes da modalidade de arte marcial.
+ * Versão atualizada para usar com Navigation Compose.
  */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MartialArtDetailScreen(
-    martialArt: MartialArt,
+    martialArtId: Int,
     onBackClick: () -> Unit,
-    onAddTechniqueClick: () -> Unit,
+    onAddTechniqueClick: (Int) -> Unit,
     onTechniqueClick: (Long) -> Unit,
     viewModel: MartialArtDetailViewModel = koinViewModel()
 ) {
     val uiState by viewModel.uiState.collectAsState()
     
     // Carregar dados quando a tela é criada
-    LaunchedEffect(martialArt) {
-        viewModel.setMartialArt(martialArt)
+    LaunchedEffect(martialArtId) {
+        viewModel.loadMartialArt(martialArtId.toLong())
     }
     
     Scaffold(
@@ -48,7 +49,7 @@ fun MartialArtDetailScreen(
             TopAppBar(
                 title = {
                     Text(
-                        text = martialArt.name,
+                        text = uiState.martialArt?.name ?: "Carregando...",
                         fontSize = 20.sp,
                         fontWeight = FontWeight.SemiBold
                     )
@@ -73,7 +74,7 @@ fun MartialArtDetailScreen(
         },
         floatingActionButton = {
             FloatingActionButton(
-                onClick = onAddTechniqueClick,
+                onClick = { onAddTechniqueClick(martialArtId) },
                 containerColor = MaterialTheme.colorScheme.primary
             ) {
                 Icon(
@@ -98,13 +99,18 @@ fun MartialArtDetailScreen(
                 uiState.error != null -> {
                     ErrorState(
                         error = uiState.error!!,
-                        onRetry = { viewModel.refreshTechniques() },
+                        onRetry = { viewModel.loadMartialArt(martialArtId.toLong()) },
+                        modifier = Modifier.align(Alignment.Center)
+                    )
+                }
+                uiState.martialArt == null -> {
+                    CircularProgressIndicator(
                         modifier = Modifier.align(Alignment.Center)
                     )
                 }
                 uiState.techniques.isEmpty() -> {
                     EmptyTechniquesState(
-                        martialArtName = martialArt.name,
+                        martialArtName = uiState.martialArt!!.name,
                         modifier = Modifier.align(Alignment.Center)
                     )
                 }
@@ -279,7 +285,7 @@ fun MartialArtDetailScreenPreview() {
     
     MaterialTheme {
         MartialArtDetailScreen(
-            martialArt = sampleMartialArt,
+            martialArtId = 1, // Assuming a sample ID for preview
             onBackClick = {},
             onAddTechniqueClick = {},
             onTechniqueClick = {}
