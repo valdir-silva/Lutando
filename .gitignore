@@ -126,3 +126,11 @@ hs_err_pid*
 
 # CursorRIPER Framework
 .cursor/rules/
+
+# Documentação de desenvolvimento (não versionar)
+NAVIGATION_SUBTASKS.md
+SUBTASKS.md
+CHANGELOG.md
+
+# Arquivos do Cursor IDE
+.cursor/cursorignore
