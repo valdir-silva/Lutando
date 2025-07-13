@@ -1,9 +1,14 @@
 package com.example.lutando.presentation.screens.technique_form
 
+import android.net.Uri
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.lutando.domain.model.MediaType
 import com.example.lutando.domain.model.Technique
+import com.example.lutando.domain.repository.MediaRepository
 import com.example.lutando.domain.repository.TechniqueRepository
+import com.example.lutando.domain.usecase.DeleteMediaFileUseCase
+import com.example.lutando.domain.usecase.SaveMediaFileUseCase
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -24,11 +29,16 @@ data class TechniqueFormUiState(
     val audioPath: String = "",
     val isLoading: Boolean = false,
     val error: String? = null,
-    val isSuccess: Boolean = false
+    val isSuccess: Boolean = false,
+    val isSavingMedia: Boolean = false,
+    val mediaError: String? = null
 )
 
 class TechniqueFormViewModel(
-    private val techniqueRepository: TechniqueRepository
+    private val techniqueRepository: TechniqueRepository,
+    private val saveMediaFileUseCase: SaveMediaFileUseCase,
+    private val deleteMediaFileUseCase: DeleteMediaFileUseCase,
+    private val mediaRepository: MediaRepository
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(TechniqueFormUiState())
@@ -155,5 +165,132 @@ class TechniqueFormViewModel(
 
     fun clearSuccess() {
         _uiState.update { it.copy(isSuccess = false) }
+    }
+    
+    /**
+     * Salva um arquivo de mídia e atualiza o estado da técnica.
+     */
+    fun saveMediaFile(sourceUri: Uri, mediaType: MediaType) {
+        viewModelScope.launch {
+            _uiState.update { it.copy(isSavingMedia = true, mediaError = null) }
+            
+            try {
+                val result = saveMediaFileUseCase(sourceUri, mediaType)
+                result.fold(
+                    onSuccess = { filePath ->
+                        when (mediaType) {
+                            MediaType.PHOTO -> {
+                                _uiState.update { 
+                                    it.copy(
+                                        hasPhoto = true,
+                                        photoPath = filePath,
+                                        isSavingMedia = false
+                                    )
+                                }
+                            }
+                            MediaType.VIDEO -> {
+                                _uiState.update { 
+                                    it.copy(
+                                        hasVideo = true,
+                                        videoPath = filePath,
+                                        isSavingMedia = false
+                                    )
+                                }
+                            }
+                            MediaType.AUDIO -> {
+                                _uiState.update { 
+                                    it.copy(
+                                        hasAudio = true,
+                                        audioPath = filePath,
+                                        isSavingMedia = false
+                                    )
+                                }
+                            }
+                        }
+                    },
+                    onFailure = { exception ->
+                        _uiState.update { 
+                            it.copy(
+                                mediaError = exception.message ?: "Erro ao salvar mídia",
+                                isSavingMedia = false
+                            )
+                        }
+                    }
+                )
+            } catch (e: Exception) {
+                _uiState.update { 
+                    it.copy(
+                        mediaError = e.message ?: "Erro ao salvar mídia",
+                        isSavingMedia = false
+                    )
+                }
+            }
+        }
+    }
+    
+    /**
+     * Remove um arquivo de mídia e atualiza o estado da técnica.
+     */
+    fun removeMediaFile(mediaType: MediaType) {
+        viewModelScope.launch {
+            val currentState = _uiState.value
+            val filePath = when (mediaType) {
+                MediaType.PHOTO -> currentState.photoPath
+                MediaType.VIDEO -> currentState.videoPath
+                MediaType.AUDIO -> currentState.audioPath
+            }
+            
+            if (filePath.isNotEmpty()) {
+                deleteMediaFileUseCase(filePath)
+            }
+            
+            when (mediaType) {
+                MediaType.PHOTO -> {
+                    _uiState.update { 
+                        it.copy(
+                            hasPhoto = false,
+                            photoPath = ""
+                        )
+                    }
+                }
+                MediaType.VIDEO -> {
+                    _uiState.update { 
+                        it.copy(
+                            hasVideo = false,
+                            videoPath = ""
+                        )
+                    }
+                }
+                MediaType.AUDIO -> {
+                    _uiState.update { 
+                        it.copy(
+                            hasAudio = false,
+                            audioPath = ""
+                        )
+                    }
+                }
+            }
+        }
+    }
+    
+    /**
+     * Verifica se as permissões necessárias para um tipo de mídia estão concedidas.
+     */
+    fun hasRequiredPermissions(mediaType: MediaType): Boolean {
+        return mediaRepository.hasRequiredPermissions(mediaType)
+    }
+    
+    /**
+     * Obtém as permissões necessárias para um tipo de mídia.
+     */
+    fun getRequiredPermissions(mediaType: MediaType): Array<String> {
+        return mediaRepository.getRequiredPermissions(mediaType)
+    }
+    
+    /**
+     * Limpa erros de mídia.
+     */
+    fun clearMediaError() {
+        _uiState.update { it.copy(mediaError = null) }
     }
 } 
