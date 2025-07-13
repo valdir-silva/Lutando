@@ -5,7 +5,7 @@
 O **Lutando** é um aplicativo Android para praticantes de artes marciais registrarem e organizarem as técnicas aprendidas em cada aula. O app permite salvar detalhes das técnicas usando texto, voz, foto ou vídeo, organizadas por modalidades de artes marciais, com interface moderna e navegação intuitiva.
 
 <p align="center">
-  <img src="docs/screenshots/home_screen.png" alt="Home Screen" width="320" />
+  <img src="docs/screenshots/home_screen.png" alt="Home Screen" width="200" />
 </p>
 
 ## 🚀 Funcionalidades
