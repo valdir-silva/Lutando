@@ -12,9 +12,10 @@ O **Lutando** é um aplicativo Android para praticantes de artes marciais regist
 
 - **Perfil de Usuário**: Gerenciamento de perfil pessoal
 - **CRUD Completo de Técnicas**: Criar, visualizar, editar e deletar técnicas
-- **Mídia nas Técnicas**: Suporte para texto, foto, vídeo e áudio (campos prontos para integração)
+- **Mídia nas Técnicas**: Suporte completo para foto, vídeo e áudio (além de texto)
+- **Ícones Personalizados**: Ícones vetoriais exclusivos para cada tipo de mídia
 - **Organização por Modalidades**: Técnicas separadas por tipo de arte marcial
-- **Tela de Detalhes**: Visualização detalhada de cada técnica e modalidade
+- **Tela de Detalhes**: Visualização detalhada de cada técnica e modalidade, incluindo players de mídia
 - **Navegação Completa**: Navigation Compose com rotas e argumentos tipados
 - **Dados Iniciais**: 8 modalidades cadastradas automaticamente
 - **Arquitetura Limpa**: MVVM, Use Cases, Repositórios, Room, Koin
@@ -84,8 +85,15 @@ HomeScreen → MartialArtDetailScreen → TechniqueDetailScreen
 1. **Tela Inicial**: Visualize todas as modalidades de artes marciais
 2. **Selecionar Modalidade**: Toque em uma modalidade para ver suas técnicas
 3. **Adicionar Técnica**: Use o botão flutuante (+) para adicionar nova técnica
-4. **Ver Detalhes**: Toque em uma técnica para ver seus detalhes
-5. **Editar/Deletar**: Use os botões na tela de detalhes da técnica
+4. **Adicionar Mídia**: No formulário de técnica, utilize os botões de mídia (foto, vídeo, áudio) para anexar arquivos da galeria
+5. **Ver Detalhes**: Toque em uma técnica para ver seus detalhes, incluindo players de mídia
+6. **Editar/Deletar**: Use os botões na tela de detalhes da técnica
+
+## 🖼️ Funcionalidade de Mídia
+
+- **Adicionar Mídia**: No formulário de técnica, utilize os botões de mídia para selecionar foto, vídeo ou áudio da galeria do dispositivo.
+- **Visualização**: As mídias anexadas podem ser visualizadas na tela de detalhes da técnica, com player de vídeo, player de áudio e visualização de imagem.
+- **Ícones Personalizados**: Cada tipo de mídia possui um ícone vetorial exclusivo, garantindo clareza e acessibilidade.
 
 ## 💡 Como Contribuir
 
@@ -96,10 +104,10 @@ HomeScreen → MartialArtDetailScreen → TechniqueDetailScreen
 
 ## 📊 Status do Projeto
 
-- **Fase:** POC (Prova de Conceito) — 85% concluída
-- **Funcionalidades:** CRUD, telas, navegação completa, dados iniciais, arquitetura limpa
-- **Progresso:** Foundation (100%), Core Features (100%), UI (100%), Navegação (100%)
-- **Próximos passos:** Funcionalidades de mídia, testes automatizados, melhorias de UX
+- **Fase:** POC (Prova de Conceito) — 95% concluída
+- **Funcionalidades:** CRUD, telas, navegação completa, dados iniciais, arquitetura limpa, **mídia integrada**
+- **Progresso:** Foundation (100%), Core Features (100%), UI (100%), Navegação (100%), **Mídia (100%)**
+- **Próximos passos:** Testes automatizados, melhorias de UX
 
 ## 🎨 Padrões de Design
 
