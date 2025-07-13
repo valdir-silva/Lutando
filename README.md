@@ -43,6 +43,15 @@ app/
       ├─ presentation/ # Telas, ViewModels, Componentes, Navegação
       ├─ di/           # Módulo Koin
       └─ ui/           # Temas
+
+docs/
+  ├─ screenshots/      # Screenshots do app
+  ├─ CHANGELOG.md     # Controle de versão
+  └─ tasks/           # Documentação de desenvolvimento (não versionada)
+      ├─ README.md    # Índice da documentação
+      ├─ TEST_*.md    # Documentação de testes unitários
+      ├─ NAVIGATION_*.md # Subtasks de navegação
+      └─ SUBTASKS.md  # Subtasks gerais
 ```
 
 ## 🔄 Fluxo de Navegação
@@ -108,6 +117,18 @@ HomeScreen → MartialArtDetailScreen → TechniqueDetailScreen
 - **Funcionalidades:** CRUD, telas, navegação completa, dados iniciais, arquitetura limpa, **mídia integrada**
 - **Progresso:** Foundation (100%), Core Features (100%), UI (100%), Navegação (100%), **Mídia (100%)**
 - **Próximos passos:** Testes automatizados, melhorias de UX
+
+## 📚 Documentação
+
+A documentação de desenvolvimento está organizada na pasta `docs/tasks/`:
+
+- **`docs/tasks/README.md`** - Índice da documentação
+- **`docs/tasks/TEST_SUMMARY.md`** - Resumo do projeto de testes unitários
+- **`docs/tasks/TEST_TASKS.md`** - Subtasks detalhadas de testes
+- **`docs/tasks/TEST_EXAMPLES.md`** - Exemplos práticos de implementação
+- **`docs/CHANGELOG.md`** - Histórico de mudanças do projeto
+
+*Nota: A documentação de desenvolvimento não é versionada no repositório.*
 
 ## 🎨 Padrões de Design
 

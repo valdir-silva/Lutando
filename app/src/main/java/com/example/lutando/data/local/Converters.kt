@@ -25,7 +25,11 @@ class Converters {
      */
     @TypeConverter
     fun toMediaFileList(value: String): List<MediaFile> {
-        val listType = object : TypeToken<List<MediaFile>>() {}.type
-        return gson.fromJson(value, listType) ?: emptyList()
+        return try {
+            val listType = object : TypeToken<List<MediaFile>>() {}.type
+            gson.fromJson(value, listType) ?: emptyList()
+        } catch (e: Exception) {
+            emptyList()
+        }
     }
 } 

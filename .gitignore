@@ -128,9 +128,7 @@ memory-bank/
 .cursor/rules/
 
 # Documentação de desenvolvimento (não versionar)
-NAVIGATION_SUBTASKS.md
-SUBTASKS.md
-CHANGELOG.md
+docs/tasks/
 
 # Arquivos do Cursor IDE
 .cursor/cursorignore
