@@ -121,8 +121,8 @@ Desktop.ini
 # Virtual machine crash logs
 hs_err_pid*
 
-# Memory Bank (opcional - manter se quiser versionar a documentação)
-# memory-bank/
+# Memory Bank (documentação de desenvolvimento - não versionar)
+memory-bank/
 
 # CursorRIPER Framework
 .cursor/rules/
