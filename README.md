@@ -2,63 +2,76 @@
 
 ## 📱 Sobre o Projeto
 
-O **Lutando** é um aplicativo Android desenvolvido para ajudar praticantes de artes marciais a registrar e organizar as técnicas aprendidas durante suas aulas. O app permite salvar detalhes das técnicas usando texto, voz, foto ou vídeo, organizadas por modalidades de artes marciais.
+O **Lutando** é um aplicativo Android para praticantes de artes marciais registrarem e organizarem as técnicas aprendidas em cada aula. O app permite salvar detalhes das técnicas usando texto, voz, foto ou vídeo, organizadas por modalidades de artes marciais, com interface moderna e navegação intuitiva.
 
-## 🎯 Funcionalidades
+## 🚀 Funcionalidades
 
 - **Perfil de Usuário**: Gerenciamento de perfil pessoal
-- **Registro de Técnicas**: CRUD completo para técnicas de artes marciais
-- **Múltiplos Formatos**: Suporte para texto, voz, foto e vídeo
-- **Organização por Modalidades**: Separação clara por tipos de artes marciais
-- **Interface Moderna**: Desenvolvido com Jetpack Compose
+- **CRUD Completo de Técnicas**: Criar, visualizar, editar e deletar técnicas
+- **Mídia nas Técnicas**: Suporte para texto, foto, vídeo e áudio (campos prontos para integração)
+- **Organização por Modalidades**: Técnicas separadas por tipo de arte marcial
+- **Tela de Detalhes**: Visualização detalhada de cada técnica e modalidade
+- **Dados Iniciais**: 8 modalidades cadastradas automaticamente
+- **Arquitetura Limpa**: MVVM, Use Cases, Repositórios, Room, Koin
+- **Interface Moderna**: Jetpack Compose
 
-## 🤖 Desenvolvimento com Cursor + Framework RIPER
+## 🛠️ Tecnologias Utilizadas
 
-Este projeto utiliza o **Cursor IDE** em conjunto com o **Framework RIPER** para desenvolvimento estruturado e eficiente.
+- **Kotlin**
+- **Jetpack Compose** (UI)
+- **Room Database** (persistência local)
+- **Koin** (injeção de dependência)
+- **MVVM** (arquitetura)
+- **Clean Architecture**
+- **Cursor IDE + Framework RIPER**
 
-### Framework RIPER
-O **RIPER** é um framework de desenvolvimento que organiza o trabalho em 5 modos:
+## 🏗️ Estrutura do Projeto
 
-- **🔍 RESEARCH**: Análise e coleta de informações
-- **💡 INNOVATE**: Brainstorming e geração de ideias
-- **📋 PLAN**: Planejamento detalhado e especificações
-- **⚡ EXECUTE**: Implementação e codificação
-- **✅ REVIEW**: Revisão e validação
-
-### Comandos Disponíveis
-```bash
-/research    # Entrar no modo de pesquisa
-/innovate    # Entrar no modo de inovação
-/plan        # Entrar no modo de planejamento
-/execute     # Entrar no modo de execução
-/review      # Entrar no modo de revisão
-/start       # Iniciar fase de setup do projeto
+```
+app/
+  └─ src/main/java/com/example/lutando/
+      ├─ data/         # DAOs, Database, Repositórios
+      ├─ domain/       # Modelos, Repositórios, Use Cases
+      ├─ presentation/ # Telas, ViewModels, Componentes
+      ├─ di/           # Módulo Koin
+      └─ ui/           # Temas
 ```
 
-### Memory Bank
-O projeto mantém um **Memory Bank** com arquivos de contexto:
-- `projectbrief.md` - Requisitos e objetivos do projeto
-- `systemPatterns.md` - Arquitetura e padrões técnicos
-- `techContext.md` - Tecnologias e configurações
-- `activeContext.md` - Contexto atual de trabalho
-- `progress.md` - Progresso e próximos passos
+## ▶️ Como Rodar o Projeto
 
-### Subtasks
-O desenvolvimento segue um plano incremental definido em `SUBTASKS.md`, implementando bibliotecas uma por vez para garantir estabilidade.
+1. **Clone o repositório:**
+   ```bash
+   git clone https://github.com/valdir-silva/Lutando.git
+   cd Lutando
+   ```
+2. **Abra no Android Studio ou Cursor IDE**
+3. **Compile e rode em um emulador ou dispositivo físico:**
+   ```bash
+   ./gradlew installDebug
+   # Ou use o botão "Run" do Android Studio
+   ```
+4. **Pronto!** O app já vem com dados iniciais para testar.
+
+## 💡 Como Contribuir
+
+- Crie uma branch a partir da `main`
+- Faça suas alterações
+- Envie um Pull Request com uma descrição clara
+- Siga o padrão de arquitetura e boas práticas do projeto
 
 ## 📊 Status do Projeto
 
-- **Fase**: POC (Prova de Conceito)
-- **Prazo**: 2 semanas
-- **Progresso**: 5% (Setup inicial completo)
+- **Fase:** POC (Prova de Conceito) — 100% concluída
+- **Funcionalidades:** CRUD, telas, navegação, dados iniciais, arquitetura limpa
+- **Próximos passos:** Integração de captura de mídia, melhorias de UX, testes automatizados
 
 ## 👨‍💻 Desenvolvedor
 
-- **Valdir Silva** - Desenvolvedor e Usuário Primário
+- **Valdir Silva** — Desenvolvedor e Usuário Primário
 
 ## 📞 Contato
 
-Para dúvidas ou sugestões, entre em contato através do repositório.
+Para dúvidas ou sugestões, abra uma issue ou envie um pull request.
 
 ---
 
