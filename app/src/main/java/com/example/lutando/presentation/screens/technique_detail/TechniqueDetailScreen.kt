@@ -68,6 +68,26 @@ fun TechniqueDetailScreen(
         viewModel.loadTechnique(techniqueId.toLong())
     }
 
+    TechniqueDetailContent(
+        uiState = uiState,
+        onBackClick = onBackClick,
+        onEditClick = { onEditClick(techniqueId) },
+        onDeleteClick = onDeleteClick,
+        onRetry = { viewModel.loadTechnique(techniqueId.toLong()) },
+        onClearError = { viewModel.clearError() }
+    )
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun TechniqueDetailContent(
+    uiState: TechniqueDetailUiState,
+    onBackClick: () -> Unit,
+    onEditClick: () -> Unit,
+    onDeleteClick: () -> Unit,
+    onRetry: () -> Unit = {},
+    onClearError: () -> Unit = {}
+) {
     Scaffold(
         topBar = {
             TopAppBar(
@@ -87,7 +107,7 @@ fun TechniqueDetailScreen(
                     }
                 },
                 actions = {
-                    IconButton(onClick = { onEditClick(techniqueId) }) {
+                    IconButton(onClick = onEditClick) {
                         Icon(
                             imageVector = Icons.Default.Edit,
                             contentDescription = "Editar"
@@ -114,18 +134,16 @@ fun TechniqueDetailScreen(
                         modifier = Modifier.align(Alignment.Center)
                     )
                 }
-
                 uiState.error != null -> {
                     ErrorState(
                         error = uiState.error!!,
-                        onRetry = { viewModel.loadTechnique(techniqueId.toLong()) },
+                        onRetry = onRetry,
                         modifier = Modifier.align(Alignment.Center)
                     )
                 }
-
                 uiState.technique != null -> {
                     TechniqueContent(
-                        technique = uiState.technique!!,
+                        technique = uiState.technique,
                         mediaUris = uiState.mediaUris,
                         modifier = Modifier.fillMaxSize()
                     )
@@ -139,7 +157,7 @@ fun TechniqueDetailScreen(
                         .align(Alignment.BottomCenter)
                         .padding(16.dp),
                     action = {
-                        TextButton(onClick = { viewModel.clearError() }) {
+                        TextButton(onClick = onClearError) {
                             Text("OK")
                         }
                     }
@@ -440,13 +458,20 @@ fun TechniqueDetailScreenPreview() {
         createdAt = "2025-01-27T10:00:00",
         updatedAt = "2025-01-27T10:00:00"
     )
-
+    val uiState = TechniqueDetailUiState(
+        technique = sampleTechnique,
+        mediaUris = emptyMap(),
+        isLoading = false,
+        error = null
+    )
     MaterialTheme {
-        TechniqueDetailScreen(
-            techniqueId = 1,
+        TechniqueDetailContent(
+            uiState = uiState,
             onBackClick = {},
-            onEditClick = { _ -> },
-            onDeleteClick = {}
+            onEditClick = {},
+            onDeleteClick = {},
+            onRetry = {},
+            onClearError = {}
         )
     }
 } 

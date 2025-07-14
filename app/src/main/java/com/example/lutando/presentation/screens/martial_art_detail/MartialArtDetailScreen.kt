@@ -46,6 +46,9 @@ import androidx.compose.ui.unit.sp
 import com.example.lutando.domain.model.MartialArt
 import com.example.lutando.domain.model.Technique
 import org.koin.androidx.compose.koinViewModel
+import com.example.lutando.domain.usecase.GetAllMartialArtsUseCase
+import com.example.lutando.domain.usecase.GetTechniquesByMartialArtUseCase
+import kotlinx.coroutines.flow.flowOf
 
 /**
  * Tela de detalhes da modalidade de arte marcial.
@@ -67,6 +70,24 @@ fun MartialArtDetailScreen(
         viewModel.loadMartialArt(martialArtId.toLong())
     }
 
+    MartialArtDetailContent(
+        uiState = uiState,
+        onBackClick = onBackClick,
+        onAddTechniqueClick = { onAddTechniqueClick(martialArtId) },
+        onTechniqueClick = onTechniqueClick,
+        onRetry = { viewModel.loadMartialArt(martialArtId.toLong()) }
+    )
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun MartialArtDetailContent(
+    uiState: MartialArtDetailUiState,
+    onBackClick: () -> Unit,
+    onAddTechniqueClick: () -> Unit,
+    onTechniqueClick: (Long) -> Unit,
+    onRetry: () -> Unit = {}
+) {
     Scaffold(
         topBar = {
             TopAppBar(
@@ -97,7 +118,7 @@ fun MartialArtDetailScreen(
         },
         floatingActionButton = {
             FloatingActionButton(
-                onClick = { onAddTechniqueClick(martialArtId) },
+                onClick = onAddTechniqueClick,
                 containerColor = MaterialTheme.colorScheme.primary
             ) {
                 Icon(
@@ -119,28 +140,24 @@ fun MartialArtDetailScreen(
                         modifier = Modifier.align(Alignment.Center)
                     )
                 }
-
                 uiState.error != null -> {
                     ErrorState(
                         error = uiState.error!!,
-                        onRetry = { viewModel.loadMartialArt(martialArtId.toLong()) },
+                        onRetry = onRetry,
                         modifier = Modifier.align(Alignment.Center)
                     )
                 }
-
                 uiState.martialArt == null -> {
                     CircularProgressIndicator(
                         modifier = Modifier.align(Alignment.Center)
                     )
                 }
-
                 uiState.techniques.isEmpty() -> {
                     EmptyTechniquesState(
-                        martialArtName = uiState.martialArt!!.name,
+                        martialArtName = uiState.martialArt?.name ?: "",
                         modifier = Modifier.align(Alignment.Center)
                     )
                 }
-
                 else -> {
                     LazyColumn(
                         modifier = Modifier.fillMaxSize(),
@@ -309,13 +326,41 @@ fun MartialArtDetailScreenPreview() {
         name = "Jiu-Jitsu",
         description = "Arte marcial brasileira"
     )
-
+    val sampleTechniques = listOf(
+        Technique(
+            id = 1L,
+            name = "Kimura",
+            description = "Chave de braço clássica do Jiu-Jitsu",
+            martialArtId = 1L,
+            createdAt = "2024-01-27",
+            hasVideo = true,
+            hasPhoto = true,
+            hasAudio = false
+        ),
+        Technique(
+            id = 2L,
+            name = "Triângulo",
+            description = "Finalização com as pernas",
+            martialArtId = 1L,
+            createdAt = "2024-01-26",
+            hasVideo = true,
+            hasPhoto = false,
+            hasAudio = true
+        )
+    )
+    val uiState = MartialArtDetailUiState(
+        martialArt = sampleMartialArt,
+        techniques = sampleTechniques,
+        isLoading = false,
+        error = null
+    )
     MaterialTheme {
-        MartialArtDetailScreen(
-            martialArtId = 1, // Assuming a sample ID for preview
+        MartialArtDetailContent(
+            uiState = uiState,
             onBackClick = {},
             onAddTechniqueClick = {},
-            onTechniqueClick = {}
+            onTechniqueClick = {},
+            onRetry = {}
         )
     }
 } 

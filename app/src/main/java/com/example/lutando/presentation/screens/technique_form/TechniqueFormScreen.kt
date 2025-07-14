@@ -75,12 +75,40 @@ fun TechniqueFormScreen(
         }
     }
 
+    TechniqueFormContent(
+        uiState = uiState,
+        isEditMode = techniqueId != null && techniqueId > 0,
+        onSaveClick = { viewModel.saveTechnique() },
+        onCancelClick = onCancelClick,
+        onNameChange = { viewModel.setName(it) },
+        onDescriptionChange = { viewModel.setDescription(it) },
+        onMediaCaptured = { uri, mediaType -> viewModel.saveMediaFile(uri, mediaType) },
+        onMediaRemoved = { mediaType -> viewModel.removeMediaFile(mediaType) },
+        onClearError = { viewModel.clearError() },
+        onClearMediaError = { viewModel.clearMediaError() }
+    )
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun TechniqueFormContent(
+    uiState: TechniqueFormUiState,
+    isEditMode: Boolean,
+    onSaveClick: () -> Unit,
+    onCancelClick: () -> Unit,
+    onNameChange: (String) -> Unit,
+    onDescriptionChange: (String) -> Unit,
+    onMediaCaptured: (Uri, MediaType) -> Unit,
+    onMediaRemoved: (MediaType) -> Unit,
+    onClearError: () -> Unit = {},
+    onClearMediaError: () -> Unit = {}
+) {
     Scaffold(
         topBar = {
             TopAppBar(
                 title = {
                     Text(
-                        text = if (techniqueId != null && techniqueId > 0) "Editar Técnica" else "Nova Técnica",
+                        text = if (isEditMode) "Editar Técnica" else "Nova Técnica",
                         fontSize = 20.sp,
                         fontWeight = FontWeight.SemiBold
                     )
@@ -95,7 +123,7 @@ fun TechniqueFormScreen(
                 },
                 actions = {
                     IconButton(
-                        onClick = { viewModel.saveTechnique() },
+                        onClick = onSaveClick,
                         enabled = !uiState.isLoading
                     ) {
                         Icon(
@@ -118,7 +146,6 @@ fun TechniqueFormScreen(
                         modifier = Modifier.align(Alignment.Center)
                     )
                 }
-
                 else -> {
                     Column(
                         modifier = Modifier
@@ -130,7 +157,7 @@ fun TechniqueFormScreen(
                         // Nome da técnica
                         OutlinedTextField(
                             value = uiState.name,
-                            onValueChange = { viewModel.setName(it) },
+                            onValueChange = onNameChange,
                             label = { Text("Nome da técnica") },
                             modifier = Modifier.fillMaxWidth(),
                             singleLine = true
@@ -139,7 +166,7 @@ fun TechniqueFormScreen(
                         // Descrição da técnica
                         OutlinedTextField(
                             value = uiState.description,
-                            onValueChange = { viewModel.setDescription(it) },
+                            onValueChange = onDescriptionChange,
                             label = { Text("Descrição (opcional)") },
                             modifier = Modifier.fillMaxWidth(),
                             minLines = 3,
@@ -149,12 +176,8 @@ fun TechniqueFormScreen(
                         // Seção de mídia
                         MediaSection(
                             uiState = uiState,
-                            onMediaCaptured = { uri, mediaType ->
-                                viewModel.saveMediaFile(uri, mediaType)
-                            },
-                            onMediaRemoved = { mediaType ->
-                                viewModel.removeMediaFile(mediaType)
-                            },
+                            onMediaCaptured = onMediaCaptured,
+                            onMediaRemoved = onMediaRemoved,
                             onError = { error ->
                                 // Mostrar erro via Snackbar
                             }
@@ -162,7 +185,7 @@ fun TechniqueFormScreen(
 
                         // Botão de salvar
                         Button(
-                            onClick = { viewModel.saveTechnique() },
+                            onClick = onSaveClick,
                             modifier = Modifier.fillMaxWidth(),
                             enabled = !uiState.isLoading && uiState.name.isNotBlank()
                         ) {
@@ -181,7 +204,7 @@ fun TechniqueFormScreen(
                         .align(Alignment.BottomCenter)
                         .padding(16.dp),
                     action = {
-                        TextButton(onClick = { viewModel.clearError() }) {
+                        TextButton(onClick = onClearError) {
                             Text("OK")
                         }
                     }
@@ -197,7 +220,7 @@ fun TechniqueFormScreen(
                         .align(Alignment.BottomCenter)
                         .padding(16.dp),
                     action = {
-                        TextButton(onClick = { viewModel.clearMediaError() }) {
+                        TextButton(onClick = onClearMediaError) {
                             Text("OK")
                         }
                     }
@@ -308,11 +331,33 @@ private fun MediaTypeSection(
 @Preview(showBackground = true)
 @Composable
 fun TechniqueFormScreenPreview() {
+    val uiState = TechniqueFormUiState(
+        name = "Kimura",
+        description = "Técnica de finalização do jiu-jitsu brasileiro",
+        martialArtId = 1L,
+        hasPhoto = true,
+        hasVideo = false,
+        hasAudio = true,
+        photoPath = "/photos/kimura.jpg",
+        videoPath = "",
+        audioPath = "/audio/kimura.mp3",
+        isLoading = false,
+        isSuccess = false,
+        error = null,
+        mediaError = null
+    )
     MaterialTheme {
-        TechniqueFormScreen(
-            martialArtId = 1,
+        TechniqueFormContent(
+            uiState = uiState,
+            isEditMode = false,
             onSaveClick = {},
-            onCancelClick = {}
+            onCancelClick = {},
+            onNameChange = {},
+            onDescriptionChange = {},
+            onMediaCaptured = { _, _ -> },
+            onMediaRemoved = {},
+            onClearError = {},
+            onClearMediaError = {}
         )
     }
 } 
