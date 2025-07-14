@@ -1,5 +1,6 @@
 package com.example.lutando.presentation.screens.technique_form
 
+import android.net.Uri
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
@@ -14,11 +15,15 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.lutando.domain.model.MediaType
+import com.example.lutando.presentation.components.MediaCaptureButton
+import com.example.lutando.presentation.components.MediaPreviewCard
+import com.example.lutando.presentation.components.MediaRemoveButton
 import org.koin.androidx.compose.koinViewModel
 
 /**
  * Tela de formulário para adicionar/editar técnicas.
- * Versão atualizada para usar com Navigation Compose.
+ * Versão atualizada para usar com Navigation Compose e funcionalidades de mídia.
  */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -122,12 +127,16 @@ fun TechniqueFormScreen(
                         
                         // Seção de mídia
                         MediaSection(
-                            hasVideo = uiState.hasVideo,
-                            hasPhoto = uiState.hasPhoto,
-                            hasAudio = uiState.hasAudio,
-                            onVideoChange = { viewModel.setHasVideo(it) },
-                            onPhotoChange = { viewModel.setHasPhoto(it) },
-                            onAudioChange = { viewModel.setHasAudio(it) }
+                            uiState = uiState,
+                            onMediaCaptured = { uri, mediaType ->
+                                viewModel.saveMediaFile(uri, mediaType)
+                            },
+                            onMediaRemoved = { mediaType ->
+                                viewModel.removeMediaFile(mediaType)
+                            },
+                            onError = { error ->
+                                // Mostrar erro via Snackbar
+                            }
                         )
                         
                         // Botão de salvar
@@ -159,18 +168,32 @@ fun TechniqueFormScreen(
                     Text(error)
                 }
             }
+            
+            // Snackbar para erros de mídia
+            uiState.mediaError?.let { error ->
+                Snackbar(
+                    modifier = Modifier
+                        .align(Alignment.BottomCenter)
+                        .padding(16.dp),
+                    action = {
+                        TextButton(onClick = { viewModel.clearMediaError() }) {
+                            Text("OK")
+                        }
+                    }
+                ) {
+                    Text(error)
+                }
+            }
         }
     }
 }
 
 @Composable
 private fun MediaSection(
-    hasVideo: Boolean,
-    hasPhoto: Boolean,
-    hasAudio: Boolean,
-    onVideoChange: (Boolean) -> Unit,
-    onPhotoChange: (Boolean) -> Unit,
-    onAudioChange: (Boolean) -> Unit
+    uiState: TechniqueFormUiState,
+    onMediaCaptured: (Uri, MediaType) -> Unit,
+    onMediaRemoved: (MediaType) -> Unit,
+    onError: (String) -> Unit
 ) {
     Card(
         modifier = Modifier.fillMaxWidth(),
@@ -178,7 +201,7 @@ private fun MediaSection(
     ) {
         Column(
             modifier = Modifier.padding(16.dp),
-            verticalArrangement = Arrangement.spacedBy(12.dp)
+            verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
             Text(
                 text = "Mídia da Técnica",
@@ -186,61 +209,77 @@ private fun MediaSection(
                 fontWeight = FontWeight.SemiBold
             )
             
-            // Checkbox para vídeo
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Checkbox(
-                    checked = hasVideo,
-                    onCheckedChange = onVideoChange
-                )
-                Spacer(modifier = Modifier.width(8.dp))
-                Text(
-                    text = "Incluir vídeo da técnica",
-                    style = MaterialTheme.typography.bodyMedium
-                )
-            }
+            // Seção de foto
+            MediaTypeSection(
+                title = "Foto da Técnica",
+                hasMedia = uiState.hasPhoto,
+                mediaPath = uiState.photoPath,
+                mediaType = MediaType.PHOTO,
+                onMediaCaptured = onMediaCaptured,
+                onMediaRemoved = onMediaRemoved,
+                onError = onError
+            )
             
-            // Checkbox para foto
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Checkbox(
-                    checked = hasPhoto,
-                    onCheckedChange = onPhotoChange
-                )
-                Spacer(modifier = Modifier.width(8.dp))
-                Text(
-                    text = "Incluir foto da técnica",
-                    style = MaterialTheme.typography.bodyMedium
-                )
-            }
+            // Seção de vídeo
+            MediaTypeSection(
+                title = "Vídeo da Técnica",
+                hasMedia = uiState.hasVideo,
+                mediaPath = uiState.videoPath,
+                mediaType = MediaType.VIDEO,
+                onMediaCaptured = onMediaCaptured,
+                onMediaRemoved = onMediaRemoved,
+                onError = onError
+            )
             
-            // Checkbox para áudio
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Checkbox(
-                    checked = hasAudio,
-                    onCheckedChange = onAudioChange
-                )
-                Spacer(modifier = Modifier.width(8.dp))
-                Text(
-                    text = "Incluir áudio explicativo",
-                    style = MaterialTheme.typography.bodyMedium
-                )
-            }
-            
-            if (hasVideo || hasPhoto || hasAudio) {
-                Text(
-                    text = "Nota: A captura de mídia será implementada na próxima versão",
-                    style = MaterialTheme.typography.bodySmall,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant
-                )
-            }
+            // Seção de áudio
+            MediaTypeSection(
+                title = "Áudio Explicativo",
+                hasMedia = uiState.hasAudio,
+                mediaPath = uiState.audioPath,
+                mediaType = MediaType.AUDIO,
+                onMediaCaptured = onMediaCaptured,
+                onMediaRemoved = onMediaRemoved,
+                onError = onError
+            )
+        }
+    }
+}
+
+@Composable
+private fun MediaTypeSection(
+    title: String,
+    hasMedia: Boolean,
+    mediaPath: String,
+    mediaType: MediaType,
+    onMediaCaptured: (Uri, MediaType) -> Unit,
+    onMediaRemoved: (MediaType) -> Unit,
+    onError: (String) -> Unit
+) {
+    Column(
+        verticalArrangement = Arrangement.spacedBy(8.dp)
+    ) {
+        Text(
+            text = title,
+            style = MaterialTheme.typography.bodyLarge,
+            fontWeight = FontWeight.Medium
+        )
+        
+        if (hasMedia && mediaPath.isNotEmpty()) {
+            // Mostrar preview da mídia
+            MediaPreviewCard(
+                mediaType = mediaType,
+                uri = Uri.parse(mediaPath),
+                onRemove = { onMediaRemoved(mediaType) },
+                modifier = Modifier.fillMaxWidth()
+            )
+        } else {
+            // Mostrar botão de captura
+            MediaCaptureButton(
+                mediaType = mediaType,
+                onMediaCaptured = { uri -> onMediaCaptured(uri, mediaType) },
+                onError = onError,
+                modifier = Modifier.fillMaxWidth()
+            )
         }
     }
 }

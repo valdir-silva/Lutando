@@ -1,5 +1,6 @@
 package com.example.lutando.presentation.screens.technique_detail
 
+import android.net.Uri
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
@@ -19,12 +20,14 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.lutando.domain.model.MediaType
 import com.example.lutando.domain.model.Technique
+import com.example.lutando.presentation.components.MediaDisplay
 import org.koin.androidx.compose.koinViewModel
 
 /**
  * Tela de detalhes da técnica.
- * Versão atualizada para usar com Navigation Compose.
+ * Versão atualizada para usar com Navigation Compose e exibir mídia.
  */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -98,6 +101,7 @@ fun TechniqueDetailScreen(
                 uiState.technique != null -> {
                     TechniqueContent(
                         technique = uiState.technique!!,
+                        mediaUris = uiState.mediaUris,
                         modifier = Modifier.fillMaxSize()
                     )
                 }
@@ -125,6 +129,7 @@ fun TechniqueDetailScreen(
 @Composable
 private fun TechniqueContent(
     technique: Technique,
+    mediaUris: Map<MediaType, Uri?>,
     modifier: Modifier = Modifier
 ) {
     Column(
@@ -180,12 +185,7 @@ private fun TechniqueContent(
         
         // Seção de mídia
         if (technique.hasVideo || technique.hasPhoto || technique.hasAudio) {
-            MediaSection(technique = technique)
-        }
-        
-        // Placeholder para conteúdo de mídia
-        if (technique.hasVideo || technique.hasPhoto || technique.hasAudio) {
-            MediaPlaceholder(technique = technique)
+            MediaSection(technique = technique, mediaUris = mediaUris)
         }
     }
 }
@@ -213,14 +213,17 @@ private fun InfoRow(
 }
 
 @Composable
-private fun MediaSection(technique: Technique) {
+private fun MediaSection(
+    technique: Technique,
+    mediaUris: Map<MediaType, Uri?>
+) {
     Card(
         modifier = Modifier.fillMaxWidth(),
         elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
     ) {
         Column(
             modifier = Modifier.padding(16.dp),
-            verticalArrangement = Arrangement.spacedBy(12.dp)
+            verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
             Text(
                 text = "Mídia",
@@ -228,6 +231,7 @@ private fun MediaSection(technique: Technique) {
                 fontWeight = FontWeight.SemiBold
             )
             
+            // Chips indicando tipos de mídia disponíveis
             Row(
                 horizontalArrangement = Arrangement.spacedBy(8.dp)
             ) {
@@ -248,6 +252,68 @@ private fun MediaSection(technique: Technique) {
                         text = "Áudio",
                         backgroundColor = MaterialTheme.colorScheme.tertiary
                     )
+                }
+            }
+            
+            // Exibir mídia
+            Column(
+                verticalArrangement = Arrangement.spacedBy(16.dp)
+            ) {
+                // Foto
+                if (technique.hasPhoto && technique.photoPath.isNotEmpty()) {
+                    val photoUri = mediaUris[MediaType.PHOTO]
+                    if (photoUri != null) {
+                        MediaDisplay(
+                            uri = photoUri,
+                            mediaType = MediaType.PHOTO,
+                            contentDescription = "Foto da técnica ${technique.name}",
+                            modifier = Modifier.fillMaxWidth()
+                        )
+                    } else {
+                        MediaPlaceholder(
+                            title = "Foto",
+                            message = "Carregando foto...",
+                            mediaType = MediaType.PHOTO
+                        )
+                    }
+                }
+                
+                // Vídeo
+                if (technique.hasVideo && technique.videoPath.isNotEmpty()) {
+                    val videoUri = mediaUris[MediaType.VIDEO]
+                    if (videoUri != null) {
+                        MediaDisplay(
+                            uri = videoUri,
+                            mediaType = MediaType.VIDEO,
+                            contentDescription = "Vídeo da técnica ${technique.name}",
+                            modifier = Modifier.fillMaxWidth()
+                        )
+                    } else {
+                        MediaPlaceholder(
+                            title = "Vídeo",
+                            message = "Carregando vídeo...",
+                            mediaType = MediaType.VIDEO
+                        )
+                    }
+                }
+                
+                // Áudio
+                if (technique.hasAudio && technique.audioPath.isNotEmpty()) {
+                    val audioUri = mediaUris[MediaType.AUDIO]
+                    if (audioUri != null) {
+                        MediaDisplay(
+                            uri = audioUri,
+                            mediaType = MediaType.AUDIO,
+                            contentDescription = "Áudio da técnica ${technique.name}",
+                            modifier = Modifier.fillMaxWidth()
+                        )
+                    } else {
+                        MediaPlaceholder(
+                            title = "Áudio",
+                            message = "Carregando áudio...",
+                            mediaType = MediaType.AUDIO
+                        )
+                    }
                 }
             }
         }
@@ -274,7 +340,11 @@ private fun MediaChip(
 }
 
 @Composable
-private fun MediaPlaceholder(technique: Technique) {
+private fun MediaPlaceholder(
+    title: String,
+    message: String,
+    mediaType: MediaType
+) {
     Card(
         modifier = Modifier.fillMaxWidth(),
         elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
@@ -284,7 +354,7 @@ private fun MediaPlaceholder(technique: Technique) {
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Text(
-                text = "Conteúdo de Mídia",
+                text = title,
                 style = MaterialTheme.typography.titleMedium,
                 fontWeight = FontWeight.SemiBold
             )
@@ -292,35 +362,10 @@ private fun MediaPlaceholder(technique: Technique) {
             Spacer(modifier = Modifier.height(8.dp))
             
             Text(
-                text = "A visualização de mídia será implementada na próxima versão",
+                text = message,
                 style = MaterialTheme.typography.bodyMedium,
                 color = MaterialTheme.colorScheme.onSurfaceVariant
             )
-            
-            if (technique.hasVideo) {
-                Spacer(modifier = Modifier.height(8.dp))
-                Text(
-                    text = "Vídeo: ${technique.videoPath}",
-                    style = MaterialTheme.typography.bodySmall,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant
-                )
-            }
-            
-            if (technique.hasPhoto) {
-                Text(
-                    text = "Foto: ${technique.photoPath}",
-                    style = MaterialTheme.typography.bodySmall,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant
-                )
-            }
-            
-            if (technique.hasAudio) {
-                Text(
-                    text = "Áudio: ${technique.audioPath}",
-                    style = MaterialTheme.typography.bodySmall,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant
-                )
-            }
         }
     }
 }
