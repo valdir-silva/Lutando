@@ -14,7 +14,6 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Delete
-import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
@@ -24,7 +23,6 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -34,6 +32,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.lutando.R
 import com.example.lutando.domain.model.MediaType
@@ -53,11 +52,10 @@ fun MediaCaptureButton(
     onError: (String) -> Unit,
     modifier: Modifier = Modifier
 ) {
-    var showCaptureDialog by remember { mutableStateOf(false) }
     var showMediaCapture by remember { mutableStateOf(false) }
 
     Button(
-        onClick = { showCaptureDialog = true },
+        onClick = { showMediaCapture = !showMediaCapture },
         modifier = modifier,
         colors = ButtonDefaults.buttonColors(
             containerColor = MaterialTheme.colorScheme.secondary
@@ -80,46 +78,6 @@ fun MediaCaptureButton(
                 MediaType.AUDIO -> "Gravar Áudio"
             },
             fontWeight = FontWeight.Medium
-        )
-    }
-
-    if (showCaptureDialog) {
-        AlertDialog(
-            onDismissRequest = { showCaptureDialog = false },
-            title = {
-                Text(
-                    text = when (mediaType) {
-                        MediaType.PHOTO -> "Capturar Foto"
-                        MediaType.VIDEO -> "Capturar Vídeo"
-                        MediaType.AUDIO -> "Gravar Áudio"
-                    },
-                    fontWeight = FontWeight.Bold
-                )
-            },
-            text = {
-                Text(
-                    text = when (mediaType) {
-                        MediaType.PHOTO -> "Escolha como capturar a foto da técnica"
-                        MediaType.VIDEO -> "Escolha como capturar o vídeo da técnica"
-                        MediaType.AUDIO -> "Escolha como gravar o áudio explicativo"
-                    }
-                )
-            },
-            confirmButton = {
-                TextButton(
-                    onClick = {
-                        showCaptureDialog = false
-                        showMediaCapture = true
-                    }
-                ) {
-                    Text("Capturar")
-                }
-            },
-            dismissButton = {
-                TextButton(onClick = { showCaptureDialog = false }) {
-                    Text("Cancelar")
-                }
-            }
         )
     }
 
@@ -273,4 +231,33 @@ fun MediaPreviewCard(
             }
         }
     }
-} 
+}
+
+@Preview
+@Composable
+fun MediaCaptureButtonPreview() {
+    MediaCaptureButton(
+        mediaType = MediaType.PHOTO,
+        onMediaCaptured = {},
+        onError = {}
+    )
+}
+
+@Preview
+@Composable
+fun MediaRemoveButtonPreview() {
+    MediaRemoveButton(
+        mediaType = MediaType.VIDEO,
+        onRemove = {}
+    )
+}
+
+@Preview
+@Composable
+fun MediaPreviewCardPreview() {
+    MediaPreviewCard(
+        mediaType = MediaType.PHOTO,
+        uri = Uri.EMPTY,
+        onRemove = {}
+    )
+}
