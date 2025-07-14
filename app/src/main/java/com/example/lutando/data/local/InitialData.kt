@@ -7,7 +7,7 @@ import com.example.lutando.domain.model.User
  * Dados iniciais para popular o banco de dados.
  */
 object InitialData {
-    
+
     /**
      * Lista de modalidades de artes marciais iniciais.
      */
@@ -61,7 +61,7 @@ object InitialData {
             color = "#FF388E3C"
         )
     )
-    
+
     /**
      * Usuário padrão para a POC.
      */

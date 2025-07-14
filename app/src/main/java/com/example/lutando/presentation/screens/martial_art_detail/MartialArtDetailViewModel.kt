@@ -30,18 +30,18 @@ class MartialArtDetailViewModel(
     fun loadMartialArt(martialArtId: Long) {
         viewModelScope.launch {
             _uiState.update { it.copy(isLoading = true, error = null) }
-            
+
             try {
                 // Carregar a modalidade
                 getAllMartialArtsUseCase().collect { martialArts ->
                     val martialArt = martialArts.find { it.id == martialArtId }
-                    
+
                     if (martialArt != null) {
                         _uiState.update { it.copy(martialArt = martialArt) }
-                        
+
                         // Carregar as técnicas
                         getTechniquesByMartialArtUseCase(martialArtId).collect { techniques ->
-                            _uiState.update { 
+                            _uiState.update {
                                 it.copy(
                                     techniques = techniques,
                                     isLoading = false
@@ -49,7 +49,7 @@ class MartialArtDetailViewModel(
                             }
                         }
                     } else {
-                        _uiState.update { 
+                        _uiState.update {
                             it.copy(
                                 error = "Modalidade não encontrada",
                                 isLoading = false
@@ -58,7 +58,7 @@ class MartialArtDetailViewModel(
                     }
                 }
             } catch (e: Exception) {
-                _uiState.update { 
+                _uiState.update {
                     it.copy(
                         error = e.message ?: "Erro ao carregar dados",
                         isLoading = false
@@ -71,10 +71,10 @@ class MartialArtDetailViewModel(
     fun loadMartialArtDetail(martialArtId: Long) {
         viewModelScope.launch {
             _uiState.update { it.copy(isLoading = true, error = null) }
-            
+
             try {
                 getTechniquesByMartialArtUseCase(martialArtId).collect { techniques ->
-                    _uiState.update { 
+                    _uiState.update {
                         it.copy(
                             techniques = techniques,
                             isLoading = false
@@ -82,7 +82,7 @@ class MartialArtDetailViewModel(
                     }
                 }
             } catch (e: Exception) {
-                _uiState.update { 
+                _uiState.update {
                     it.copy(
                         error = e.message ?: "Erro ao carregar técnicas",
                         isLoading = false

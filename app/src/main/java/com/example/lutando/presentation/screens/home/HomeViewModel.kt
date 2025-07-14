@@ -16,21 +16,21 @@ import kotlinx.coroutines.launch
 class HomeViewModel(
     private val getAllMartialArtsUseCase: GetAllMartialArtsUseCase
 ) : ViewModel() {
-    
+
     private val _uiState = MutableStateFlow(HomeUiState())
     val uiState: StateFlow<HomeUiState> = _uiState.asStateFlow()
-    
+
     init {
         loadMartialArts()
     }
-    
+
     private fun loadMartialArts() {
         viewModelScope.launch {
             _uiState.update { it.copy(isLoading = true) }
-            
+
             try {
                 getAllMartialArtsUseCase().collect { martialArts ->
-                    _uiState.update { 
+                    _uiState.update {
                         it.copy(
                             isLoading = false,
                             martialArts = martialArts,
@@ -39,7 +39,7 @@ class HomeViewModel(
                     }
                 }
             } catch (e: Exception) {
-                _uiState.update { 
+                _uiState.update {
                     it.copy(
                         isLoading = false,
                         error = e.message ?: "Erro ao carregar modalidades"
@@ -48,11 +48,11 @@ class HomeViewModel(
             }
         }
     }
-    
+
     fun refresh() {
         loadMartialArts()
     }
-    
+
     fun clearError() {
         _uiState.update { it.copy(error = null) }
     }

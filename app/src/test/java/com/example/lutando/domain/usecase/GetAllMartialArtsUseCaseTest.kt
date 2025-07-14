@@ -29,12 +29,12 @@ class GetAllMartialArtsUseCaseTest {
             MartialArt(id = 2L, name = "Muay Thai"),
             MartialArt(id = 3L, name = "Boxe")
         )
-        
+
         coEvery { mockRepository.getAllMartialArts() } returns flowOf(martialArts)
-        
+
         // When
         val result = useCase()
-        
+
         // Then
         result.collect { arts ->
             assertEquals(3, arts.size)
@@ -48,10 +48,10 @@ class GetAllMartialArtsUseCaseTest {
     fun `deve retornar lista vazia quando repositório não tem dados`() = runTest {
         // Given
         coEvery { mockRepository.getAllMartialArts() } returns flowOf(emptyList())
-        
+
         // When
         val result = useCase()
-        
+
         // Then
         result.collect { arts ->
             assertEquals(0, arts.size)
@@ -63,10 +63,10 @@ class GetAllMartialArtsUseCaseTest {
         // Given
         val martialArt = MartialArt(id = 1L, name = "Karatê", description = "Arte marcial japonesa")
         coEvery { mockRepository.getAllMartialArts() } returns flowOf(listOf(martialArt))
-        
+
         // When
         val result = useCase()
-        
+
         // Then
         result.collect { arts ->
             assertEquals(1, arts.size)

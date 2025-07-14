@@ -22,7 +22,7 @@ class SaveMediaFileUseCaseTest {
     fun setup() {
         mockRepository = mockk(relaxed = true)
         useCase = SaveMediaFileUseCase(mockRepository)
-        
+
         // Mock Uri.parse() para todos os testes
         mockkStatic(Uri::class)
     }
@@ -34,12 +34,14 @@ class SaveMediaFileUseCaseTest {
         every { Uri.parse("content://media/video.mp4") } returns mockUri
         val mediaType = MediaType.VIDEO
         val expectedPath = "/app/videos/technique_123.mp4"
-        
-        coEvery { mockRepository.saveMediaFile(mockUri, mediaType) } returns Result.success(expectedPath)
-        
+
+        coEvery { mockRepository.saveMediaFile(mockUri, mediaType) } returns Result.success(
+            expectedPath
+        )
+
         // When
         val result = useCase(mockUri, mediaType)
-        
+
         // Then
         assertTrue(result.isSuccess)
         assertEquals(expectedPath, result.getOrNull())
@@ -52,12 +54,14 @@ class SaveMediaFileUseCaseTest {
         every { Uri.parse("content://media/photo.jpg") } returns mockUri
         val mediaType = MediaType.PHOTO
         val expectedPath = "/app/photos/technique_456.jpg"
-        
-        coEvery { mockRepository.saveMediaFile(mockUri, mediaType) } returns Result.success(expectedPath)
-        
+
+        coEvery { mockRepository.saveMediaFile(mockUri, mediaType) } returns Result.success(
+            expectedPath
+        )
+
         // When
         val result = useCase(mockUri, mediaType)
-        
+
         // Then
         assertTrue(result.isSuccess)
         assertEquals(expectedPath, result.getOrNull())
@@ -70,12 +74,14 @@ class SaveMediaFileUseCaseTest {
         every { Uri.parse("content://media/audio.mp3") } returns mockUri
         val mediaType = MediaType.AUDIO
         val expectedPath = "/app/audio/technique_789.mp3"
-        
-        coEvery { mockRepository.saveMediaFile(mockUri, mediaType) } returns Result.success(expectedPath)
-        
+
+        coEvery { mockRepository.saveMediaFile(mockUri, mediaType) } returns Result.success(
+            expectedPath
+        )
+
         // When
         val result = useCase(mockUri, mediaType)
-        
+
         // Then
         assertTrue(result.isSuccess)
         assertEquals(expectedPath, result.getOrNull())
@@ -88,12 +94,14 @@ class SaveMediaFileUseCaseTest {
         every { Uri.parse("content://media/video.mp4") } returns mockUri
         val mediaType = MediaType.VIDEO
         val errorMessage = "Erro ao salvar arquivo"
-        
-        coEvery { mockRepository.saveMediaFile(mockUri, mediaType) } returns Result.failure(Exception(errorMessage))
-        
+
+        coEvery { mockRepository.saveMediaFile(mockUri, mediaType) } returns Result.failure(
+            Exception(errorMessage)
+        )
+
         // When
         val result = useCase(mockUri, mediaType)
-        
+
         // Then
         assertTrue(result.isFailure)
         assertEquals(errorMessage, result.exceptionOrNull()?.message)
@@ -106,12 +114,14 @@ class SaveMediaFileUseCaseTest {
         every { Uri.parse("content://media/test.mp4") } returns mockUri
         val mediaType = MediaType.VIDEO
         val expectedPath = "/app/videos/test.mp4"
-        
-        coEvery { mockRepository.saveMediaFile(mockUri, mediaType) } returns Result.success(expectedPath)
-        
+
+        coEvery { mockRepository.saveMediaFile(mockUri, mediaType) } returns Result.success(
+            expectedPath
+        )
+
         // When
         val result = useCase(mockUri, mediaType)
-        
+
         // Then
         assertTrue(result.isSuccess)
         assertEquals(expectedPath, result.getOrNull())

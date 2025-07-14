@@ -5,7 +5,7 @@ import androidx.room.PrimaryKey
 
 /**
  * Modelo que representa um usuário do aplicativo Lutando.
- * 
+ *
  * @property id Identificador único do usuário
  * @property name Nome completo do usuário
  * @property email Email do usuário (opcional para POC)

@@ -5,7 +5,7 @@ import androidx.room.PrimaryKey
 
 /**
  * Modelo que representa uma técnica de arte marcial.
- * 
+ *
  * @property id Identificador único da técnica
  * @property name Nome da técnica
  * @property description Descrição detalhada da técnica
@@ -38,7 +38,7 @@ data class Technique(
 
 /**
  * Classe que representa um arquivo de mídia associado a uma técnica.
- * 
+ *
  * @property id Identificador único do arquivo
  * @property type Tipo de mídia (PHOTO, VIDEO, AUDIO)
  * @property uri URI do arquivo no dispositivo

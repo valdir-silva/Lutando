@@ -13,14 +13,13 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.media3.common.MediaItem
-import androidx.media3.common.Player
 import androidx.media3.exoplayer.ExoPlayer
 import androidx.media3.ui.PlayerView
 import com.example.lutando.domain.model.MediaType
 
 /**
  * Componente de player de mídia usando ExoPlayer.
- * 
+ *
  * @param uri URI do arquivo de mídia
  * @param mediaType Tipo de mídia
  * @param modifier Modifier para customização do layout
@@ -32,7 +31,7 @@ fun MediaPlayer(
     modifier: Modifier = Modifier
 ) {
     val context = LocalContext.current
-    
+
     val exoPlayer = remember {
         ExoPlayer.Builder(context).build().apply {
             val mediaItem = MediaItem.fromUri(uri)
@@ -40,13 +39,13 @@ fun MediaPlayer(
             prepare()
         }
     }
-    
+
     DisposableEffect(Unit) {
         onDispose {
             exoPlayer.release()
         }
     }
-    
+
     Card(
         modifier = modifier.fillMaxWidth(),
         elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
@@ -65,6 +64,7 @@ fun MediaPlayer(
                         .aspectRatio(16f / 9f)
                 )
             }
+
             MediaType.AUDIO -> {
                 AndroidView(
                     factory = { context ->
@@ -78,6 +78,7 @@ fun MediaPlayer(
                         .aspectRatio(4f / 1f)
                 )
             }
+
             else -> {
                 // Para fotos, não usar MediaPlayer
             }

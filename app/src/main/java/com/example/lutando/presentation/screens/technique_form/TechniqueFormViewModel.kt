@@ -14,8 +14,6 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import java.time.LocalDateTime
-import java.time.format.DateTimeFormatter
 
 data class TechniqueFormUiState(
     val name: String = "",
@@ -82,7 +80,7 @@ class TechniqueFormViewModel(
 
     fun saveTechnique() {
         val currentState = _uiState.value
-        
+
         if (currentState.name.isBlank()) {
             _uiState.update { it.copy(error = "Nome da técnica é obrigatório") }
             return
@@ -95,7 +93,7 @@ class TechniqueFormViewModel(
 
         viewModelScope.launch {
             _uiState.update { it.copy(isLoading = true, error = null) }
-            
+
             try {
                 val now = System.currentTimeMillis()
                 val technique = Technique(
@@ -112,11 +110,11 @@ class TechniqueFormViewModel(
                     createdAt = now.toString(),
                     updatedAt = now.toString()
                 )
-                
+
                 techniqueRepository.insertTechnique(technique)
                 _uiState.update { it.copy(isSuccess = true, isLoading = false) }
             } catch (e: Exception) {
-                _uiState.update { 
+                _uiState.update {
                     it.copy(
                         error = e.message ?: "Erro ao salvar técnica",
                         isLoading = false
@@ -129,7 +127,7 @@ class TechniqueFormViewModel(
     fun loadTechniqueForEdit(techniqueId: Long) {
         viewModelScope.launch {
             _uiState.update { it.copy(isLoading = true, error = null) }
-            
+
             try {
                 val technique = techniqueRepository.getTechniqueById(techniqueId)
                 technique?.let { tech ->
@@ -149,7 +147,7 @@ class TechniqueFormViewModel(
                     }
                 }
             } catch (e: Exception) {
-                _uiState.update { 
+                _uiState.update {
                     it.copy(
                         error = e.message ?: "Erro ao carregar técnica",
                         isLoading = false
@@ -166,21 +164,21 @@ class TechniqueFormViewModel(
     fun clearSuccess() {
         _uiState.update { it.copy(isSuccess = false) }
     }
-    
+
     /**
      * Salva um arquivo de mídia e atualiza o estado da técnica.
      */
     fun saveMediaFile(sourceUri: Uri, mediaType: MediaType) {
         viewModelScope.launch {
             _uiState.update { it.copy(isSavingMedia = true, mediaError = null) }
-            
+
             try {
                 val result = saveMediaFileUseCase(sourceUri, mediaType)
                 result.fold(
                     onSuccess = { filePath ->
                         when (mediaType) {
                             MediaType.PHOTO -> {
-                                _uiState.update { 
+                                _uiState.update {
                                     it.copy(
                                         hasPhoto = true,
                                         photoPath = filePath,
@@ -188,8 +186,9 @@ class TechniqueFormViewModel(
                                     )
                                 }
                             }
+
                             MediaType.VIDEO -> {
-                                _uiState.update { 
+                                _uiState.update {
                                     it.copy(
                                         hasVideo = true,
                                         videoPath = filePath,
@@ -197,8 +196,9 @@ class TechniqueFormViewModel(
                                     )
                                 }
                             }
+
                             MediaType.AUDIO -> {
-                                _uiState.update { 
+                                _uiState.update {
                                     it.copy(
                                         hasAudio = true,
                                         audioPath = filePath,
@@ -209,7 +209,7 @@ class TechniqueFormViewModel(
                         }
                     },
                     onFailure = { exception ->
-                        _uiState.update { 
+                        _uiState.update {
                             it.copy(
                                 mediaError = exception.message ?: "Erro ao salvar mídia",
                                 isSavingMedia = false
@@ -218,7 +218,7 @@ class TechniqueFormViewModel(
                     }
                 )
             } catch (e: Exception) {
-                _uiState.update { 
+                _uiState.update {
                     it.copy(
                         mediaError = e.message ?: "Erro ao salvar mídia",
                         isSavingMedia = false
@@ -227,7 +227,7 @@ class TechniqueFormViewModel(
             }
         }
     }
-    
+
     /**
      * Remove um arquivo de mídia e atualiza o estado da técnica.
      */
@@ -239,30 +239,32 @@ class TechniqueFormViewModel(
                 MediaType.VIDEO -> currentState.videoPath
                 MediaType.AUDIO -> currentState.audioPath
             }
-            
+
             if (filePath.isNotEmpty()) {
                 deleteMediaFileUseCase(filePath)
             }
-            
+
             when (mediaType) {
                 MediaType.PHOTO -> {
-                    _uiState.update { 
+                    _uiState.update {
                         it.copy(
                             hasPhoto = false,
                             photoPath = ""
                         )
                     }
                 }
+
                 MediaType.VIDEO -> {
-                    _uiState.update { 
+                    _uiState.update {
                         it.copy(
                             hasVideo = false,
                             videoPath = ""
                         )
                     }
                 }
+
                 MediaType.AUDIO -> {
-                    _uiState.update { 
+                    _uiState.update {
                         it.copy(
                             hasAudio = false,
                             audioPath = ""
@@ -272,21 +274,21 @@ class TechniqueFormViewModel(
             }
         }
     }
-    
+
     /**
      * Verifica se as permissões necessárias para um tipo de mídia estão concedidas.
      */
     fun hasRequiredPermissions(mediaType: MediaType): Boolean {
         return mediaRepository.hasRequiredPermissions(mediaType)
     }
-    
+
     /**
      * Obtém as permissões necessárias para um tipo de mídia.
      */
     fun getRequiredPermissions(mediaType: MediaType): Array<String> {
         return mediaRepository.getRequiredPermissions(mediaType)
     }
-    
+
     /**
      * Limpa erros de mídia.
      */

@@ -2,7 +2,15 @@ package com.example.lutando.presentation.screens.technique_detail
 
 import android.net.Uri
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
@@ -10,8 +18,23 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Edit
-import androidx.compose.material3.*
-import androidx.compose.runtime.*
+import androidx.compose.material3.Button
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Snackbar
+import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
+import androidx.compose.material3.TopAppBar
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -39,12 +62,12 @@ fun TechniqueDetailScreen(
     viewModel: TechniqueDetailViewModel = koinViewModel()
 ) {
     val uiState by viewModel.uiState.collectAsState()
-    
+
     // Carregar técnica quando a tela é criada
     LaunchedEffect(techniqueId) {
         viewModel.loadTechnique(techniqueId.toLong())
     }
-    
+
     Scaffold(
         topBar = {
             TopAppBar(
@@ -91,6 +114,7 @@ fun TechniqueDetailScreen(
                         modifier = Modifier.align(Alignment.Center)
                     )
                 }
+
                 uiState.error != null -> {
                     ErrorState(
                         error = uiState.error!!,
@@ -98,6 +122,7 @@ fun TechniqueDetailScreen(
                         modifier = Modifier.align(Alignment.Center)
                     )
                 }
+
                 uiState.technique != null -> {
                     TechniqueContent(
                         technique = uiState.technique!!,
@@ -106,7 +131,7 @@ fun TechniqueDetailScreen(
                     )
                 }
             }
-            
+
             // Snackbar para erros
             uiState.error?.let { error ->
                 Snackbar(
@@ -151,7 +176,7 @@ private fun TechniqueContent(
                     style = MaterialTheme.typography.headlineSmall,
                     fontWeight = FontWeight.Bold
                 )
-                
+
                 if (technique.description.isNotBlank()) {
                     Spacer(modifier = Modifier.height(8.dp))
                     Text(
@@ -162,7 +187,7 @@ private fun TechniqueContent(
                 }
             }
         }
-        
+
         // Informações da técnica
         Card(
             modifier = Modifier.fillMaxWidth(),
@@ -177,12 +202,12 @@ private fun TechniqueContent(
                     style = MaterialTheme.typography.titleMedium,
                     fontWeight = FontWeight.SemiBold
                 )
-                
+
                 InfoRow("Criado em", technique.createdAt)
                 InfoRow("Atualizado em", technique.updatedAt)
             }
         }
-        
+
         // Seção de mídia
         if (technique.hasVideo || technique.hasPhoto || technique.hasAudio) {
             MediaSection(technique = technique, mediaUris = mediaUris)
@@ -230,7 +255,7 @@ private fun MediaSection(
                 style = MaterialTheme.typography.titleMedium,
                 fontWeight = FontWeight.SemiBold
             )
-            
+
             // Chips indicando tipos de mídia disponíveis
             Row(
                 horizontalArrangement = Arrangement.spacedBy(8.dp)
@@ -254,7 +279,7 @@ private fun MediaSection(
                     )
                 }
             }
-            
+
             // Exibir mídia
             Column(
                 verticalArrangement = Arrangement.spacedBy(16.dp)
@@ -277,7 +302,7 @@ private fun MediaSection(
                         )
                     }
                 }
-                
+
                 // Vídeo
                 if (technique.hasVideo && technique.videoPath.isNotEmpty()) {
                     val videoUri = mediaUris[MediaType.VIDEO]
@@ -296,7 +321,7 @@ private fun MediaSection(
                         )
                     }
                 }
-                
+
                 // Áudio
                 if (technique.hasAudio && technique.audioPath.isNotEmpty()) {
                     val audioUri = mediaUris[MediaType.AUDIO]
@@ -358,9 +383,9 @@ private fun MediaPlaceholder(
                 style = MaterialTheme.typography.titleMedium,
                 fontWeight = FontWeight.SemiBold
             )
-            
+
             Spacer(modifier = Modifier.height(8.dp))
-            
+
             Text(
                 text = message,
                 style = MaterialTheme.typography.bodyMedium,
@@ -415,7 +440,7 @@ fun TechniqueDetailScreenPreview() {
         createdAt = "2025-01-27T10:00:00",
         updatedAt = "2025-01-27T10:00:00"
     )
-    
+
     MaterialTheme {
         TechniqueDetailScreen(
             techniqueId = 1,

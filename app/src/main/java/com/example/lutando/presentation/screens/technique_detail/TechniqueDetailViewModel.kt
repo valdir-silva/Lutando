@@ -5,7 +5,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.lutando.domain.model.MediaType
 import com.example.lutando.domain.model.Technique
-import com.example.lutando.domain.repository.MediaRepository
 import com.example.lutando.domain.repository.TechniqueRepository
 import com.example.lutando.domain.usecase.DeleteMediaFileUseCase
 import com.example.lutando.domain.usecase.GetMediaUriUseCase
@@ -35,32 +34,32 @@ class TechniqueDetailViewModel(
     fun loadTechnique(techniqueId: Long) {
         viewModelScope.launch {
             _uiState.update { it.copy(isLoading = true, error = null) }
-            
+
             try {
                 val technique = techniqueRepository.getTechniqueById(techniqueId)
                 technique?.let { tech ->
                     // Carrega URIs de mídia
                     val mediaUris = mutableMapOf<MediaType, Uri?>()
-                    
+
                     if (tech.hasPhoto && tech.photoPath.isNotEmpty()) {
                         getMediaUriUseCase(tech.photoPath).onSuccess { uri ->
                             mediaUris[MediaType.PHOTO] = uri
                         }
                     }
-                    
+
                     if (tech.hasVideo && tech.videoPath.isNotEmpty()) {
                         getMediaUriUseCase(tech.videoPath).onSuccess { uri ->
                             mediaUris[MediaType.VIDEO] = uri
                         }
                     }
-                    
+
                     if (tech.hasAudio && tech.audioPath.isNotEmpty()) {
                         getMediaUriUseCase(tech.audioPath).onSuccess { uri ->
                             mediaUris[MediaType.AUDIO] = uri
                         }
                     }
-                    
-                    _uiState.update { 
+
+                    _uiState.update {
                         it.copy(
                             technique = tech,
                             mediaUris = mediaUris,
@@ -69,7 +68,7 @@ class TechniqueDetailViewModel(
                     }
                 }
             } catch (e: Exception) {
-                _uiState.update { 
+                _uiState.update {
                     it.copy(
                         error = e.message ?: "Erro ao carregar técnica",
                         isLoading = false
@@ -82,7 +81,7 @@ class TechniqueDetailViewModel(
     fun deleteTechnique(techniqueId: Long) {
         viewModelScope.launch {
             _uiState.update { it.copy(isDeleting = true) }
-            
+
             try {
                 val technique = techniqueRepository.getTechniqueById(techniqueId)
                 technique?.let { tech ->
@@ -97,11 +96,11 @@ class TechniqueDetailViewModel(
                         deleteMediaFileUseCase(tech.audioPath)
                     }
                 }
-                
+
                 techniqueRepository.deleteTechniqueById(techniqueId)
                 _uiState.update { it.copy(isDeleting = false) }
             } catch (e: Exception) {
-                _uiState.update { 
+                _uiState.update {
                     it.copy(
                         error = e.message ?: "Erro ao deletar técnica",
                         isDeleting = false

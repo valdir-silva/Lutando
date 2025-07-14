@@ -31,12 +31,12 @@ class GetTechniquesByMartialArtUseCaseTest {
             Technique(id = 2L, name = "Armbar", martialArtId = martialArtId),
             Technique(id = 3L, name = "Triangle", martialArtId = martialArtId)
         )
-        
+
         coEvery { mockRepository.getTechniquesByMartialArt(martialArtId) } returns flowOf(techniques)
-        
+
         // When
         val result = useCase(martialArtId)
-        
+
         // Then
         result.collect { techs ->
             assertEquals(3, techs.size)
@@ -54,10 +54,10 @@ class GetTechniquesByMartialArtUseCaseTest {
         // Given
         val martialArtId = 999L
         coEvery { mockRepository.getTechniquesByMartialArt(martialArtId) } returns flowOf(emptyList())
-        
+
         // When
         val result = useCase(martialArtId)
-        
+
         // Then
         result.collect { techniques ->
             assertEquals(0, techniques.size)
@@ -78,12 +78,16 @@ class GetTechniquesByMartialArtUseCaseTest {
             videoPath = "/videos/omoplata.mp4",
             photoPath = "/photos/omoplata.jpg"
         )
-        
-        coEvery { mockRepository.getTechniquesByMartialArt(martialArtId) } returns flowOf(listOf(technique))
-        
+
+        coEvery { mockRepository.getTechniquesByMartialArt(martialArtId) } returns flowOf(
+            listOf(
+                technique
+            )
+        )
+
         // When
         val result = useCase(martialArtId)
-        
+
         // Then
         result.collect { techniques ->
             assertEquals(1, techniques.size)
@@ -102,10 +106,10 @@ class GetTechniquesByMartialArtUseCaseTest {
         // Given
         val martialArtId = 5L
         coEvery { mockRepository.getTechniquesByMartialArt(martialArtId) } returns flowOf(emptyList())
-        
+
         // When
         useCase(martialArtId)
-        
+
         // Then
         coEvery { mockRepository.getTechniquesByMartialArt(martialArtId) }
     }

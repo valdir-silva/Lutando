@@ -34,25 +34,25 @@ import org.koin.dsl.module
  * Módulo Koin para injeção de dependência do aplicativo Lutando.
  */
 val appModule = module {
-    
+
     // Database
     single { LutandoDatabase.getDatabase(androidContext()) }
-    
+
     // DAOs
     single<UserDao> { get<LutandoDatabase>().userDao() }
     single<MartialArtDao> { get<LutandoDatabase>().martialArtDao() }
     single<TechniqueDao> { get<LutandoDatabase>().techniqueDao() }
-    
+
     // Media Managers
     single { MediaManager(androidContext()) }
     single { PermissionManager(androidContext()) }
-    
+
     // Repositories
     single<UserRepository> { UserRepositoryImpl(get()) }
     single<MartialArtRepository> { MartialArtRepositoryImpl(get()) }
     single<TechniqueRepository> { TechniqueRepositoryImpl(get()) }
     single<MediaRepository> { MediaRepositoryImpl(get(), get()) }
-    
+
     // Use Cases
     single { GetAllMartialArtsUseCase(get()) }
     single { GetCurrentUserUseCase(get()) }
@@ -60,7 +60,7 @@ val appModule = module {
     single { SaveMediaFileUseCase(get()) }
     single { DeleteMediaFileUseCase(get()) }
     single { GetMediaUriUseCase(get()) }
-    
+
     // ViewModels
     viewModel { HomeViewModel(get()) }
     viewModel { MartialArtDetailViewModel(get(), get()) }

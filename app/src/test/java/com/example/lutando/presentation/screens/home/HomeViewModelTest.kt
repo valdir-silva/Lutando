@@ -46,13 +46,13 @@ class HomeViewModelTest {
             MartialArt(id = 2L, name = "Muay Thai"),
             MartialArt(id = 3L, name = "Boxe")
         )
-        
+
         coEvery { mockGetAllMartialArtsUseCase() } returns flowOf(martialArts)
-        
+
         // When
         viewModel = HomeViewModel(mockGetAllMartialArtsUseCase)
         testDispatcher.scheduler.advanceUntilIdle()
-        
+
         // Then
         viewModel.uiState.test {
             val state = awaitItem()
@@ -69,7 +69,7 @@ class HomeViewModelTest {
     fun `deve mostrar estado de carregamento inicialmente`() = runTest(testDispatcher) {
         // Given
         coEvery { mockGetAllMartialArtsUseCase() } returns flowOf(emptyList())
-        
+
         // When & Then
         viewModel = HomeViewModel(mockGetAllMartialArtsUseCase)
         testDispatcher.scheduler.advanceUntilIdle()
@@ -85,7 +85,7 @@ class HomeViewModelTest {
     fun `deve mostrar lista vazia quando não há artes marciais`() = runTest(testDispatcher) {
         // Given
         coEvery { mockGetAllMartialArtsUseCase() } returns flowOf(emptyList())
-        
+
         // When
         viewModel = HomeViewModel(mockGetAllMartialArtsUseCase)
         testDispatcher.scheduler.advanceUntilIdle()
@@ -103,7 +103,7 @@ class HomeViewModelTest {
         // Given
         val errorMessage = "Erro ao carregar dados"
         coEvery { mockGetAllMartialArtsUseCase() } throws Exception(errorMessage)
-        
+
         // When
         viewModel = HomeViewModel(mockGetAllMartialArtsUseCase)
         testDispatcher.scheduler.advanceUntilIdle()
@@ -124,13 +124,13 @@ class HomeViewModelTest {
             MartialArt(id = 1L, name = "Jiu-Jitsu"),
             MartialArt(id = 2L, name = "Muay Thai")
         )
-        
+
         var callCount = 0
         coEvery { mockGetAllMartialArtsUseCase() } answers {
             callCount++
             if (callCount == 1) flowOf(initialArts) else flowOf(refreshedArts)
         }
-        
+
         // When
         viewModel = HomeViewModel(mockGetAllMartialArtsUseCase)
         testDispatcher.scheduler.advanceUntilIdle()
@@ -161,7 +161,7 @@ class HomeViewModelTest {
         // Given
         val errorMessage = "Erro ao carregar dados"
         coEvery { mockGetAllMartialArtsUseCase() } throws Exception(errorMessage)
-        
+
         // When
         viewModel = HomeViewModel(mockGetAllMartialArtsUseCase)
         testDispatcher.scheduler.advanceUntilIdle()

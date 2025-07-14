@@ -30,12 +30,12 @@ class GetCurrentUserUseCaseTest {
             name = "João Silva",
             email = "joao@email.com"
         )
-        
+
         coEvery { mockRepository.getCurrentUser() } returns flowOf(user)
-        
+
         // When
         val result = useCase()
-        
+
         // Then
         result.collect { currentUser ->
             assertEquals(1L, currentUser?.id)
@@ -52,12 +52,12 @@ class GetCurrentUserUseCaseTest {
             name = "Maria Santos",
             email = null
         )
-        
+
         coEvery { mockRepository.getCurrentUser() } returns flowOf(user)
-        
+
         // When
         val result = useCase()
-        
+
         // Then
         result.collect { currentUser ->
             assertEquals(2L, currentUser?.id)
@@ -70,12 +70,12 @@ class GetCurrentUserUseCaseTest {
     fun `deve retornar usuário com dados mínimos`() = runTest {
         // Given
         val user = User(name = "Pedro Costa")
-        
+
         coEvery { mockRepository.getCurrentUser() } returns flowOf(user)
-        
+
         // When
         val result = useCase()
-        
+
         // Then
         result.collect { currentUser ->
             assertEquals(0L, currentUser?.id)

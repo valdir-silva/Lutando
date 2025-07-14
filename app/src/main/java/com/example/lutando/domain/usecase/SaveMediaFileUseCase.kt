@@ -10,10 +10,10 @@ import com.example.lutando.domain.repository.MediaRepository
 class SaveMediaFileUseCase(
     private val mediaRepository: MediaRepository
 ) {
-    
+
     /**
      * Executa o use case para salvar um arquivo de mídia.
-     * 
+     *
      * @param sourceUri URI do arquivo de origem
      * @param mediaType Tipo de mídia
      * @return Result contendo o caminho do arquivo salvo ou erro

@@ -52,10 +52,10 @@ class MartialArtDetailViewModelTest {
             Technique(id = 1L, name = "Kimura", martialArtId = martialArtId),
             Technique(id = 2L, name = "Armbar", martialArtId = martialArtId)
         )
-        
+
         coEvery { mockGetAllMartialArtsUseCase() } returns flowOf(martialArts)
         coEvery { mockGetTechniquesByMartialArtUseCase(martialArtId) } returns flowOf(techniques)
-        
+
         // When
         viewModel = MartialArtDetailViewModel(
             mockGetTechniquesByMartialArtUseCase,
@@ -80,9 +80,9 @@ class MartialArtDetailViewModelTest {
         // Given
         val martialArtId = 999L
         val martialArts = listOf(MartialArt(id = 1L, name = "Jiu-Jitsu"))
-        
+
         coEvery { mockGetAllMartialArtsUseCase() } returns flowOf(martialArts)
-        
+
         // When
         viewModel = MartialArtDetailViewModel(
             mockGetTechniquesByMartialArtUseCase,
@@ -108,9 +108,9 @@ class MartialArtDetailViewModelTest {
             Technique(id = 1L, name = "Triangle", martialArtId = martialArtId),
             Technique(id = 2L, name = "Omoplata", martialArtId = martialArtId)
         )
-        
+
         coEvery { mockGetTechniquesByMartialArtUseCase(martialArtId) } returns flowOf(techniques)
-        
+
         // When
         viewModel = MartialArtDetailViewModel(
             mockGetTechniquesByMartialArtUseCase,
@@ -134,9 +134,9 @@ class MartialArtDetailViewModelTest {
         // Given
         val martialArtId = 3L
         val errorMessage = "Erro ao carregar técnicas"
-        
+
         coEvery { mockGetTechniquesByMartialArtUseCase(martialArtId) } throws Exception(errorMessage)
-        
+
         // When
         viewModel = MartialArtDetailViewModel(
             mockGetTechniquesByMartialArtUseCase,
@@ -161,9 +161,9 @@ class MartialArtDetailViewModelTest {
             Technique(id = 1L, name = "Jab", martialArtId = martialArt.id),
             Technique(id = 2L, name = "Cross", martialArtId = martialArt.id)
         )
-        
+
         coEvery { mockGetTechniquesByMartialArtUseCase(martialArt.id) } returns flowOf(techniques)
-        
+
         // When
         viewModel = MartialArtDetailViewModel(
             mockGetTechniquesByMartialArtUseCase,
@@ -186,18 +186,19 @@ class MartialArtDetailViewModelTest {
     fun `deve recarregar técnicas quando refresh é chamado`() = runTest(testDispatcher) {
         // Given
         val martialArt = MartialArt(id = 5L, name = "Boxe")
-        val initialTechniques = listOf(Technique(id = 1L, name = "Jab", martialArtId = martialArt.id))
+        val initialTechniques =
+            listOf(Technique(id = 1L, name = "Jab", martialArtId = martialArt.id))
         val refreshedTechniques = listOf(
             Technique(id = 1L, name = "Jab", martialArtId = martialArt.id),
             Technique(id = 2L, name = "Hook", martialArtId = martialArt.id)
         )
-        
+
         var callCount = 0
         coEvery { mockGetTechniquesByMartialArtUseCase(martialArt.id) } answers {
             callCount++
             if (callCount == 1) flowOf(initialTechniques) else flowOf(refreshedTechniques)
         }
-        
+
         // When
         viewModel = MartialArtDetailViewModel(
             mockGetTechniquesByMartialArtUseCase,
@@ -231,10 +232,10 @@ class MartialArtDetailViewModelTest {
         val martialArtId = 6L
         val martialArt = MartialArt(id = martialArtId, name = "Karatê")
         val martialArts = listOf(martialArt)
-        
+
         coEvery { mockGetAllMartialArtsUseCase() } returns flowOf(martialArts)
         coEvery { mockGetTechniquesByMartialArtUseCase(martialArtId) } returns flowOf(emptyList())
-        
+
         // When
         viewModel = MartialArtDetailViewModel(
             mockGetTechniquesByMartialArtUseCase,

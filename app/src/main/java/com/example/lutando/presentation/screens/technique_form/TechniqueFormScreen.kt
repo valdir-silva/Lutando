@@ -1,14 +1,35 @@
 package com.example.lutando.presentation.screens.technique_form
 
 import android.net.Uri
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Check
-import androidx.compose.material3.*
-import androidx.compose.runtime.*
+import androidx.compose.material3.Button
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Snackbar
+import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
+import androidx.compose.material3.TopAppBar
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
@@ -18,7 +39,6 @@ import androidx.compose.ui.unit.sp
 import com.example.lutando.domain.model.MediaType
 import com.example.lutando.presentation.components.MediaCaptureButton
 import com.example.lutando.presentation.components.MediaPreviewCard
-import com.example.lutando.presentation.components.MediaRemoveButton
 import org.koin.androidx.compose.koinViewModel
 
 /**
@@ -35,7 +55,7 @@ fun TechniqueFormScreen(
     viewModel: TechniqueFormViewModel = koinViewModel()
 ) {
     val uiState by viewModel.uiState.collectAsState()
-    
+
     // Configurar martialArtId e carregar técnica se for edição
     LaunchedEffect(martialArtId, techniqueId) {
         martialArtId?.let { id ->
@@ -47,14 +67,14 @@ fun TechniqueFormScreen(
             }
         }
     }
-    
+
     // Observar sucesso e navegar de volta
     LaunchedEffect(uiState.isSuccess) {
         if (uiState.isSuccess) {
             onSaveClick()
         }
     }
-    
+
     Scaffold(
         topBar = {
             TopAppBar(
@@ -98,6 +118,7 @@ fun TechniqueFormScreen(
                         modifier = Modifier.align(Alignment.Center)
                     )
                 }
+
                 else -> {
                     Column(
                         modifier = Modifier
@@ -114,7 +135,7 @@ fun TechniqueFormScreen(
                             modifier = Modifier.fillMaxWidth(),
                             singleLine = true
                         )
-                        
+
                         // Descrição da técnica
                         OutlinedTextField(
                             value = uiState.description,
@@ -124,7 +145,7 @@ fun TechniqueFormScreen(
                             minLines = 3,
                             maxLines = 5
                         )
-                        
+
                         // Seção de mídia
                         MediaSection(
                             uiState = uiState,
@@ -138,7 +159,7 @@ fun TechniqueFormScreen(
                                 // Mostrar erro via Snackbar
                             }
                         )
-                        
+
                         // Botão de salvar
                         Button(
                             onClick = { viewModel.saveTechnique() },
@@ -152,7 +173,7 @@ fun TechniqueFormScreen(
                     }
                 }
             }
-            
+
             // Snackbar para erros
             uiState.error?.let { error ->
                 Snackbar(
@@ -168,7 +189,7 @@ fun TechniqueFormScreen(
                     Text(error)
                 }
             }
-            
+
             // Snackbar para erros de mídia
             uiState.mediaError?.let { error ->
                 Snackbar(
@@ -208,7 +229,7 @@ private fun MediaSection(
                 style = MaterialTheme.typography.titleMedium,
                 fontWeight = FontWeight.SemiBold
             )
-            
+
             // Seção de foto
             MediaTypeSection(
                 title = "Foto da Técnica",
@@ -219,7 +240,7 @@ private fun MediaSection(
                 onMediaRemoved = onMediaRemoved,
                 onError = onError
             )
-            
+
             // Seção de vídeo
             MediaTypeSection(
                 title = "Vídeo da Técnica",
@@ -230,7 +251,7 @@ private fun MediaSection(
                 onMediaRemoved = onMediaRemoved,
                 onError = onError
             )
-            
+
             // Seção de áudio
             MediaTypeSection(
                 title = "Áudio Explicativo",
@@ -263,7 +284,7 @@ private fun MediaTypeSection(
             style = MaterialTheme.typography.bodyLarge,
             fontWeight = FontWeight.Medium
         )
-        
+
         if (hasMedia && mediaPath.isNotEmpty()) {
             // Mostrar preview da mídia
             MediaPreviewCard(

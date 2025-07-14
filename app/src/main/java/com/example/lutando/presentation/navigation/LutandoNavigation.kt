@@ -35,7 +35,7 @@ fun LutandoNavigation(
                 }
             )
         }
-        
+
         // Tela de detalhes da modalidade
         composable(
             route = NavRoutes.MARTIAL_ART_DETAIL,
@@ -59,7 +59,7 @@ fun LutandoNavigation(
                 }
             )
         }
-        
+
         // Tela de detalhes da técnica
         composable(
             route = NavRoutes.TECHNIQUE_DETAIL,
@@ -84,7 +84,7 @@ fun LutandoNavigation(
                 }
             )
         }
-        
+
         // Tela de formulário de nova técnica
         composable(
             route = NavRoutes.TECHNIQUE_FORM,
@@ -105,7 +105,7 @@ fun LutandoNavigation(
                 }
             )
         }
-        
+
         // Tela de edição de técnica existente
         composable(
             route = NavRoutes.TECHNIQUE_EDIT,

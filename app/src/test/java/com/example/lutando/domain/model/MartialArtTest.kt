@@ -1,7 +1,9 @@
 package com.example.lutando.domain.model
 
+import org.junit.Assert.assertEquals
+import org.junit.Assert.assertNotEquals
+import org.junit.Assert.assertTrue
 import org.junit.Test
-import org.junit.Assert.*
 
 class MartialArtTest {
 
@@ -9,10 +11,10 @@ class MartialArtTest {
     fun `deve criar MartialArt com valores padrão`() {
         // Given
         val name = "Jiu-Jitsu"
-        
+
         // When
         val martialArt = MartialArt(name = name)
-        
+
         // Then
         assertEquals(0L, martialArt.id)
         assertEquals(name, martialArt.name)
@@ -31,7 +33,7 @@ class MartialArtTest {
         val color = "#FF0000"
         val createdAt = 1000L
         val updatedAt = 2000L
-        
+
         // When
         val martialArt = MartialArt(
             id = id,
@@ -41,7 +43,7 @@ class MartialArtTest {
             createdAt = createdAt,
             updatedAt = updatedAt
         )
-        
+
         // Then
         assertEquals(id, martialArt.id)
         assertEquals(name, martialArt.name)
@@ -57,7 +59,7 @@ class MartialArtTest {
         val martialArt1 = MartialArt(name = "Boxe")
         val martialArt2 = MartialArt(name = "Boxe")
         val martialArt3 = MartialArt(name = "Karatê")
-        
+
         // When & Then
         assertEquals(martialArt1, martialArt2)
         assertNotEquals(martialArt1, martialArt3)
@@ -67,13 +69,13 @@ class MartialArtTest {
     fun `deve copiar MartialArt com novos valores`() {
         // Given
         val original = MartialArt(name = "Judo")
-        
+
         // When
         val copy = original.copy(
             name = "Aikido",
             description = "Arte marcial japonesa"
         )
-        
+
         // Then
         assertEquals(original.id, copy.id)
         assertEquals("Aikido", copy.name)

@@ -1,26 +1,39 @@
 package com.example.lutando.presentation.components
 
-import android.Manifest
-import android.content.Context
 import android.net.Uri
 import androidx.activity.compose.rememberLauncherForActivityResult
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.result.ActivityResultLauncher
-import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.*
-import androidx.compose.material3.*
-import androidx.compose.runtime.*
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
+import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedButton
+import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
-import androidx.core.content.ContextCompat
-import androidx.core.content.PackageManagerCompat
 import com.example.lutando.R
 import com.example.lutando.data.media.MediaManager
 import com.example.lutando.data.media.PermissionManager
@@ -28,7 +41,7 @@ import com.example.lutando.domain.model.MediaType
 
 /**
  * Componente para captura de mídia usando câmera, microfone e galeria.
- * 
+ *
  * @param mediaType Tipo de mídia a ser capturada
  * @param onMediaCaptured Callback executado quando a mídia é capturada
  * @param onError Callback executado quando ocorre erro
@@ -49,14 +62,14 @@ fun MediaCapture(
     var permissionDenied by remember { mutableStateOf(false) }
     var currentPhotoUri by remember { mutableStateOf<Uri?>(null) }
     var currentVideoUri by remember { mutableStateOf<Uri?>(null) }
-    
+
     // Launcher para galeria
     val galleryLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.GetContent()
     ) { uri ->
         uri?.let { onMediaCaptured(it) }
     }
-    
+
     // Launcher para captura de foto
     val photoCaptureLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.TakePicture()
@@ -67,7 +80,7 @@ fun MediaCapture(
             onError("Falha ao capturar foto")
         }
     }
-    
+
     // Launcher para captura de vídeo
     val videoCaptureLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.CaptureVideo()
@@ -78,16 +91,15 @@ fun MediaCapture(
             onError("Falha ao capturar vídeo")
         }
     }
-    
+
     // Launcher para gravação de áudio
     val audioCaptureLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.GetContent()
     ) { uri ->
         uri?.let { onMediaCaptured(it) }
     }
-    
 
-    
+
     // Launcher para permissões
     val permissionLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.RequestMultiplePermissions()
@@ -96,12 +108,22 @@ fun MediaCapture(
         if (allGranted) {
             // Permissões concedidas, pode capturar
             when (mediaType) {
-                MediaType.PHOTO -> capturePhoto(mediaManager, photoCaptureLauncher, currentPhotoUri) { uri ->
+                MediaType.PHOTO -> capturePhoto(
+                    mediaManager,
+                    photoCaptureLauncher,
+                    currentPhotoUri
+                ) { uri ->
                     currentPhotoUri = uri
                 }
-                MediaType.VIDEO -> captureVideo(mediaManager, videoCaptureLauncher, currentVideoUri) { uri ->
+
+                MediaType.VIDEO -> captureVideo(
+                    mediaManager,
+                    videoCaptureLauncher,
+                    currentVideoUri
+                ) { uri ->
                     currentVideoUri = uri
                 }
+
                 MediaType.AUDIO -> {
                     // Áudio é tratado pelo AudioRecorder
                 }
@@ -111,7 +133,7 @@ fun MediaCapture(
             onError("Permissões necessárias não foram concedidas")
         }
     }
-    
+
     Box(modifier = modifier.fillMaxSize()) {
         if (isCapturing) {
             CircularProgressIndicator(
@@ -123,32 +145,50 @@ fun MediaCapture(
                     PhotoCaptureOptions(
                         onCameraClick = {
                             if (permissionManager.hasAllRequiredPermissions(MediaType.PHOTO)) {
-                                capturePhoto(mediaManager, photoCaptureLauncher, currentPhotoUri) { uri ->
+                                capturePhoto(
+                                    mediaManager,
+                                    photoCaptureLauncher,
+                                    currentPhotoUri
+                                ) { uri ->
                                     currentPhotoUri = uri
                                 }
                             } else {
-                                requestPermissions(permissionManager, MediaType.PHOTO, permissionLauncher)
+                                requestPermissions(
+                                    permissionManager,
+                                    MediaType.PHOTO,
+                                    permissionLauncher
+                                )
                             }
                         },
                         onGalleryClick = { galleryLauncher.launch("image/*") },
                         onError = onError
                     )
                 }
+
                 MediaType.VIDEO -> {
                     VideoCaptureOptions(
                         onCameraClick = {
                             if (permissionManager.hasAllRequiredPermissions(MediaType.VIDEO)) {
-                                captureVideo(mediaManager, videoCaptureLauncher, currentVideoUri) { uri ->
+                                captureVideo(
+                                    mediaManager,
+                                    videoCaptureLauncher,
+                                    currentVideoUri
+                                ) { uri ->
                                     currentVideoUri = uri
                                 }
                             } else {
-                                requestPermissions(permissionManager, MediaType.VIDEO, permissionLauncher)
+                                requestPermissions(
+                                    permissionManager,
+                                    MediaType.VIDEO,
+                                    permissionLauncher
+                                )
                             }
                         },
                         onGalleryClick = { galleryLauncher.launch("video/*") },
                         onError = onError
                     )
                 }
+
                 MediaType.AUDIO -> {
                     AudioRecorder(
                         onAudioRecorded = onMediaCaptured,
@@ -159,13 +199,13 @@ fun MediaCapture(
             }
         }
     }
-    
+
     // Dialog de permissão
     if (showPermissionDialog) {
         AlertDialog(
             onDismissRequest = { showPermissionDialog = false },
             title = { Text("Permissão Necessária") },
-            text = { 
+            text = {
                 Text(
                     when (mediaType) {
                         MediaType.PHOTO -> "Para capturar fotos, o aplicativo precisa de permissão para acessar a câmera e o armazenamento."
@@ -211,9 +251,9 @@ private fun PhotoCaptureOptions(
             style = MaterialTheme.typography.headlineSmall,
             fontWeight = FontWeight.Bold
         )
-        
+
         Spacer(modifier = Modifier.height(24.dp))
-        
+
         Row(
             horizontalArrangement = Arrangement.spacedBy(16.dp)
         ) {
@@ -233,7 +273,7 @@ private fun PhotoCaptureOptions(
                 Spacer(modifier = Modifier.width(8.dp))
                 Text("Câmera")
             }
-            
+
             // Botão da galeria
             OutlinedButton(
                 onClick = onGalleryClick,
@@ -269,9 +309,9 @@ private fun VideoCaptureOptions(
             style = MaterialTheme.typography.headlineSmall,
             fontWeight = FontWeight.Bold
         )
-        
+
         Spacer(modifier = Modifier.height(24.dp))
-        
+
         Row(
             horizontalArrangement = Arrangement.spacedBy(16.dp)
         ) {
@@ -291,7 +331,7 @@ private fun VideoCaptureOptions(
                 Spacer(modifier = Modifier.width(8.dp))
                 Text("Câmera")
             }
-            
+
             // Botão da galeria
             OutlinedButton(
                 onClick = onGalleryClick,
@@ -308,8 +348,6 @@ private fun VideoCaptureOptions(
         }
     }
 }
-
-
 
 private fun capturePhoto(
     mediaManager: MediaManager,
@@ -342,7 +380,6 @@ private fun captureVideo(
         // Tratar erro
     }
 }
-
 
 
 private fun requestPermissions(

@@ -8,10 +8,10 @@ import com.example.lutando.domain.repository.MediaRepository
 class DeleteMediaFileUseCase(
     private val mediaRepository: MediaRepository
 ) {
-    
+
     /**
      * Executa o use case para excluir um arquivo de mídia.
-     * 
+     *
      * @param filePath Caminho do arquivo a ser excluído
      * @return Result contendo true se excluído com sucesso ou erro
      */

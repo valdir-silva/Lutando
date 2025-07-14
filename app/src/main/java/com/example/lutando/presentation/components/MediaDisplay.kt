@@ -7,7 +7,7 @@ import com.example.lutando.domain.model.MediaType
 
 /**
  * Componente que exibe mídia baseado no tipo.
- * 
+ *
  * @param uri URI do arquivo de mídia
  * @param mediaType Tipo de mídia
  * @param contentDescription Descrição do conteúdo para acessibilidade
@@ -28,6 +28,7 @@ fun MediaDisplay(
                 modifier = modifier
             )
         }
+
         MediaType.VIDEO -> {
             MediaPlayer(
                 uri = uri,
@@ -35,6 +36,7 @@ fun MediaDisplay(
                 modifier = modifier
             )
         }
+
         MediaType.AUDIO -> {
             MediaPlayer(
                 uri = uri,

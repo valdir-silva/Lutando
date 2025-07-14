@@ -10,7 +10,7 @@ import androidx.core.content.ContextCompat
  * Gerenciador de permissões para funcionalidades de mídia.
  */
 class PermissionManager(private val context: Context) {
-    
+
     /**
      * Verifica se as permissões de câmera estão concedidas.
      */
@@ -20,7 +20,7 @@ class PermissionManager(private val context: Context) {
             Manifest.permission.CAMERA
         ) == PackageManager.PERMISSION_GRANTED
     }
-    
+
     /**
      * Verifica se as permissões de áudio estão concedidas.
      */
@@ -30,7 +30,7 @@ class PermissionManager(private val context: Context) {
             Manifest.permission.RECORD_AUDIO
         ) == PackageManager.PERMISSION_GRANTED
     }
-    
+
     /**
      * Verifica se as permissões de armazenamento estão concedidas.
      */
@@ -46,7 +46,7 @@ class PermissionManager(private val context: Context) {
             ) == PackageManager.PERMISSION_GRANTED
         }
     }
-    
+
     /**
      * Verifica se as permissões de mídia granulares estão concedidas (Android 13+).
      */
@@ -55,26 +55,26 @@ class PermissionManager(private val context: Context) {
             context,
             Manifest.permission.READ_MEDIA_IMAGES
         ) == PackageManager.PERMISSION_GRANTED
-        
+
         val videoPermission = ContextCompat.checkSelfPermission(
             context,
             Manifest.permission.READ_MEDIA_VIDEO
         ) == PackageManager.PERMISSION_GRANTED
-        
+
         val audioPermission = ContextCompat.checkSelfPermission(
             context,
             Manifest.permission.READ_MEDIA_AUDIO
         ) == PackageManager.PERMISSION_GRANTED
-        
+
         return imagePermission && videoPermission && audioPermission
     }
-    
+
     /**
      * Obtém as permissões necessárias para um tipo de mídia específico.
      */
     fun getRequiredPermissions(mediaType: com.example.lutando.domain.model.MediaType): Array<String> {
         val permissions = mutableListOf<String>()
-        
+
         when (mediaType) {
             com.example.lutando.domain.model.MediaType.PHOTO -> {
                 permissions.add(Manifest.permission.CAMERA)
@@ -84,6 +84,7 @@ class PermissionManager(private val context: Context) {
                     permissions.add(Manifest.permission.READ_EXTERNAL_STORAGE)
                 }
             }
+
             com.example.lutando.domain.model.MediaType.VIDEO -> {
                 permissions.add(Manifest.permission.CAMERA)
                 permissions.add(Manifest.permission.RECORD_AUDIO)
@@ -93,6 +94,7 @@ class PermissionManager(private val context: Context) {
                     permissions.add(Manifest.permission.READ_EXTERNAL_STORAGE)
                 }
             }
+
             com.example.lutando.domain.model.MediaType.AUDIO -> {
                 permissions.add(Manifest.permission.RECORD_AUDIO)
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
@@ -102,17 +104,20 @@ class PermissionManager(private val context: Context) {
                 }
             }
         }
-        
+
         return permissions.toTypedArray()
     }
-    
+
     /**
      * Verifica se todas as permissões necessárias para um tipo de mídia estão concedidas.
      */
     fun hasAllRequiredPermissions(mediaType: com.example.lutando.domain.model.MediaType): Boolean {
         val requiredPermissions = getRequiredPermissions(mediaType)
         return requiredPermissions.all { permission ->
-            ContextCompat.checkSelfPermission(context, permission) == PackageManager.PERMISSION_GRANTED
+            ContextCompat.checkSelfPermission(
+                context,
+                permission
+            ) == PackageManager.PERMISSION_GRANTED
         }
     }
 } 

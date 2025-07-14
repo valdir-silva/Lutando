@@ -31,12 +31,12 @@ class GetMediaUriUseCaseTest {
         val filePath = "/app/videos/technique_123.mp4"
         val mockUri = mockk<Uri>()
         every { Uri.parse("content://media/video.mp4") } returns mockUri
-        
+
         coEvery { mockRepository.getMediaUri(filePath) } returns Result.success(mockUri)
-        
+
         // When
         val result = useCase(filePath)
-        
+
         // Then
         assertTrue(result.isSuccess)
         assertEquals(mockUri, result.getOrNull())
@@ -48,12 +48,12 @@ class GetMediaUriUseCaseTest {
         val filePath = "/app/photos/technique_456.jpg"
         val mockUri = mockk<Uri>()
         every { Uri.parse("content://media/photo.jpg") } returns mockUri
-        
+
         coEvery { mockRepository.getMediaUri(filePath) } returns Result.success(mockUri)
-        
+
         // When
         val result = useCase(filePath)
-        
+
         // Then
         assertTrue(result.isSuccess)
         assertEquals(mockUri, result.getOrNull())
@@ -65,12 +65,12 @@ class GetMediaUriUseCaseTest {
         val filePath = "/app/audio/technique_789.mp3"
         val mockUri = mockk<Uri>()
         every { Uri.parse("content://media/audio.mp3") } returns mockUri
-        
+
         coEvery { mockRepository.getMediaUri(filePath) } returns Result.success(mockUri)
-        
+
         // When
         val result = useCase(filePath)
-        
+
         // Then
         assertTrue(result.isSuccess)
         assertEquals(mockUri, result.getOrNull())
@@ -81,12 +81,16 @@ class GetMediaUriUseCaseTest {
         // Given
         val filePath = "/app/videos/inexistente.mp4"
         val errorMessage = "Arquivo não encontrado"
-        
-        coEvery { mockRepository.getMediaUri(filePath) } returns Result.failure(Exception(errorMessage))
-        
+
+        coEvery { mockRepository.getMediaUri(filePath) } returns Result.failure(
+            Exception(
+                errorMessage
+            )
+        )
+
         // When
         val result = useCase(filePath)
-        
+
         // Then
         assertTrue(result.isFailure)
         assertEquals(errorMessage, result.exceptionOrNull()?.message)
@@ -98,12 +102,12 @@ class GetMediaUriUseCaseTest {
         val filePath = "/app/videos/test.mp4"
         val mockUri = mockk<Uri>()
         every { Uri.parse("content://media/test.mp4") } returns mockUri
-        
+
         coEvery { mockRepository.getMediaUri(filePath) } returns Result.success(mockUri)
-        
+
         // When
         val result = useCase(filePath)
-        
+
         // Then
         assertTrue(result.isSuccess)
         assertEquals(mockUri, result.getOrNull())
@@ -114,12 +118,16 @@ class GetMediaUriUseCaseTest {
         // Given
         val filePath = ""
         val errorMessage = "Caminho do arquivo não pode estar vazio"
-        
-        coEvery { mockRepository.getMediaUri(filePath) } returns Result.failure(Exception(errorMessage))
-        
+
+        coEvery { mockRepository.getMediaUri(filePath) } returns Result.failure(
+            Exception(
+                errorMessage
+            )
+        )
+
         // When
         val result = useCase(filePath)
-        
+
         // Then
         assertTrue(result.isFailure)
         assertEquals(errorMessage, result.exceptionOrNull()?.message)

@@ -5,7 +5,7 @@ import androidx.room.PrimaryKey
 
 /**
  * Modelo que representa uma modalidade de arte marcial.
- * 
+ *
  * @property id Identificador único da modalidade
  * @property name Nome da modalidade (ex: Jiu-Jitsu, Muay Thai, Boxe)
  * @property description Descrição da modalidade

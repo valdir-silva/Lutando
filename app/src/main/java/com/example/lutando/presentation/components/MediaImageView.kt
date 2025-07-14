@@ -15,7 +15,7 @@ import coil.request.ImageRequest
 
 /**
  * Componente para exibir imagens usando Coil.
- * 
+ *
  * @param uri URI da imagem
  * @param contentDescription Descrição do conteúdo para acessibilidade
  * @param modifier Modifier para customização do layout

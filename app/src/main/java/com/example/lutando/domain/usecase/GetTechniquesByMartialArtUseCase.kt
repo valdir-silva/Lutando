@@ -10,7 +10,6 @@ import kotlinx.coroutines.flow.Flow
 class GetTechniquesByMartialArtUseCase(
     private val techniqueRepository: TechniqueRepository
 ) {
-    
     operator fun invoke(martialArtId: Long): Flow<List<Technique>> {
         return techniqueRepository.getTechniquesByMartialArt(martialArtId)
     }

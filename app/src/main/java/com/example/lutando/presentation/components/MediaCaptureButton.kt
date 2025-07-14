@@ -1,11 +1,35 @@
 package com.example.lutando.presentation.components
 
 import android.net.Uri
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.*
-import androidx.compose.material3.*
-import androidx.compose.runtime.*
+import androidx.compose.material.icons.filled.Close
+import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedButton
+import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
@@ -16,7 +40,7 @@ import com.example.lutando.domain.model.MediaType
 
 /**
  * Botão de captura de mídia para ser usado em formulários.
- * 
+ *
  * @param mediaType Tipo de mídia a ser capturada
  * @param onMediaCaptured Callback executado quando a mídia é capturada
  * @param onError Callback executado quando ocorre erro
@@ -31,7 +55,7 @@ fun MediaCaptureButton(
 ) {
     var showCaptureDialog by remember { mutableStateOf(false) }
     var showMediaCapture by remember { mutableStateOf(false) }
-    
+
     Button(
         onClick = { showCaptureDialog = true },
         modifier = modifier,
@@ -58,7 +82,7 @@ fun MediaCaptureButton(
             fontWeight = FontWeight.Medium
         )
     }
-    
+
     if (showCaptureDialog) {
         AlertDialog(
             onDismissRequest = { showCaptureDialog = false },
@@ -98,7 +122,7 @@ fun MediaCaptureButton(
             }
         )
     }
-    
+
     if (showMediaCapture) {
         MediaCapture(
             mediaType = mediaType,
@@ -117,7 +141,7 @@ fun MediaCaptureButton(
 
 /**
  * Botão de remoção de mídia.
- * 
+ *
  * @param mediaType Tipo de mídia a ser removida
  * @param onRemove Callback executado quando a mídia é removida
  * @param modifier Modifier para customização do layout
@@ -154,7 +178,7 @@ fun MediaRemoveButton(
 
 /**
  * Card de preview de mídia.
- * 
+ *
  * @param mediaType Tipo de mídia
  * @param uri URI da mídia
  * @param onRemove Callback executado quando a mídia é removida
@@ -203,7 +227,7 @@ fun MediaPreviewCard(
                         fontWeight = FontWeight.Medium
                     )
                 }
-                
+
                 IconButton(onClick = onRemove) {
                     Icon(
                         imageVector = Icons.Default.Close,
@@ -212,9 +236,9 @@ fun MediaPreviewCard(
                     )
                 }
             }
-            
+
             Spacer(modifier = Modifier.height(8.dp))
-            
+
             // Preview da mídia
             when (mediaType) {
                 MediaType.PHOTO -> {
@@ -226,6 +250,7 @@ fun MediaPreviewCard(
                             .height(200.dp)
                     )
                 }
+
                 MediaType.VIDEO -> {
                     MediaPlayer(
                         uri = uri,
@@ -235,6 +260,7 @@ fun MediaPreviewCard(
                             .height(200.dp)
                     )
                 }
+
                 MediaType.AUDIO -> {
                     MediaPlayer(
                         uri = uri,

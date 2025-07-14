@@ -10,7 +10,6 @@ import kotlinx.coroutines.flow.Flow
 class GetCurrentUserUseCase(
     private val userRepository: UserRepository
 ) {
-    
     operator fun invoke(): Flow<User?> {
         return userRepository.getCurrentUser()
     }

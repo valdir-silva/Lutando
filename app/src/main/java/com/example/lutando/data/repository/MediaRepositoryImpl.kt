@@ -15,7 +15,7 @@ class MediaRepositoryImpl(
     private val mediaManager: MediaManager,
     private val permissionManager: PermissionManager
 ) : MediaRepository {
-    
+
     override suspend fun saveMediaFile(sourceUri: Uri, mediaType: MediaType): Result<String> {
         return withContext(Dispatchers.IO) {
             try {
@@ -24,7 +24,7 @@ class MediaRepositoryImpl(
                         SecurityException("Permissões necessárias não concedidas")
                     )
                 }
-                
+
                 val filePath = mediaManager.saveMediaFile(sourceUri, mediaType)
                 Result.success(filePath)
             } catch (e: Exception) {
@@ -32,7 +32,7 @@ class MediaRepositoryImpl(
             }
         }
     }
-    
+
     override suspend fun deleteMediaFile(filePath: String): Result<Boolean> {
         return withContext(Dispatchers.IO) {
             try {
@@ -43,7 +43,7 @@ class MediaRepositoryImpl(
             }
         }
     }
-    
+
     override suspend fun getMediaUri(filePath: String): Result<Uri?> {
         return withContext(Dispatchers.IO) {
             try {
@@ -54,7 +54,7 @@ class MediaRepositoryImpl(
             }
         }
     }
-    
+
     override suspend fun fileExists(filePath: String): Result<Boolean> {
         return withContext(Dispatchers.IO) {
             try {
@@ -65,11 +65,11 @@ class MediaRepositoryImpl(
             }
         }
     }
-    
+
     override fun hasRequiredPermissions(mediaType: MediaType): Boolean {
         return permissionManager.hasAllRequiredPermissions(mediaType)
     }
-    
+
     override fun getRequiredPermissions(mediaType: MediaType): Array<String> {
         return permissionManager.getRequiredPermissions(mediaType)
     }

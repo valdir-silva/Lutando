@@ -9,10 +9,10 @@ import com.example.lutando.domain.repository.MediaRepository
 class GetMediaUriUseCase(
     private val mediaRepository: MediaRepository
 ) {
-    
+
     /**
      * Executa o use case para obter o URI de um arquivo de mídia.
-     * 
+     *
      * @param filePath Caminho do arquivo
      * @return Result contendo o URI do arquivo ou null se não existir
      */

@@ -1,7 +1,10 @@
 package com.example.lutando.domain.model
 
+import org.junit.Assert.assertEquals
+import org.junit.Assert.assertFalse
+import org.junit.Assert.assertNotEquals
+import org.junit.Assert.assertTrue
 import org.junit.Test
-import org.junit.Assert.*
 
 class TechniqueTest {
 
@@ -10,10 +13,10 @@ class TechniqueTest {
         // Given
         val name = "Kimura"
         val martialArtId = 1L
-        
+
         // When
         val technique = Technique(name = name, martialArtId = martialArtId)
-        
+
         // Then
         assertEquals(0L, technique.id)
         assertEquals(name, technique.name)
@@ -44,7 +47,7 @@ class TechniqueTest {
         val audioPath = ""
         val createdAt = "2024-01-01"
         val updatedAt = "2024-01-02"
-        
+
         // When
         val technique = Technique(
             id = id,
@@ -60,7 +63,7 @@ class TechniqueTest {
             createdAt = createdAt,
             updatedAt = updatedAt
         )
-        
+
         // Then
         assertEquals(id, technique.id)
         assertEquals(name, technique.name)
@@ -80,7 +83,7 @@ class TechniqueTest {
     fun `deve copiar Technique com novos valores`() {
         // Given
         val original = Technique(name = "Triangle", martialArtId = 1L)
-        
+
         // When
         val copy = original.copy(
             name = "Omoplata",
@@ -88,7 +91,7 @@ class TechniqueTest {
             hasVideo = true,
             videoPath = "/videos/omoplata.mp4"
         )
-        
+
         // Then
         assertEquals(original.id, copy.id)
         assertEquals("Omoplata", copy.name)
@@ -109,10 +112,10 @@ class MediaFileTest {
         val id = "media_1"
         val type = MediaType.VIDEO
         val uri = "content://media/video.mp4"
-        
+
         // When
         val mediaFile = MediaFile(id = id, type = type, uri = uri)
-        
+
         // Then
         assertEquals(id, mediaFile.id)
         assertEquals(type, mediaFile.type)
@@ -129,7 +132,7 @@ class MediaFileTest {
         val uri = "content://media/photo.jpg"
         val description = "Foto da técnica"
         val createdAt = 1000L
-        
+
         // When
         val mediaFile = MediaFile(
             id = id,
@@ -138,7 +141,7 @@ class MediaFileTest {
             description = description,
             createdAt = createdAt
         )
-        
+
         // Then
         assertEquals(id, mediaFile.id)
         assertEquals(type, mediaFile.type)
@@ -155,14 +158,14 @@ class MediaFileTest {
             type = MediaType.AUDIO,
             uri = "content://media/audio.mp3"
         )
-        
+
         // When
         val copy = original.copy(
             type = MediaType.VIDEO,
             uri = "content://media/video.mp4",
             description = "Vídeo da técnica"
         )
-        
+
         // Then
         assertEquals(original.id, copy.id)
         assertEquals(MediaType.VIDEO, copy.type)
@@ -189,7 +192,7 @@ class MediaTypeTest {
         val photo = MediaType.PHOTO
         val video = MediaType.VIDEO
         val audio = MediaType.AUDIO
-        
+
         // When & Then
         assertEquals(MediaType.PHOTO, photo)
         assertEquals(MediaType.VIDEO, video)

@@ -17,7 +17,7 @@ import org.junit.runners.Suite
 
 /**
  * Suíte de testes unitários para o aplicativo Lutando.
- * 
+ *
  * Esta suíte inclui testes para:
  * - Modelos de domínio (MartialArt, Technique, User, MediaFile)
  * - Use Cases (todos os casos de uso da aplicação)
@@ -30,7 +30,7 @@ import org.junit.runners.Suite
     MartialArtTest::class,
     TechniqueTest::class,
     UserTest::class,
-    
+
     // Use Cases
     GetAllMartialArtsUseCaseTest::class,
     GetTechniquesByMartialArtUseCaseTest::class,
@@ -38,11 +38,11 @@ import org.junit.runners.Suite
     SaveMediaFileUseCaseTest::class,
     DeleteMediaFileUseCaseTest::class,
     GetMediaUriUseCaseTest::class,
-    
+
     // ViewModels
     HomeViewModelTest::class,
     MartialArtDetailViewModelTest::class,
-    
+
     // Conversores
     ConvertersTest::class
 )

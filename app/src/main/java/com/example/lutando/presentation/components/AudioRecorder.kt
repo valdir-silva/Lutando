@@ -1,34 +1,44 @@
 package com.example.lutando.presentation.components
 
 import android.Manifest
-import android.content.Context
 import android.media.MediaRecorder
 import android.net.Uri
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Mic
 import androidx.compose.material.icons.filled.Stop
-import androidx.compose.material.icons.filled.Pause
-import androidx.compose.material3.*
-import androidx.compose.runtime.*
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedButton
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import androidx.core.content.ContextCompat
-import androidx.core.content.PackageManagerCompat
 import com.example.lutando.R
 import com.example.lutando.data.media.MediaManager
 import com.example.lutando.data.media.PermissionManager
 import kotlinx.coroutines.delay
 import java.io.File
-import java.text.SimpleDateFormat
-import java.util.*
 
 /**
  * Componente para gravação de áudio usando MediaRecorder.
@@ -42,19 +52,19 @@ fun AudioRecorder(
     val context = LocalContext.current
     val mediaManager = remember { MediaManager(context) }
     val permissionManager = remember { PermissionManager(context) }
-    
+
     var isRecording by remember { mutableStateOf(false) }
     var recordingTime by remember { mutableStateOf(0L) }
     var mediaRecorder by remember { mutableStateOf<MediaRecorder?>(null) }
     var audioFile by remember { mutableStateOf<File?>(null) }
-    
+
     // Launcher para selecionar arquivo de áudio da galeria
     val galleryLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.GetContent()
     ) { uri ->
         uri?.let { onAudioRecorded(it) }
     }
-    
+
     // Launcher para permissões
     val permissionLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.RequestMultiplePermissions()
@@ -70,7 +80,7 @@ fun AudioRecorder(
             onError("Permissão de microfone necessária para gravar áudio")
         }
     }
-    
+
     // Timer para atualizar o tempo de gravação
     LaunchedEffect(isRecording) {
         while (isRecording) {
@@ -78,7 +88,7 @@ fun AudioRecorder(
             recordingTime++
         }
     }
-    
+
     Column(
         modifier = modifier
             .fillMaxWidth()
@@ -91,7 +101,7 @@ fun AudioRecorder(
             style = MaterialTheme.typography.headlineSmall,
             fontWeight = FontWeight.Bold
         )
-        
+
         // Indicador de tempo
         if (isRecording) {
             Text(
@@ -100,7 +110,7 @@ fun AudioRecorder(
                 color = MaterialTheme.colorScheme.primary
             )
         }
-        
+
         // Botões de ação
         Row(
             horizontalArrangement = Arrangement.spacedBy(16.dp)
@@ -140,7 +150,7 @@ fun AudioRecorder(
                 Spacer(modifier = Modifier.width(8.dp))
                 Text(if (isRecording) "Parar" else "Gravar")
             }
-            
+
             // Botão da galeria
             OutlinedButton(
                 onClick = { galleryLauncher.launch("audio/*") },
@@ -156,7 +166,7 @@ fun AudioRecorder(
                 Text("Galeria")
             }
         }
-        
+
         // Texto de instrução
         Text(
             text = if (isRecording) "Gravação em andamento..." else "Grave um áudio ou selecione da galeria",
@@ -181,17 +191,17 @@ private fun startRecording(
                 // Ignorar erro se já estava parado
             }
         }
-        
+
         // Criar arquivo de áudio
         val audioFile = mediaManager.createAudioFile()
-        
+
         // Configurar MediaRecorder
         val recorder = MediaRecorder().apply {
             setAudioSource(MediaRecorder.AudioSource.MIC)
             setOutputFormat(MediaRecorder.OutputFormat.MPEG_4)
             setAudioEncoder(MediaRecorder.AudioEncoder.AAC)
             setOutputFile(audioFile.absolutePath)
-            
+
             try {
                 prepare()
                 start()
@@ -218,7 +228,7 @@ private fun stopRecording(
             stop()
             release()
         }
-        
+
         audioFile?.let { file ->
             if (file.exists() && file.length() > 0) {
                 val uri = Uri.fromFile(file)
@@ -227,7 +237,7 @@ private fun stopRecording(
                 onError("Arquivo de áudio não foi criado corretamente")
             }
         }
-        
+
         onStopped()
     } catch (e: Exception) {
         onError("Erro ao parar gravação: ${e.message}")
