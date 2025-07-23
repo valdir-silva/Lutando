@@ -122,7 +122,6 @@ Desktop.ini
 hs_err_pid*
 
 # Memory Bank (documentação de desenvolvimento - não versionar)
-memory-bank/
 
 # CursorRIPER Framework
 .cursor/rules/
