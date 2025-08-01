@@ -190,6 +190,110 @@
         - Testes de usabilidade e fluxo.
     - **Total estimado:** 14 dias
 
+- [ ] **Sistema de Gestão para Professores**
+    - **Controle de Presença com QR Code** (3 dias)
+        - QR Code único para cada academia/local de treino.
+        - Scanner de QR Code integrado ao app para alunos confirmarem presença.
+        - Validação de localização GPS para garantir que o aluno está no local correto.
+        - Timestamp automático da presença.
+        - Notificação para o professor quando aluno confirma presença.
+    - **Painel do Professor** (4 dias)
+        - Dashboard com visão geral de todos os alunos.
+        - Lista de presenças por dia com filtros por data, modalidade, faixa.
+        - Estatísticas de frequência por aluno (porcentagem de presença, dias consecutivos, etc).
+        - Alertas para alunos com baixa frequência.
+        - Gráficos de evolução da frequência ao longo do tempo.
+    - **Perfil Completo do Aluno** (3 dias)
+        - Informações pessoais (nome, foto, contato, data de início).
+        - Histórico de faixas e progressão.
+        - Estatísticas de treino (frequência, técnicas aprendidas, tempo de prática).
+        - Histórico de presenças detalhado.
+        - Notas e comentários do professor sobre o desenvolvimento.
+    - **Sistema de Comentários e Avaliação** (2 dias)
+        - Professores podem adicionar comentários sobre o desenvolvimento de cada aluno.
+        - Avaliação de progresso (excelente, bom, regular, precisa melhorar).
+        - Histórico de comentários e avaliações.
+        - Notificações para alunos sobre novos comentários.
+        - Sistema de tags para categorizar comentários (técnica, comportamento, evolução).
+    - **Gestão de Academias e Locais** (2 dias)
+        - Cadastro de academias com informações completas.
+        - Múltiplos locais de treino por academia.
+        - Geração e gerenciamento de QR Codes por local.
+        - Configurações de horários de treino por local.
+        - Mapa de locais de treino.
+    - **Relatórios e Analytics** (3 dias)
+        - Relatórios de frequência por período (semanal, mensal, anual).
+        - Comparação de desempenho entre alunos.
+        - Estatísticas de evolução por faixa e modalidade.
+        - Exportação de relatórios em PDF/Excel.
+        - Dashboard com métricas principais da academia.
+    - **Sistema de Notificações** (2 dias)
+        - Notificações push para professores sobre presenças.
+        - Alertas de baixa frequência de alunos.
+        - Lembretes de avaliações pendentes.
+        - Notificações para alunos sobre comentários do professor.
+        - Configurações personalizáveis de notificações.
+    - **Integração e Segurança** (3 dias)
+        - Sistema de permissões (professor, aluno, administrador).
+        - Autenticação segura e validação de identidade.
+        - Backup e sincronização de dados.
+        - Integração com o sistema existente de técnicas e modalidades.
+        - Testes de segurança e validação de dados.
+    - **Total estimado:** 22 dias
+
+- [ ] **Desenvolvimento Multiplataforma**
+    - **Versão Web com Kotlin Multiplatform** (8 dias)
+        - Configuração do Kotlin Multiplatform para Android e Web.
+        - Compartilhamento de código de negócio (domain, data, use cases).
+        - Adaptação da UI para Compose for Web.
+        - Implementação de navegação web (URLs, browser history).
+        - Adaptação dos componentes de mídia para web (File API, WebRTC).
+        - Sistema de autenticação web (OAuth, JWT).
+        - Responsividade e design adaptativo para diferentes tamanhos de tela.
+        - PWA (Progressive Web App) com funcionalidades offline.
+        - Integração com APIs web (REST, GraphQL).
+        - Testes específicos para plataforma web.
+    - **Otimizações e Performance Web** (3 dias)
+        - Lazy loading de imagens e mídia.
+        - Cache inteligente para dados e assets.
+        - Compressão e otimização de assets.
+        - SEO e meta tags para melhor indexação.
+        - Analytics web (Google Analytics, eventos customizados).
+        - Monitoramento de performance (Core Web Vitals).
+    - **Sincronização Multiplataforma** (4 dias)
+        - Sistema de sincronização entre Android e Web.
+        - Resolução de conflitos de dados.
+        - Backup na nuvem (Firebase, AWS, Google Cloud).
+        - Sincronização em tempo real (WebSockets, Server-Sent Events).
+        - Versionamento de dados e rollback.
+        - Indicadores de status de sincronização.
+    - **Total estimado:** 15 dias
+
+- [ ] **Versão iOS Nativa** (Futuro Distante)
+    - **Desenvolvimento iOS com Swift/SwiftUI** (12 dias)
+        - Reescrita completa da UI usando SwiftUI.
+        - Adaptação da arquitetura para padrões iOS.
+        - Implementação de navegação iOS (NavigationView, TabView).
+        - Componentes nativos iOS (Core Data, AVFoundation).
+        - Integração com serviços Apple (iCloud, HealthKit).
+        - Notificações push nativas (APNs).
+        - Widgets para iOS (iOS 14+).
+        - Suporte a Apple Watch (opcional).
+    - **Integração com Ecossistema Apple** (4 dias)
+        - Sincronização com iCloud.
+        - Integração com HealthKit para métricas de treino.
+        - Suporte a Apple Fitness+.
+        - AirDrop para compartilhamento de técnicas.
+        - Siri Shortcuts para comandos de voz.
+        - Spotlight Search para técnicas.
+    - **Otimizações iOS** (3 dias)
+        - Performance nativa e otimizações de bateria.
+        - Suporte a diferentes tamanhos de iPhone e iPad.
+        - Modo escuro nativo.
+        - Haptic feedback e animações fluidas.
+        - Acessibilidade iOS (VoiceOver, Dynamic Type).
+    - **Total estimado:** 19 dias
+
 ## 🐛 Problemas conhecidos
 
 ### Menores
@@ -210,8 +314,12 @@
 - **Funcionalidades de Mídia**: 100% ✅
 - **Testes**: 0% ⏳
 - **Funcionalidades Avançadas**: 0% ⏳
+- **Funcionalidades Sociais**: 0% ⏳
+- **Sistema de Gestão para Professores**: 0% ⏳
+- **Desenvolvimento Multiplataforma**: 0% ⏳
+- **Versão iOS**: 0% ⏳
 
-**Progresso Geral**: 95% ✅
+**Progresso Geral**: 75% ✅
 
 ## 🎯 Próximos Milestones
 
