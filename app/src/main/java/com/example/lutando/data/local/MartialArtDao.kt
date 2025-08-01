@@ -24,7 +24,7 @@ interface MartialArtDao {
     @Query("SELECT * FROM martial_arts WHERE name LIKE '%' || :query || '%' ORDER BY name ASC")
     suspend fun searchMartialArts(query: String): List<MartialArt>
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    @Insert(onConflict = OnConflictStrategy.ABORT)
     suspend fun insertMartialArt(martialArt: MartialArt): Long
 
     @Update

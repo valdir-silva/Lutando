@@ -5,7 +5,9 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
+import androidx.room.migration.Migration
 import androidx.sqlite.db.SupportSQLiteDatabase
+import com.example.lutando.domain.model.Comment
 import com.example.lutando.domain.model.MartialArt
 import com.example.lutando.domain.model.Technique
 import com.example.lutando.domain.model.User
@@ -20,9 +22,10 @@ import kotlinx.coroutines.launch
     entities = [
         User::class,
         MartialArt::class,
-        Technique::class
+        Technique::class,
+        Comment::class
     ],
-    version = 1,
+    version = 2,
     exportSchema = false
 )
 @TypeConverters(Converters::class)
@@ -31,45 +34,22 @@ abstract class LutandoDatabase : RoomDatabase() {
     abstract fun userDao(): UserDao
     abstract fun martialArtDao(): MartialArtDao
     abstract fun techniqueDao(): TechniqueDao
+    abstract fun commentDao(): CommentDao
 
     companion object {
-        @Volatile
-        private var INSTANCE: LutandoDatabase? = null
-
-        fun getDatabase(context: Context): LutandoDatabase {
-            return INSTANCE ?: synchronized(this) {
-                val instance = Room.databaseBuilder(
-                    context.applicationContext,
-                    LutandoDatabase::class.java,
-                    "lutando_database"
-                )
-                    .fallbackToDestructiveMigration()
-                    .addCallback(object : RoomDatabase.Callback() {
-                        override fun onCreate(db: SupportSQLiteDatabase) {
-                            super.onCreate(db)
-                            INSTANCE?.let { database ->
-                                CoroutineScope(Dispatchers.IO).launch {
-                                    populateDatabase(database)
-                                }
-                            }
-                        }
-                    })
-                    .build()
-                INSTANCE = instance
-                instance
-            }
-        }
-
-        private suspend fun populateDatabase(database: LutandoDatabase) {
-            val userDao = database.userDao()
-            val martialArtDao = database.martialArtDao()
-
-            // Inserir usuário padrão
-            userDao.insertUser(InitialData.defaultUser)
-
-            // Inserir modalidades iniciais
-            InitialData.martialArts.forEach { martialArt ->
-                martialArtDao.insertMartialArt(martialArt)
+        val MIGRATION_1_2 = object : Migration(1, 2) {
+            override fun migrate(database: SupportSQLiteDatabase) {
+                database.execSQL("""
+                    CREATE TABLE IF NOT EXISTS `comments` (
+                        `id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+                        `techniqueId` INTEGER NOT NULL,
+                        `author` TEXT NOT NULL,
+                        `text` TEXT NOT NULL,
+                        `createdAt` TEXT NOT NULL,
+                        `updatedAt` TEXT NOT NULL,
+                        FOREIGN KEY(`techniqueId`) REFERENCES `techniques`(`id`) ON DELETE CASCADE
+                    )
+                """)
             }
         }
     }
