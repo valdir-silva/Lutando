@@ -87,7 +87,17 @@
 - [ ] Filtros por modalidade (1 dia)
 - [ ] Ordenação de técnicas (1 dia)
 - [ ] Exportação de dados (2 dias)
-- [ ] Backup e restauração (2 dias)
+- [ ] **Sistema de Backup e Restore** (3 dias)
+    - Backup completo do banco de dados (técnicas, comentários, mídia, configurações).
+    - Múltiplos formatos de exportação (.json, .csv, .db, .zip).
+    - Backup automático programado (diário, semanal, mensal).
+    - Backup manual com opções de compressão.
+    - Restauração de backup com validação de integridade.
+    - Backup na nuvem (Google Drive, Dropbox, OneDrive).
+    - Histórico de backups com informações de data/tamanho.
+    - Configurações de backup (frequência, local, compressão).
+    - Notificações de backup bem-sucedido/falhado.
+    - Backup incremental para economizar espaço.
 
 ### Melhorias de UX
 - [ ] Animações de transição (1 dia)
@@ -98,12 +108,29 @@
 
 ### Funcionalidades Futuras
 
-- [ ] **Possibilidade de comentar dentro de uma técnica criada** (2 dias)
+- [ ] **Possibilidade de compartilhar sua técnica** (2 dias)
+    - comparar suas anotacoes de uma tecnica com as anotacoes de outra pessoa da mesma
+    - comentar na postagem da tecnica de outra pessoa, dar like
+    - puxar comentario, video, foto... de uma tecnica de outra pessoa pra vc (manter a informacao do usuario original)
+
+- [x] **Possibilidade de comentar dentro de uma técnica criada** (2 dias) ✅
     - Cada técnica terá uma seção de comentários, armazenados localmente.
     - Campos: texto do comentário, autor (multiusuário), data/hora.
     - UI: exibição e adição de comentários na tela de detalhes da técnica.
     - Permitir editar/deletar comentários próprios.
     - (Futuro) Notificações locais para novos comentários.
+
+- [ ] **Mídia nos comentários (fotos, vídeos e áudios)** (3 dias)
+    - Permitir anexar fotos, vídeos e áudios aos comentários.
+    - Captura de mídia via câmera/microfone ou seleção da galeria.
+    - Visualização de mídia nos comentários (fotos, reprodução de vídeo/áudio).
+    - Armazenamento local de arquivos de mídia dos comentários.
+    - Gerenciamento de permissões para captura de mídia.
+    - Componentes reutilizáveis para captura e exibição de mídia nos comentários.
+    - Preview de mídia antes de enviar o comentário.
+    - Remoção de mídia dos comentários.
+    - Limite de tamanho de arquivo e compressão automática.
+    - Ícones indicativos do tipo de mídia anexada.
 
 - [ ] **Opções de tags para separar por faixa, por estilo, por grupos de técnicas** (2 dias)
     - Técnicas podem ter múltiplas tags (ex: “faixa azul”, “projeção”, “finalização”).
@@ -144,10 +171,13 @@
     - Seção “Sugestões para hoje” e notificações.
     - Configuração de critérios e quantidade de sugestões.
 
-- [ ] **Exportação/backup dos dados** (2 dias)
-    - Exportação do banco para arquivo (.json, .csv, .db).
-    - Botão de exportar/backup nas configurações.
-    - Opção de restaurar backup e backup automático na nuvem.
+- [ ] **Exportação de dados para compartilhamento** (1 dia)
+    - Exportação de técnicas específicas para compartilhamento.
+    - Formato de arquivo otimizado para transferência (.lutando).
+    - Compressão de mídia para reduzir tamanho do arquivo.
+    - Validação de integridade do arquivo exportado.
+    - Importação de técnicas de outros usuários.
+    - Preview do conteúdo antes da importação.
 
 - [ ] **Integração com vídeo/aula externa** (1 dia)
     - Permitir anexar links de vídeos externos ou anotações extras a uma técnica.
@@ -303,6 +333,10 @@
 
 ### Maiores
 - ✅ Gravação de áudio não funcionava (corrigido - implementado MediaRecorder nativo)
+- ✅ **BUG CRÍTICO: Botão de adicionar modalidade não funciona** - Corrigido: implementada tela de formulário para adicionar modalidades, use case, ViewModel e navegação
+- ✅ **BUG CRÍTICO: Comentários não estão sendo salvos nem mostrados** - Corrigido: Migração do banco de dados ajustada e chave estrangeira (ForeignKey) implementada para garantir a integridade dos dados.
+- ✅ **BUG CRÍTICO: App travava em "loading" ao salvar** - Corrigido: Refatorada a inicialização do banco de dados no Koin para eliminar condição de corrida que causava deadlock.
+- ✅ **BUG CRÍTICO: App quebrava ao abrir detalhes da técnica** - Corrigido: Layout da tela de detalhes refatorado para usar um único LazyColumn, resolvendo conflito de scroll aninhado (`IllegalStateException`).
 
 ## 📊 Métricas de Progresso
 
@@ -312,23 +346,53 @@
 - **Navegação**: 100% ✅
 - **CRUD Operations**: 100% ✅
 - **Funcionalidades de Mídia**: 100% ✅
+- **Mídia nos Comentários**: 0% ⏳
+- **Sistema de Backup e Restore**: 0% ⏳
 - **Testes**: 0% ⏳
-- **Funcionalidades Avançadas**: 0% ⏳
+- **Funcionalidades Avançadas**: 10% ⏳
 - **Funcionalidades Sociais**: 0% ⏳
 - **Sistema de Gestão para Professores**: 0% ⏳
 - **Desenvolvimento Multiplataforma**: 0% ⏳
 - **Versão iOS**: 0% ⏳
 
-**Progresso Geral**: 75% ✅
+**Progresso Geral**: 77% ✅
 
 ## 🎯 Próximos Milestones
 
-### Milestone 1: Testes (3 dias)
+### Milestone 1: Migrar para Firebase (5-7 dias)
+- [ ] **Migrar persistência de dados do Room para Firebase**
+    - Configurar projeto Firebase e adicionar SDKs ao app.
+    - Implementar autenticação de usuários com Firebase Auth.
+    - Refatorar camada de dados (Repositórios) para usar Firestore em vez de Room.
+    - Migrar modelos de dados para serem compatíveis com Firestore.
+    - Implementar upload/download de arquivos de mídia para o Firebase Storage.
+    - Adaptar Use Cases e ViewModels para a nova fonte de dados assíncrona.
+    - Criar regras de segurança para Firestore e Storage.
+    - (Opcional) Criar um script de migração para mover dados existentes do Room para o Firestore.
+
+### Milestone 2: Mídia nos Comentários (3 dias)
+- Implementar captura de mídia nos comentários
+- Integrar componentes de mídia existentes com comentários
+- Atualizar modelo de dados e banco de dados
+- Implementar visualização de mídia nos comentários
+
+### Milestone 3: Sistema de Backup e Restore (3 dias)
+- Implementar backup completo do banco de dados
+- Criar sistema de backup automático
+- Implementar restauração de backup
+- Integrar backup na nuvem (Google Drive)
+  - Configurar Google Drive API v3
+  - Implementar autenticação OAuth 2.0
+  - Criar sistema de upload/download automático
+  - Implementar sincronização bidirecional
+  - Adicionar detecção e resolução de conflitos
+
+### Milestone 4: Testes (3 dias)
 - Implementar testes unitários básicos
 - Implementar testes de UI
 - Implementar testes de navegação
 
-### Milestone 2: Polimento (2 dias)
+### Milestone 5: Polimento (2 dias)
 - Corrigir warnings
 - Melhorar UX
 - Finalizar documentação
@@ -427,6 +491,199 @@
 - [x] Reprodução de áudio
 - [x] Remoção de mídia
 - [x] Gerenciamento de permissões
+
+## 🔧 Sistema de Backup e Restore (Planejado)
+
+### Componentes a Serem Criados
+- `BackupManager.kt` - Gerenciador principal de backup
+- `BackupRepository.kt` - Interface do repositório de backup
+- `BackupRepositoryImpl.kt` - Implementação do repositório de backup
+- `CreateBackupUseCase.kt` - Criar backup completo
+- `RestoreBackupUseCase.kt` - Restaurar backup
+- `ValidateBackupUseCase.kt` - Validar integridade do backup
+- `ScheduleBackupUseCase.kt` - Agendar backup automático
+- `CloudBackupManager.kt` - Gerenciamento de backup na nuvem
+- `GoogleDriveBackupManager.kt` - Gerenciamento específico do Google Drive
+- `GoogleDriveAuthManager.kt` - Autenticação com Google Drive
+- `GoogleDriveSyncUseCase.kt` - Sincronização com Google Drive
+- `GoogleDriveUploadUseCase.kt` - Upload de backup para Google Drive
+- `GoogleDriveDownloadUseCase.kt` - Download de backup do Google Drive
+- `GoogleDriveConflictResolver.kt` - Resolução de conflitos no Google Drive
+
+### Componentes de UI a Serem Criados
+- `BackupSettingsScreen.kt` - Tela de configurações de backup
+- `BackupHistoryScreen.kt` - Histórico de backups
+- `BackupProgressDialog.kt` - Progresso do backup/restore
+- `RestoreConfirmationDialog.kt` - Confirmação de restauração
+- `CloudBackupSetupScreen.kt` - Configuração de backup na nuvem
+- `GoogleDriveSetupScreen.kt` - Configuração específica do Google Drive
+- `GoogleDriveAuthScreen.kt` - Tela de autenticação com Google
+- `GoogleDriveBackupListScreen.kt` - Lista de backups no Google Drive
+- `GoogleDriveSyncStatusCard.kt` - Status de sincronização com Google Drive
+- `GoogleDriveConflictDialog.kt` - Diálogo para resolver conflitos
+- `GoogleDriveSettingsCard.kt` - Configurações do Google Drive
+
+### Integração Planejada
+- Banco de dados atualizado com tabela de histórico de backups
+- Koin atualizado com dependências de backup
+- WorkManager para backup automático em background
+- Integração com Google Drive API, Dropbox API, OneDrive API
+- Permissões de armazenamento e internet
+- Notificações para status de backup
+
+### Integração Google Drive (Detalhada)
+- **Google Drive API v3** para upload/download de arquivos
+- **Google Sign-In** para autenticação do usuário
+- **Pasta dedicada "Lutando Backups"** no Google Drive do usuário
+- **Versionamento automático** de backups (backup_YYYY-MM-DD_HH-MM.zip)
+- **Sincronização bidirecional** entre app e Google Drive
+- **Detecção de conflitos** e resolução automática
+- **Backup incremental** para economizar espaço na nuvem
+- **Configuração de frequência** (diário, semanal, mensal)
+- **Notificações push** sobre status de backup na nuvem
+- **Restauração seletiva** de backups específicos do Google Drive
+- **Limpeza automática** de backups antigos na nuvem
+- **Criptografia opcional** de backups sensíveis
+- **Compressão inteligente** para reduzir tamanho de upload
+- **Retry automático** em caso de falha de conexão
+- **Indicador de status** de sincronização com Google Drive
+
+### Funcionalidades Planejadas
+- [ ] Backup completo do banco de dados
+- [ ] Backup de arquivos de mídia (fotos, vídeos, áudios)
+- [ ] Backup de configurações do usuário
+- [ ] Múltiplos formatos de exportação (.json, .csv, .db, .zip)
+- [ ] Backup automático programado (diário, semanal, mensal)
+- [ ] Backup manual com opções de compressão
+- [ ] Restauração de backup com validação de integridade
+- [ ] Backup na nuvem (Google Drive, Dropbox, OneDrive)
+- [ ] Histórico de backups com informações de data/tamanho
+- [ ] Configurações de backup (frequência, local, compressão)
+- [ ] Notificações de backup bem-sucedido/falhado
+- [ ] Backup incremental para economizar espaço
+- [ ] Criptografia de backups sensíveis
+- [ ] Limpeza automática de backups antigos
+
+### Funcionalidades Específicas Google Drive
+- [ ] Autenticação OAuth 2.0 com Google Sign-In
+- [ ] Criação automática da pasta "Lutando Backups" no Google Drive
+- [ ] Upload automático de backups para Google Drive
+- [ ] Download de backups do Google Drive para restauração
+- [ ] Sincronização bidirecional em tempo real
+- [ ] Detecção e resolução de conflitos de versão
+- [ ] Backup incremental para economizar espaço na nuvem
+- [ ] Configuração de frequência de backup (diário, semanal, mensal)
+- [ ] Notificações push sobre status de sincronização
+- [ ] Restauração seletiva de backups específicos
+- [ ] Limpeza automática de backups antigos na nuvem
+- [ ] Criptografia opcional de backups sensíveis
+- [ ] Compressão inteligente para reduzir tamanho de upload
+- [ ] Retry automático em caso de falha de conexão
+- [ ] Indicador visual de status de sincronização
+- [ ] Configuração de backup apenas via Wi-Fi
+- [ ] Backup em background com WorkManager
+- [ ] Histórico detalhado de sincronizações
+- [ ] Configuração de tamanho máximo de backup
+- [ ] Backup seletivo (apenas dados, dados + mídia, completo)
+
+### Formatos de Backup
+- **JSON**: Estrutura de dados legível e portável
+- **CSV**: Compatível com planilhas e análise de dados
+- **DB**: Cópia direta do banco SQLite
+- **ZIP**: Arquivo compactado com dados + mídia
+- **LUTANDO**: Formato proprietário otimizado
+
+### Estratégias de Backup
+- **Completo**: Todos os dados + mídia
+- **Incremental**: Apenas mudanças desde último backup
+- **Diferencial**: Mudanças desde backup completo
+- **Seletivo**: Apenas dados específicos (técnicas, comentários, etc.)
+
+### Configuração Google Drive
+- **Google Drive API v3** - Biblioteca oficial do Google
+- **Google Sign-In** - Autenticação OAuth 2.0
+- **WorkManager** - Backup em background
+- **Room Database** - Armazenamento local de metadados
+- **Koin** - Injeção de dependência
+- **Coroutines** - Operações assíncronas
+- **Flow** - Reatividade para status de sincronização
+
+### Permissões Necessárias
+- `INTERNET` - Conexão com Google Drive API
+- `ACCESS_NETWORK_STATE` - Verificar conectividade
+- `WRITE_EXTERNAL_STORAGE` - Backup local (Android < 11)
+- `READ_EXTERNAL_STORAGE` - Restauração local (Android < 11)
+- `FOREGROUND_SERVICE` - Backup em background
+- `RECEIVE_BOOT_COMPLETED` - Backup automático após reinicialização
+
+## 🔧 Funcionalidade de Mídia nos Comentários (Planejada)
+
+### Componentes a Serem Criados
+- `CommentMedia.kt` - Modelo de dados para mídia de comentários
+- `CommentMediaDao.kt` - DAO para operações de mídia de comentários
+- `CommentMediaRepository.kt` - Interface do repositório de mídia
+- `CommentMediaRepositoryImpl.kt` - Implementação do repositório de mídia
+- `AddCommentMediaUseCase.kt` - Adicionar mídia ao comentário
+- `DeleteCommentMediaUseCase.kt` - Remover mídia do comentário
+- `GetCommentMediaUseCase.kt` - Buscar mídia de comentários
+
+### Componentes de UI a Serem Criados
+- `CommentMediaCapture.kt` - Captura de mídia para comentários
+- `CommentMediaDisplay.kt` - Exibição de mídia nos comentários
+- `CommentMediaPreview.kt` - Preview de mídia antes de enviar
+- `CommentMediaButton.kt` - Botão para adicionar mídia ao comentário
+
+### Integração Planejada
+- Banco de dados atualizado com tabela de mídia de comentários
+- Koin atualizado com dependências de mídia de comentários
+- CommentCard atualizado para exibir mídia
+- CommentInput atualizado com opção de captura de mídia
+- CommentRepository atualizado para gerenciar mídia
+
+### Funcionalidades Planejadas
+- [ ] Anexar fotos aos comentários
+- [ ] Anexar vídeos aos comentários
+- [ ] Anexar áudios aos comentários
+- [ ] Visualizar mídia nos comentários
+- [ ] Preview de mídia antes de enviar
+- [ ] Remover mídia dos comentários
+- [ ] Compressão automática de arquivos
+- [ ] Limite de tamanho de arquivo
+- [ ] Ícones indicativos do tipo de mídia
+
+## 🔧 Funcionalidade de Comentários Implementada
+
+### Componentes Criados
+- `Comment.kt` - Modelo de dados para comentários
+- `CommentDao.kt` - DAO para operações de banco de dados
+- `CommentRepository.kt` - Interface do repositório
+- `CommentRepositoryImpl.kt` - Implementação do repositório
+- `GetCommentsByTechniqueUseCase.kt` - Buscar comentários
+- `AddCommentUseCase.kt` - Adicionar comentário
+- `UpdateCommentUseCase.kt` - Atualizar comentário
+- `DeleteCommentUseCase.kt` - Deletar comentário
+
+### Componentes de UI
+- `CommentCard.kt` - Exibição de comentário individual
+- `CommentInput.kt` - Campo para adicionar novo comentário
+- `EditCommentDialog.kt` - Diálogo para editar comentário
+- `DeleteCommentDialog.kt` - Diálogo de confirmação para deletar
+
+### Integração
+- Banco de dados atualizado (versão 2) com tabela de comentários
+- Koin atualizado com todas as dependências
+- TechniqueDetailViewModel atualizado com funcionalidades de comentários
+- TechniqueDetailScreen atualizada com seção de comentários
+- Teste unitário criado para AddCommentUseCase
+
+### Funcionalidades
+- ✅ Adicionar comentários a técnicas
+- ✅ Visualizar comentários ordenados por data (mais recentes primeiro)
+- ✅ Editar comentários próprios
+- ✅ Deletar comentários próprios
+- ✅ Contagem de comentários
+- ✅ Formatação de data em português
+- ✅ Interface responsiva e intuitiva
 
 ---
 
