@@ -8,6 +8,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import com.example.lutando.presentation.screens.home.HomeScreen
 import com.example.lutando.presentation.screens.martial_art_detail.MartialArtDetailScreen
+import com.example.lutando.presentation.screens.martial_art_form.MartialArtFormScreen
 import com.example.lutando.presentation.screens.technique_detail.TechniqueDetailScreen
 import com.example.lutando.presentation.screens.technique_form.TechniqueFormScreen
 
@@ -31,7 +32,19 @@ fun LutandoNavigation(
                     navController.navigate(NavRoutes.martialArtDetail(martialArtId.toInt()))
                 },
                 onAddMartialArtClick = {
-                    // TODO: Implementar adição de modalidade
+                    navController.navigate(NavRoutes.MARTIAL_ART_FORM)
+                }
+            )
+        }
+
+        // Tela de formulário de nova modalidade
+        composable(NavRoutes.MARTIAL_ART_FORM) {
+            MartialArtFormScreen(
+                onSaveClick = {
+                    navController.popBackStack()
+                },
+                onCancelClick = {
+                    navController.popBackStack()
                 }
             )
         }

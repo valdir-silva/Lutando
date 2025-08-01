@@ -5,6 +5,7 @@ package com.example.lutando.presentation.navigation
  */
 object NavRoutes {
     const val HOME = "home"
+    const val MARTIAL_ART_FORM = "martial_art_form"
     const val MARTIAL_ART_DETAIL = "martial_art_detail/{martialArtId}"
     const val TECHNIQUE_DETAIL = "technique_detail/{techniqueId}"
     const val TECHNIQUE_FORM = "technique_form/{martialArtId}"

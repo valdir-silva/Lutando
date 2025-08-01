@@ -1,6 +1,7 @@
 package com.example.lutando.domain.model
 
 import androidx.room.Entity
+import androidx.room.ForeignKey
 import androidx.room.PrimaryKey
 
 /**
@@ -13,7 +14,15 @@ import androidx.room.PrimaryKey
  * @property createdAt Data de criação do comentário
  * @property updatedAt Data da última atualização do comentário
  */
-@Entity(tableName = "comments")
+@Entity(
+    tableName = "comments",
+    foreignKeys = [ForeignKey(
+        entity = Technique::class,
+        parentColumns = ["id"],
+        childColumns = ["techniqueId"],
+        onDelete = ForeignKey.CASCADE
+    )]
+)
 data class Comment(
     @PrimaryKey(autoGenerate = true)
     val id: Long = 0,

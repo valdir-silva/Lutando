@@ -35,6 +35,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.lutando.ui.theme.LutandoTheme
 import org.koin.androidx.compose.koinViewModel
 
 /**
@@ -203,7 +204,7 @@ fun MartialArtFormContent(
 @Preview(showBackground = true)
 @Composable
 fun MartialArtFormScreenPreview() {
-    MaterialTheme {
+    LutandoTheme {
         MartialArtFormScreen(
             onSaveClick = {},
             onCancelClick = {}

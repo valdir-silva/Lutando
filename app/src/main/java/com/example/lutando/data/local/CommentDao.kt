@@ -17,6 +17,12 @@ interface CommentDao {
     fun getCommentsByTechniqueId(techniqueId: Long): Flow<List<Comment>>
     
     /**
+     * Verifica se a tabela de comentários existe.
+     */
+    @Query("SELECT name FROM sqlite_master WHERE type='table' AND name='comments'")
+    suspend fun checkCommentsTableExists(): String?
+    
+    /**
      * Busca um comentário específico por ID.
      */
     @Query("SELECT * FROM comments WHERE id = :commentId")

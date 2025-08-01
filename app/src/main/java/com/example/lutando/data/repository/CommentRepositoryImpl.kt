@@ -15,6 +15,7 @@ class CommentRepositoryImpl(
 ) : CommentRepository {
     
     override fun getCommentsByTechniqueId(techniqueId: Long): Flow<List<Comment>> {
+        println("Buscando comentários para técnica ID: $techniqueId")
         return commentDao.getCommentsByTechniqueId(techniqueId)
     }
     
@@ -28,7 +29,10 @@ class CommentRepositoryImpl(
             createdAt = currentTime,
             updatedAt = currentTime
         )
-        return commentDao.insertComment(commentWithTimestamp)
+        println("Adicionando comentário: $commentWithTimestamp")
+        val commentId = commentDao.insertComment(commentWithTimestamp)
+        println("Comentário adicionado com ID: $commentId")
+        return commentId
     }
     
     override suspend fun updateComment(comment: Comment) {
