@@ -11,6 +11,8 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
@@ -45,8 +47,14 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.lutando.domain.model.MediaType
 import com.example.lutando.domain.model.Technique
+import com.example.lutando.presentation.components.CommentCard
+import com.example.lutando.presentation.components.CommentInput
+import com.example.lutando.presentation.components.DeleteCommentDialog
+import com.example.lutando.presentation.components.EditCommentDialog
 import com.example.lutando.presentation.components.MediaDisplay
 import org.koin.androidx.compose.koinViewModel
+import androidx.compose.foundation.layout.PaddingValues
+import com.example.lutando.domain.model.Comment
 
 /**
  * Tela de detalhes da técnica.
@@ -74,7 +82,14 @@ fun TechniqueDetailScreen(
         onEditClick = { onEditClick(techniqueId) },
         onDeleteClick = onDeleteClick,
         onRetry = { viewModel.loadTechnique(techniqueId.toLong()) },
-        onClearError = { viewModel.clearError() }
+        onClearError = { viewModel.clearError() },
+        onAddComment = { viewModel.addComment(it) },
+        onEditComment = { viewModel.editComment(it) },
+        onDeleteComment = { viewModel.deleteComment(it) },
+        onUpdateComment = { viewModel.updateComment(it) },
+        onConfirmDeleteComment = { viewModel.confirmDeleteComment() },
+        onDismissEditDialog = { viewModel.dismissEditDialog() },
+        onDismissDeleteDialog = { viewModel.dismissDeleteDialog() }
     )
 }
 
@@ -86,7 +101,14 @@ fun TechniqueDetailContent(
     onEditClick: () -> Unit,
     onDeleteClick: () -> Unit,
     onRetry: () -> Unit = {},
-    onClearError: () -> Unit = {}
+    onClearError: () -> Unit = {},
+    onAddComment: (String) -> Unit = {},
+    onEditComment: (com.example.lutando.domain.model.Comment) -> Unit = {},
+    onDeleteComment: (com.example.lutando.domain.model.Comment) -> Unit = {},
+    onUpdateComment: (String) -> Unit = {},
+    onConfirmDeleteComment: () -> Unit = {},
+    onDismissEditDialog: () -> Unit = {},
+    onDismissDeleteDialog: () -> Unit = {}
 ) {
     Scaffold(
         topBar = {
@@ -134,6 +156,7 @@ fun TechniqueDetailContent(
                         modifier = Modifier.align(Alignment.Center)
                     )
                 }
+
                 uiState.error != null -> {
                     ErrorState(
                         error = uiState.error!!,
@@ -141,10 +164,16 @@ fun TechniqueDetailContent(
                         modifier = Modifier.align(Alignment.Center)
                     )
                 }
+
                 uiState.technique != null -> {
                     TechniqueContent(
                         technique = uiState.technique,
                         mediaUris = uiState.mediaUris,
+                        comments = uiState.comments,
+                        currentUser = uiState.currentUser,
+                        onAddComment = onAddComment,
+                        onEditComment = onEditComment,
+                        onDeleteComment = onDeleteComment,
                         modifier = Modifier.fillMaxSize()
                     )
                 }
@@ -166,6 +195,23 @@ fun TechniqueDetailContent(
                 }
             }
         }
+
+        // Diálogos de comentários
+        uiState.commentToEdit?.let { comment ->
+            EditCommentDialog(
+                comment = comment,
+                onDismiss = onDismissEditDialog,
+                onConfirm = onUpdateComment
+            )
+        }
+
+        uiState.commentToDelete?.let { comment ->
+            DeleteCommentDialog(
+                comment = comment,
+                onDismiss = onDismissDeleteDialog,
+                onConfirm = onConfirmDeleteComment
+            )
+        }
     }
 }
 
@@ -173,62 +219,102 @@ fun TechniqueDetailContent(
 private fun TechniqueContent(
     technique: Technique,
     mediaUris: Map<MediaType, Uri?>,
+    comments: List<Comment>,
+    currentUser: String,
+    onAddComment: (String) -> Unit,
+    onEditComment: (Comment) -> Unit,
+    onDeleteComment: (Comment) -> Unit,
     modifier: Modifier = Modifier
 ) {
-    Column(
-        modifier = modifier
-            .verticalScroll(rememberScrollState())
-            .padding(16.dp),
-        verticalArrangement = Arrangement.spacedBy(16.dp)
+    LazyColumn(
+        modifier = modifier.padding(horizontal = 16.dp),
+        verticalArrangement = Arrangement.spacedBy(16.dp),
+        contentPadding = PaddingValues(vertical = 16.dp)
     ) {
         // Nome da técnica
-        Card(
-            modifier = Modifier.fillMaxWidth(),
-            elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
-        ) {
-            Column(
-                modifier = Modifier.padding(16.dp)
+        item {
+            Card(
+                modifier = Modifier.fillMaxWidth(),
+                elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
             ) {
-                Text(
-                    text = technique.name,
-                    style = MaterialTheme.typography.headlineSmall,
-                    fontWeight = FontWeight.Bold
-                )
-
-                if (technique.description.isNotBlank()) {
-                    Spacer(modifier = Modifier.height(8.dp))
+                Column(
+                    modifier = Modifier.padding(16.dp)
+                ) {
                     Text(
-                        text = technique.description,
-                        style = MaterialTheme.typography.bodyLarge,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                        text = technique.name,
+                        style = MaterialTheme.typography.headlineSmall,
+                        fontWeight = FontWeight.Bold
                     )
+
+                    if (technique.description.isNotBlank()) {
+                        Spacer(modifier = Modifier.height(8.dp))
+                        Text(
+                            text = technique.description,
+                            style = MaterialTheme.typography.bodyLarge,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant
+                        )
+                    }
                 }
             }
         }
 
         // Informações da técnica
-        Card(
-            modifier = Modifier.fillMaxWidth(),
-            elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
-        ) {
-            Column(
-                modifier = Modifier.padding(16.dp),
-                verticalArrangement = Arrangement.spacedBy(12.dp)
+        item {
+            Card(
+                modifier = Modifier.fillMaxWidth(),
+                elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
             ) {
-                Text(
-                    text = "Informações",
-                    style = MaterialTheme.typography.titleMedium,
-                    fontWeight = FontWeight.SemiBold
-                )
+                Column(
+                    modifier = Modifier.padding(16.dp),
+                    verticalArrangement = Arrangement.spacedBy(12.dp)
+                ) {
+                    Text(
+                        text = "Informações",
+                        style = MaterialTheme.typography.titleMedium,
+                        fontWeight = FontWeight.SemiBold
+                    )
 
-                InfoRow("Criado em", technique.createdAt)
-                InfoRow("Atualizado em", technique.updatedAt)
+                    InfoRow("Criado em", technique.createdAt)
+                    InfoRow("Atualizado em", technique.updatedAt)
+                }
             }
         }
 
         // Seção de mídia
         if (technique.hasVideo || technique.hasPhoto || technique.hasAudio) {
-            MediaSection(technique = technique, mediaUris = mediaUris)
+            item {
+                MediaSection(technique = technique, mediaUris = mediaUris)
+            }
+        }
+
+        // Seção de comentários
+        item {
+            CommentsSectionHeader(
+                commentsSize = comments.size,
+                currentUser = currentUser,
+                onAddComment = onAddComment
+            )
+        }
+
+        // Lista de comentários
+        if (comments.isNotEmpty()) {
+            items(comments) { comment ->
+                CommentCard(
+                    comment = comment,
+                    currentUser = currentUser,
+                    onEditComment = { onEditComment(comment) },
+                    onDeleteComment = { onDeleteComment(comment) }
+                )
+            }
+        } else {
+            item {
+                Text(
+                    text = "Nenhum comentário ainda. Seja o primeiro a comentar!",
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    modifier = Modifier.padding(16.dp)
+                )
+            }
         }
     }
 }
@@ -437,6 +523,35 @@ private fun ErrorState(
         Spacer(modifier = Modifier.height(16.dp))
         Button(onClick = onRetry) {
             Text("Tentar novamente")
+        }
+    }
+}
+
+@Composable
+private fun CommentsSectionHeader(
+    commentsSize: Int,
+    currentUser: String,
+    onAddComment: (String) -> Unit
+) {
+    Card(
+        modifier = Modifier.fillMaxWidth(),
+        elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
+    ) {
+        Column(
+            modifier = Modifier.padding(16.dp),
+            verticalArrangement = Arrangement.spacedBy(16.dp)
+        ) {
+            Text(
+                text = "Comentários ($commentsSize)",
+                style = MaterialTheme.typography.titleMedium,
+                fontWeight = FontWeight.SemiBold
+            )
+
+            // Campo para adicionar novo comentário
+            CommentInput(
+                currentUser = currentUser,
+                onAddComment = onAddComment
+            )
         }
     }
 }
