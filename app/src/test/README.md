@@ -47,12 +47,12 @@ Os testes utilizam as seguintes bibliotecas:
 
 ### Executar uma classe específica
 ```bash
-./gradlew test --tests "com.example.lutando.domain.model.MartialArtTest"
+./gradlew test --tests "alunando.lutando.domain.model.MartialArtTest"
 ```
 
 ### Executar uma suíte específica
 ```bash
-./gradlew test --tests "com.example.lutando.TestSuite"
+./gradlew test --tests "alunando.lutando.TestSuite"
 ```
 
 ### Executar testes com relatório de cobertura

@@ -197,7 +197,7 @@ object NavRoutes {
   3. Imports do AndroidX (androidx.*)
   4. Imports do Jetpack Compose (androidx.compose.*)
   5. Imports de bibliotecas externas (com.*, org.*)
-  6. Imports locais do projeto (com.example.lutando.*)
+  6. Imports locais do projeto (alunando.lutando.*)
 
 ### Import Examples
 ```kotlin
@@ -218,9 +218,9 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 
 // External libraries
-import com.example.lutando.domain.model.MartialArt
-import com.example.lutando.domain.repository.MartialArtRepository
-import com.example.lutando.presentation.navigation.NavRoutes
+import alunando.lutando.domain.model.MartialArt
+import alunando.lutando.domain.repository.MartialArtRepository
+import alunando.lutando.presentation.navigation.NavRoutes
 ```
 
 ### Indentation Rules

@@ -1,7 +1,7 @@
 # Progress: Lutando
-*Version: 1.2*
+*Version: 1.4*
 *Created: 2025-01-27*
-*Last Updated: 2025-01-27*
+*Last Updated: 2025-08-01*
 
 ## 🏁 Resumo das Entregas Concluídas
 
@@ -11,7 +11,7 @@
 - **Navegação:** Navigation Compose, rotas, argumentos, callbacks, MainActivity, NavRoutes, LutandoNavigation, telas e ViewModels integrados.
 - **CRUD:** Criar, ler, atualizar e deletar técnicas.
 - **Funcionalidades de Mídia:** Captura de foto/vídeo/áudio, armazenamento local, visualização, permissões, componentes reutilizáveis, integração com formulários, preview, remoção, ícones customizados, MediaRecorder, seleção de áudio.
-- **Checklist de mídia:** Todos os itens de implementação e funcionalidades de mídia marcados como concluídos.
+- **Funcionalidade de Comentários:** Adicionar, visualizar, editar e deletar comentários em técnicas.
 
 ## ✅ O que está funcionando
 
@@ -24,7 +24,7 @@
 - ✅ Material Design 3 implementado
 
 ### Core Features (100% Concluído)
-- ✅ Entidades de dados (User, MartialArt, Technique)
+- ✅ Entidades de dados (User, MartialArt, Technique, Comment)
 - ✅ DAOs para acesso a dados
 - ✅ Repositórios implementados
 - ✅ Use Cases criados
@@ -34,43 +34,22 @@
 ### UI Components (100% Concluído)
 - ✅ HomeScreen - Lista de modalidades
 - ✅ MartialArtDetailScreen - Lista de técnicas da modalidade
-- ✅ TechniqueDetailScreen - Detalhes da técnica
+- ✅ TechniqueDetailScreen - Detalhes da técnica com seção de comentários
 - ✅ TechniqueFormScreen - Formulário para adicionar/editar técnicas
+- ✅ Componentes de Comentários (Card, Input, Dialogs)
 - ✅ MartialArtCard - Componente reutilizável
 - ✅ Previews do Jetpack Compose implementados
 
 ### Navegação (100% Concluído)
 - ✅ Navigation Compose 2.7.7 implementado
-- ✅ Rotas definidas (HOME, MARTIAL_ART_DETAIL, TECHNIQUE_DETAIL, TECHNIQUE_FORM, TECHNIQUE_EDIT)
-- ✅ Argumentos de navegação (martialArtId, techniqueId)
-- ✅ Callbacks de navegação implementados
-- ✅ Navegação entre todas as telas funcionando
-- ✅ MainActivity atualizada para usar Navigation Compose
-- ✅ NavRoutes.kt - Definição centralizada de rotas
-- ✅ LutandoNavigation.kt - Componente principal de navegação
-- ✅ Telas atualizadas para aceitar parâmetros de navegação
-- ✅ ViewModels atualizados para carregar dados por ID
+- ✅ Navegação completa entre todas as telas
 
 ### CRUD Operations (100% Concluído)
-- ✅ Criar técnica
-- ✅ Ler técnicas por modalidade
-- ✅ Atualizar técnica
-- ✅ Deletar técnica (estrutura preparada)
+- ✅ CRUD completo de técnicas
+- ✅ CRUD completo de comentários
 
 ### Funcionalidades de Mídia (100% Concluído)
-- ✅ Captura de foto (câmera e galeria)
-- ✅ Gravação de vídeo (câmera e galeria)
-- ✅ Gravação de áudio (microfone nativo + galeria)
-- ✅ Armazenamento de mídia local
-- ✅ Visualização de mídia (foto, vídeo, áudio)
-- ✅ Gerenciamento de permissões
-- ✅ Componentes de mídia reutilizáveis
-- ✅ Integração com formulário de técnicas
-- ✅ Preview de mídia capturada
-- ✅ Remoção de mídia
-- ✅ Ícones customizados para mídia
-- ✅ Gravação de áudio com MediaRecorder nativo
-- ✅ Seleção de arquivos de áudio da galeria
+- ✅ Captura, armazenamento e visualização de fotos, vídeos e áudios para técnicas.
 
 ## 🔄 O que está em desenvolvimento
 
@@ -83,21 +62,15 @@
 ## 📋 Backlog
 
 ### Funcionalidades Avançadas
-- [ ] Busca de técnicas (1 dia)
-- [ ] Filtros por modalidade (1 dia)
-- [ ] Ordenação de técnicas (1 dia)
-- [ ] Exportação de dados (2 dias)
+- [ ] **Busca de técnicas** (1 dia)
+- [ ] **Filtros por modalidade** (1 dia)
+- [ ] **Ordenação de técnicas** (1 dia)
+- [ ] **Exportação de dados** (2 dias)
 - [ ] **Sistema de Backup e Restore** (3 dias)
-    - Backup completo do banco de dados (técnicas, comentários, mídia, configurações).
-    - Múltiplos formatos de exportação (.json, .csv, .db, .zip).
-    - Backup automático programado (diário, semanal, mensal).
-    - Backup manual com opções de compressão.
-    - Restauração de backup com validação de integridade.
-    - Backup na nuvem (Google Drive, Dropbox, OneDrive).
-    - Histórico de backups com informações de data/tamanho.
-    - Configurações de backup (frequência, local, compressão).
-    - Notificações de backup bem-sucedido/falhado.
-    - Backup incremental para economizar espaço.
+    - **Resumo:** Backup completo do banco de dados (técnicas, comentários, mídia, configurações), múltiplos formatos de exportação, backup automático e manual, restauração com validação, backup na nuvem (Google Drive, etc.), histórico e notificações.
+    - **Componentes a Serem Criados:** `BackupManager`, `BackupRepository`, `CreateBackupUseCase`, `RestoreBackupUseCase`, `CloudBackupManager`, `GoogleDriveBackupManager`, etc.
+    - **Componentes de UI:** `BackupSettingsScreen`, `BackupHistoryScreen`, `CloudBackupSetupScreen`, etc.
+    - **Integração:** WorkManager para jobs em background, Google Drive API, permissões.
 
 ### Melhorias de UX
 - [ ] Animações de transição (1 dia)
@@ -324,175 +297,7 @@
         - Acessibilidade iOS (VoiceOver, Dynamic Type).
     - **Total estimado:** 19 dias
 
-## 🐛 Problemas conhecidos
-
-### Menores
-- [ ] Warnings de deprecação do ArrowBack (não crítico)
-- [ ] Variáveis não utilizadas nos previews (não crítico)
-- [ ] Shadowing de variáveis na navegação (corrigido)
-
-### Maiores
-- ✅ Gravação de áudio não funcionava (corrigido - implementado MediaRecorder nativo)
-- ✅ **BUG CRÍTICO: Botão de adicionar modalidade não funciona** - Corrigido: implementada tela de formulário para adicionar modalidades, use case, ViewModel e navegação
-- ✅ **BUG CRÍTICO: Comentários não estão sendo salvos nem mostrados** - Corrigido: Migração do banco de dados ajustada e chave estrangeira (ForeignKey) implementada para garantir a integridade dos dados.
-- ✅ **BUG CRÍTICO: App travava em "loading" ao salvar** - Corrigido: Refatorada a inicialização do banco de dados no Koin para eliminar condição de corrida que causava deadlock.
-- ✅ **BUG CRÍTICO: App quebrava ao abrir detalhes da técnica** - Corrigido: Layout da tela de detalhes refatorado para usar um único LazyColumn, resolvendo conflito de scroll aninhado (`IllegalStateException`).
-
-## 📊 Métricas de Progresso
-
-- **Foundation**: 100% ✅
-- **Core Features**: 100% ✅
-- **UI Components**: 100% ✅
-- **Navegação**: 100% ✅
-- **CRUD Operations**: 100% ✅
-- **Funcionalidades de Mídia**: 100% ✅
-- **Mídia nos Comentários**: 0% ⏳
-- **Sistema de Backup e Restore**: 0% ⏳
-- **Testes**: 0% ⏳
-- **Funcionalidades Avançadas**: 10% ⏳
-- **Funcionalidades Sociais**: 0% ⏳
-- **Sistema de Gestão para Professores**: 0% ⏳
-- **Desenvolvimento Multiplataforma**: 0% ⏳
-- **Versão iOS**: 0% ⏳
-
-**Progresso Geral**: 77% ✅
-
-## 🎯 Próximos Milestones
-
-### Milestone 1: Migrar para Firebase (5-7 dias)
-- [ ] **Migrar persistência de dados do Room para Firebase**
-    - Configurar projeto Firebase e adicionar SDKs ao app.
-    - Implementar autenticação de usuários com Firebase Auth.
-    - Refatorar camada de dados (Repositórios) para usar Firestore em vez de Room.
-    - Migrar modelos de dados para serem compatíveis com Firestore.
-    - Implementar upload/download de arquivos de mídia para o Firebase Storage.
-    - Adaptar Use Cases e ViewModels para a nova fonte de dados assíncrona.
-    - Criar regras de segurança para Firestore e Storage.
-    - (Opcional) Criar um script de migração para mover dados existentes do Room para o Firestore.
-
-### Milestone 2: Mídia nos Comentários (3 dias)
-- Implementar captura de mídia nos comentários
-- Integrar componentes de mídia existentes com comentários
-- Atualizar modelo de dados e banco de dados
-- Implementar visualização de mídia nos comentários
-
-### Milestone 3: Sistema de Backup e Restore (3 dias)
-- Implementar backup completo do banco de dados
-- Criar sistema de backup automático
-- Implementar restauração de backup
-- Integrar backup na nuvem (Google Drive)
-  - Configurar Google Drive API v3
-  - Implementar autenticação OAuth 2.0
-  - Criar sistema de upload/download automático
-  - Implementar sincronização bidirecional
-  - Adicionar detecção e resolução de conflitos
-
-### Milestone 4: Testes (3 dias)
-- Implementar testes unitários básicos
-- Implementar testes de UI
-- Implementar testes de navegação
-
-### Milestone 5: Polimento (2 dias)
-- Corrigir warnings
-- Melhorar UX
-- Finalizar documentação
-
-## 📝 Notas Técnicas
-
-### Arquitetura
-- Clean Architecture + MVVM
-- Jetpack Compose para UI
-- Room para persistência
-- Koin para DI
-- Navigation Compose para navegação
-
-### Performance
-- LazyColumn para listas grandes
-- ViewModels para gerenciamento de estado
-- Flow para reatividade
-- Coroutines para operações assíncronas
-
-### Qualidade
-- Código limpo e bem documentado
-- Separação de responsabilidades
-- Componentes reutilizáveis
-- Previews para documentação visual
-
-### Navegação
-- Navigation Compose 2.7.7
-- Rotas type-safe com argumentos
-- NavHost centralizado
-- Callbacks de navegação
-- Padrões do Google seguidos
-
-### Mídia
-- Captura de foto/vídeo/áudio
-- Armazenamento local seguro
-- Gerenciamento de permissões
-- Componentes reutilizáveis
-- Preview em tempo real
-- ExoPlayer para reprodução
-- Coil para carregamento de imagens
-
-## 🔧 Arquivos de Mídia Criados
-
-### Componentes de Mídia
-- `MediaCapture.kt` - Captura de mídia completa
-- `MediaCaptureButton.kt` - Botão de captura
-- `MediaDisplay.kt` - Exibição de mídia
-- `MediaImageView.kt` - Exibição de imagens
-- `MediaPlayer.kt` - Reprodução de vídeo/áudio
-
-### Gerenciadores de Mídia
-- `MediaManager.kt` - Gerenciamento de arquivos
-- `PermissionManager.kt` - Gerenciamento de permissões
-
-### Repositórios e Use Cases
-- `MediaRepository.kt` - Interface do repositório
-- `MediaRepositoryImpl.kt` - Implementação do repositório
-- `SaveMediaFileUseCase.kt` - Salvar arquivos
-- `DeleteMediaFileUseCase.kt` - Excluir arquivos
-- `GetMediaUriUseCase.kt` - Obter URIs
-
-### Drawables
-- `ic_camera_alt.xml` - Ícone de câmera
-- `ic_photo_library.xml` - Ícone de galeria de fotos
-- `ic_videocam.xml` - Ícone de câmera de vídeo
-- `ic_video_library.xml` - Ícone de galeria de vídeos
-- `ic_audio_file.xml` - Ícone de arquivo de áudio
-
-### Telas Atualizadas
-- `TechniqueFormScreen.kt` - Integração com captura de mídia
-- `TechniqueDetailScreen.kt` - Exibição de mídia
-- `TechniqueFormViewModel.kt` - Gerenciamento de estado de mídia
-- `TechniqueDetailViewModel.kt` - Carregamento de URIs de mídia
-
-## 📋 Checklist de Mídia
-
-### Implementação
-- [x] Componentes de captura de mídia
-- [x] Gerenciamento de permissões
-- [x] Armazenamento local de arquivos
-- [x] Reprodução de mídia
-- [x] Preview de mídia capturada
-- [x] Integração com formulários
-- [x] Ícones customizados
-- [x] Tratamento de erros
-
-### Funcionalidades
-- [x] Captura de foto via câmera
-- [x] Captura de foto via galeria
-- [x] Captura de vídeo via câmera
-- [x] Captura de vídeo via galeria
-- [x] Gravação de áudio via microfone
-- [x] Seleção de áudio via galeria
-- [x] Visualização de fotos
-- [x] Reprodução de vídeos
-- [x] Reprodução de áudio
-- [x] Remoção de mídia
-- [x] Gerenciamento de permissões
-
-## 🔧 Sistema de Backup e Restore (Planejado)
+    ## 🔧 Sistema de Backup e Restore (Planejado)
 
 ### Componentes a Serem Criados
 - `BackupManager.kt` - Gerenciador principal de backup
@@ -651,40 +456,81 @@
 - [ ] Limite de tamanho de arquivo
 - [ ] Ícones indicativos do tipo de mídia
 
-## 🔧 Funcionalidade de Comentários Implementada
+## 🐛 Problemas conhecidos
+- [ ] Warnings de deprecação do ArrowBack (não crítico)
+- [ ] Variáveis não utilizadas nos previews (não crítico)
 
-### Componentes Criados
-- `Comment.kt` - Modelo de dados para comentários
-- `CommentDao.kt` - DAO para operações de banco de dados
-- `CommentRepository.kt` - Interface do repositório
-- `CommentRepositoryImpl.kt` - Implementação do repositório
-- `GetCommentsByTechniqueUseCase.kt` - Buscar comentários
-- `AddCommentUseCase.kt` - Adicionar comentário
-- `UpdateCommentUseCase.kt` - Atualizar comentário
-- `DeleteCommentUseCase.kt` - Deletar comentário
+## 📊 Métricas de Progresso
+- **Foundation**: 100% ✅
+- **Core Features**: 100% ✅
+- **UI Components**: 100% ✅
+- **Navegação**: 100% ✅
+- **CRUD Operations**: 100% ✅
+- **Funcionalidades de Mídia**: 100% ✅
+- **Migração para Firebase**: 0% ⏳
+- **Desenvolvimento Web**: 0% ⏳
+- **Mídia nos Comentários**: 0% ⏳
+- **Sistema de Backup e Restore**: 0% ⏳
+- **Testes**: 30% ⏳
+- **Funcionalidades Avançadas**: 0% ⏳
+- **Funcionalidades Sociais**: 0% ⏳
+- **Sistema de Gestão para Professores**: 0% ⏳
+- **Versão iOS**: 0% ⏳
 
-### Componentes de UI
-- `CommentCard.kt` - Exibição de comentário individual
-- `CommentInput.kt` - Campo para adicionar novo comentário
-- `EditCommentDialog.kt` - Diálogo para editar comentário
-- `DeleteCommentDialog.kt` - Diálogo de confirmação para deletar
+**Progresso Geral**: ~65% ✅
 
-### Integração
-- Banco de dados atualizado (versão 2) com tabela de comentários
-- Koin atualizado com todas as dependências
-- TechniqueDetailViewModel atualizado com funcionalidades de comentários
-- TechniqueDetailScreen atualizada com seção de comentários
-- Teste unitário criado para AddCommentUseCase
+## 🎯 Próximos Milestones
 
-### Funcionalidades
-- ✅ Adicionar comentários a técnicas
-- ✅ Visualizar comentários ordenados por data (mais recentes primeiro)
-- ✅ Editar comentários próprios
-- ✅ Deletar comentários próprios
-- ✅ Contagem de comentários
-- ✅ Formatação de data em português
-- ✅ Interface responsiva e intuitiva
+### Milestone 1: Migrar para Firebase (5-7 dias)
+- [ ] **Etapa 1: Configuração do Projeto Firebase**
+    - [ ] Adicionar as dependências do Firebase (Firestore, Storage, Auth) ao arquivo `app/build.gradle.kts`.
+    - [ ] Criar um projeto no console do Firebase e baixar o arquivo `google-services.json`, adicionando-o ao diretório `app/`.
+    - [ ] Inicializar o Firebase na classe `LutandoApplication`.
+- [ ] **Etapa 2: Implementar Autenticação de Usuários**
+    - [ ] Configurar o Firebase Authentication (sugestão: anônima ou e-mail/senha).
+    - [ ] Criar uma tela de login/registro simples.
+- [ ] **Etapa 3: Refatorar a Camada de Dados (Repositórios)**
+    - [ ] Criar novas implementações dos repositórios para usar o Firestore.
+    - [ ] Adaptar `Flow` para `snapshotFlow()` do Firestore para manter a reatividade.
+- [ ] **Etapa 4: Migrar Armazenamento de Mídia para o Firebase Storage**
+    - [ ] Modificar o `MediaRepository` para fazer upload/download para o Firebase Storage.
+    - [ ] Armazenar as URLs de download do Storage no Firestore.
+- [ ] **Etapa 5: Atualizar a Injeção de Dependência (Koin)**
+    - [ ] Substituir as injeções do Room pelas do Firebase.
+- [ ] **Etapa 6: Definir Regras de Segurança**
+    - [ ] Criar regras no console do Firebase para garantir que usuários só acessem seus próprios dados.
+- [ ] **Etapa 7: (Opcional) Criar Script de Migração de Dados**
+    - [ ] Desenvolver uma função para migrar dados do Room local para o Firestore.
+- [ ] **Etapa 8: Limpeza do Código Antigo**
+    - [ ] Remover dependências e classes do Room após a migração.
+
+### Milestone 2: Desenvolvimento Multiplataforma (Web) (8-10 dias)
+- [ ] **Etapa 1: Configuração do Projeto Kotlin Multiplatform**
+    - [ ] Estruturar o projeto para compartilhar código (commonMain, androidMain, wasmJsMain).
+    - [ ] Configurar o build Gradle para compilar para Android e Web (WASM).
+- [ ] **Etapa 2: Adaptação da UI com Compose for Web**
+    - [ ] Garantir que os componentes Compose sejam compatíveis com a web.
+    - [ ] Implementar a navegação para a web (gerenciamento de rotas/URLs).
+- [ ] **Etapa 3: Configuração do Domínio e Hospedagem**
+    - [ ] Registrar o domínio `alunando.com`.
+    - [ ] Configurar o GitHub Pages para hospedar o site.
+    - [ ] Apontar o DNS do domínio para o GitHub Pages.
+- [ ] **Etapa 4: Implementar CI/CD com GitHub Actions**
+    - [ ] Criar um workflow para fazer o build e deploy automático da versão web a cada push.
+
+### Milestone 3: Versão iOS Nativa (Futuro Distante)
+- [ ] Reescrita da UI com SwiftUI.
+- [ ] Adaptação da arquitetura para padrões iOS.
+- [ ] Integração com serviços Apple (iCloud, etc.).
+
+## 📝 Notas Técnicas
+
+### Arquitetura
+- Clean Architecture + MVVM
+- Jetpack Compose para UI (será multiplataforma)
+- Room para persistência (será migrado para Firebase)
+- Koin para DI
+- Navigation Compose para navegação
 
 ---
-
-*Este documento rastreia o progresso geral do projeto Lutando.* 
+*Este documento rastreia o progresso geral do projeto Lutando.*
