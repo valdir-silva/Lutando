@@ -42,9 +42,9 @@ class HomeViewModelTest {
     fun `deve carregar artes marciais com sucesso`() = runTest(testDispatcher) {
         // Given
         val martialArts = listOf(
-            MartialArt(id = 1L, name = "Jiu-Jitsu"),
-            MartialArt(id = 2L, name = "Muay Thai"),
-            MartialArt(id = 3L, name = "Boxe")
+            MartialArt(id = "1", name = "Jiu-Jitsu"),
+            MartialArt(id = "2", name = "Muay Thai"),
+            MartialArt(id = "3", name = "Boxe")
         )
 
         coEvery { mockGetAllMartialArtsUseCase() } returns flowOf(martialArts)
@@ -119,10 +119,10 @@ class HomeViewModelTest {
     @Test
     fun `deve recarregar dados quando refresh é chamado`() = runTest(testDispatcher) {
         // Given
-        val initialArts = listOf(MartialArt(id = 1L, name = "Jiu-Jitsu"))
+        val initialArts = listOf(MartialArt(id = "1", name = "Jiu-Jitsu"))
         val refreshedArts = listOf(
-            MartialArt(id = 1L, name = "Jiu-Jitsu"),
-            MartialArt(id = 2L, name = "Muay Thai")
+            MartialArt(id = "1", name = "Jiu-Jitsu"),
+            MartialArt(id = "2", name = "Muay Thai")
         )
 
         var callCount = 0

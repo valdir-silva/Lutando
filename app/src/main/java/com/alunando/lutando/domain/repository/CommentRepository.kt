@@ -11,17 +11,17 @@ interface CommentRepository {
     /**
      * Busca todos os comentários de uma técnica específica.
      */
-    fun getCommentsByTechniqueId(techniqueId: Long): Flow<List<Comment>>
+    fun getCommentsByTechniqueId(techniqueId: String): Flow<List<Comment>>
     
     /**
      * Busca um comentário específico por ID.
      */
-    suspend fun getCommentById(commentId: Long): Comment?
+    suspend fun getCommentById(commentId: String): Comment?
     
     /**
      * Adiciona um novo comentário.
      */
-    suspend fun addComment(comment: Comment): Long
+    suspend fun addComment(comment: Comment): String
     
     /**
      * Atualiza um comentário existente.
@@ -36,10 +36,10 @@ interface CommentRepository {
     /**
      * Remove todos os comentários de uma técnica.
      */
-    suspend fun deleteCommentsByTechniqueId(techniqueId: Long)
+    suspend fun deleteCommentsByTechniqueId(techniqueId: String)
     
     /**
      * Conta quantos comentários uma técnica possui.
      */
-    suspend fun getCommentCountByTechniqueId(techniqueId: Long): Int
+    suspend fun getCommentCountByTechniqueId(techniqueId: String): Int
 } 

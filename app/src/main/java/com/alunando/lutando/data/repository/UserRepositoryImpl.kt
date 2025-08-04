@@ -1,38 +1,42 @@
 package com.alunando.lutando.data.repository
 
-import com.alunando.lutando.data.local.UserDao
+import com.google.firebase.firestore.FirebaseFirestore
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flowOf
+import kotlinx.coroutines.tasks.await
 import com.alunando.lutando.domain.model.User
 import com.alunando.lutando.domain.repository.UserRepository
-import kotlinx.coroutines.flow.Flow
 
-/**
- * Implementação do repositório de usuários.
- */
 class UserRepositoryImpl(
-    private val userDao: UserDao
+    private val firestore: FirebaseFirestore
 ) : UserRepository {
 
+    private val usersCollection = firestore.collection("users")
+
     override fun getCurrentUser(): Flow<User?> {
-        return userDao.getCurrentUser()
+        // Implementar lógica para obter o usuário logado do Firebase Auth
+        // Por enquanto, retorna um flow vazio ou nulo
+        return flowOf(null)
     }
 
-    override suspend fun getUserById(id: Long): User? {
-        return userDao.getUserById(id)
+    override suspend fun getUserById(id: String): User? {
+        return usersCollection.document(id).get().await().toObject(User::class.java)?.copy(id = id)
     }
 
-    override suspend fun insertUser(user: User): Long {
-        return userDao.insertUser(user)
+    override suspend fun insertUser(user: User): String {
+        val documentRef = usersCollection.add(user).await()
+        return documentRef.id
     }
 
     override suspend fun updateUser(user: User) {
-        userDao.updateUser(user)
+        usersCollection.document(user.id).set(user).await()
     }
 
     override suspend fun deleteUser(user: User) {
-        userDao.deleteUser(user)
+        usersCollection.document(user.id).delete().await()
     }
 
-    override suspend fun deleteUserById(id: Long) {
-        userDao.deleteUserById(id)
+    override suspend fun deleteUserById(id: String) {
+        usersCollection.document(id).delete().await()
     }
 } 

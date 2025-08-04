@@ -1,6 +1,6 @@
 package com.alunando.lutando
 
-import com.alunando.lutando.data.local.ConvertersTest
+
 import com.alunando.lutando.domain.model.MartialArtTest
 import com.alunando.lutando.domain.model.TechniqueTest
 import com.alunando.lutando.domain.model.UserTest
@@ -43,7 +43,6 @@ import org.junit.runners.Suite
     HomeViewModelTest::class,
     MartialArtDetailViewModelTest::class,
 
-    // Conversores
-    ConvertersTest::class
+    
 )
 class TestSuite 

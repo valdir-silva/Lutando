@@ -1,14 +1,7 @@
 package com.alunando.lutando.di
 
 import android.content.Context
-import androidx.room.Room
-import androidx.room.RoomDatabase
-import androidx.sqlite.db.SupportSQLiteDatabase
-import com.alunando.lutando.data.local.CommentDao
-import com.alunando.lutando.data.local.InitialData
-import com.alunando.lutando.data.local.LutandoDatabase
-import com.alunando.lutando.data.local.TechniqueDao
-import com.alunando.lutando.data.local.UserDao
+
 import com.alunando.lutando.data.media.MediaManager
 import com.alunando.lutando.data.media.PermissionManager
 import com.alunando.lutando.data.repository.AuthRepositoryImpl
@@ -59,33 +52,7 @@ val appModule = module {
     single { FirebaseAuth.getInstance() }
     single { FirebaseFirestore.getInstance() }
 
-    // Database
-    single {
-        val context = androidContext()
-        Room.databaseBuilder(
-            context,
-            LutandoDatabase::class.java,
-            "lutando_database"
-        )
-            .addMigrations(LutandoDatabase.MIGRATION_1_2)
-            .addCallback(object : RoomDatabase.Callback() {
-                override fun onCreate(db: SupportSQLiteDatabase) {
-                    super.onCreate(db)
-                    // Popula o banco de dados na primeira criação
-                    CoroutineScope(Dispatchers.IO).launch {
-                        val database = get<LutandoDatabase>()
-                        val userDao = database.userDao()
-                        userDao.insertUser(InitialData.defaultUser)
-                    }
-                }
-            })
-            .build()
-    }
-
-    // DAOs
-    single<UserDao> { get<LutandoDatabase>().userDao() }
-    single<TechniqueDao> { get<LutandoDatabase>().techniqueDao() }
-    single<CommentDao> { get<LutandoDatabase>().commentDao() }
+    
 
     // Media Managers
     single { MediaManager(androidContext()) }

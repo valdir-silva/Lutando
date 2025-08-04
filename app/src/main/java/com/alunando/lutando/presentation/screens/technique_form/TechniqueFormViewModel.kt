@@ -18,7 +18,7 @@ import kotlinx.coroutines.launch
 data class TechniqueFormUiState(
     val name: String = "",
     val description: String = "",
-    val martialArtId: Long = 0L,
+    val martialArtId: String = "",
     val hasVideo: Boolean = false,
     val hasPhoto: Boolean = false,
     val hasAudio: Boolean = false,
@@ -50,7 +50,7 @@ class TechniqueFormViewModel(
         _uiState.update { it.copy(description = description) }
     }
 
-    fun setMartialArtId(martialArtId: Long) {
+    fun setMartialArtId(martialArtId: String) {
         _uiState.update { it.copy(martialArtId = martialArtId) }
     }
 
@@ -86,7 +86,7 @@ class TechniqueFormViewModel(
             return
         }
 
-        if (currentState.martialArtId == 0L) {
+        if (currentState.martialArtId.isBlank()) {
             _uiState.update { it.copy(error = "Modalidade é obrigatória") }
             return
         }
@@ -97,7 +97,7 @@ class TechniqueFormViewModel(
             try {
                 val now = System.currentTimeMillis()
                 val technique = Technique(
-                    id = 0L, // Será gerado pelo banco
+                    id = "", // Será gerado pelo Firestore
                     name = currentState.name,
                     description = currentState.description,
                     martialArtId = currentState.martialArtId,
@@ -124,7 +124,7 @@ class TechniqueFormViewModel(
         }
     }
 
-    fun loadTechniqueForEdit(techniqueId: Long) {
+    fun loadTechniqueForEdit(techniqueId: String) {
         viewModelScope.launch {
             _uiState.update { it.copy(isLoading = true, error = null) }
 

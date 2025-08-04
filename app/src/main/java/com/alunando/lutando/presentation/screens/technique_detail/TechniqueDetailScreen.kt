@@ -61,9 +61,9 @@ import com.alunando.lutando.domain.model.Comment
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun TechniqueDetailScreen(
-    techniqueId: Int,
+    techniqueId: String,
     onBackClick: () -> Unit,
-    onEditClick: (Int) -> Unit,
+    onEditClick: (String) -> Unit,
     onDeleteClick: () -> Unit,
     viewModel: TechniqueDetailViewModel = koinViewModel()
 ) {
@@ -71,7 +71,7 @@ fun TechniqueDetailScreen(
 
     // Carregar técnica quando a tela é criada
     LaunchedEffect(techniqueId) {
-        viewModel.loadTechnique(techniqueId.toLong())
+        viewModel.loadTechnique(techniqueId)
     }
 
     TechniqueDetailContent(
@@ -79,7 +79,7 @@ fun TechniqueDetailScreen(
         onBackClick = onBackClick,
         onEditClick = { onEditClick(techniqueId) },
         onDeleteClick = onDeleteClick,
-        onRetry = { viewModel.loadTechnique(techniqueId.toLong()) },
+        onRetry = { viewModel.loadTechnique(techniqueId) },
         onClearError = { viewModel.clearError() },
         onAddComment = { viewModel.addComment(it) },
         onEditComment = { viewModel.editComment(it) },
@@ -558,10 +558,10 @@ private fun CommentsSectionHeader(
 @Composable
 fun TechniqueDetailScreenPreview() {
     val sampleTechnique = Technique(
-        id = 1L,
+        id = "1",
         name = "Kimura",
         description = "Técnica de finalização do jiu-jitsu brasileiro que utiliza uma chave de braço",
-        martialArtId = 1L,
+        martialArtId = "1",
         hasVideo = true,
         hasPhoto = true,
         hasAudio = false,

@@ -1,9 +1,5 @@
 package com.alunando.lutando.domain.model
 
-import androidx.room.Entity
-import androidx.room.ForeignKey
-import androidx.room.PrimaryKey
-
 /**
  * Modelo que representa um comentário em uma técnica.
  *
@@ -14,19 +10,9 @@ import androidx.room.PrimaryKey
  * @property createdAt Data de criação do comentário
  * @property updatedAt Data da última atualização do comentário
  */
-@Entity(
-    tableName = "comments",
-    foreignKeys = [ForeignKey(
-        entity = Technique::class,
-        parentColumns = ["id"],
-        childColumns = ["techniqueId"],
-        onDelete = ForeignKey.CASCADE
-    )]
-)
 data class Comment(
-    @PrimaryKey(autoGenerate = true)
-    val id: Long = 0,
-    val techniqueId: Long,
+    val id: String = "",
+    val techniqueId: String,
     val author: String,
     val text: String,
     val createdAt: String = "",

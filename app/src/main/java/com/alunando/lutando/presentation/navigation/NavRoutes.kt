@@ -21,7 +21,7 @@ object NavRoutes {
     /**
      * Gera a rota para detalhes da técnica
      */
-    fun techniqueDetail(techniqueId: Int): String {
+    fun techniqueDetail(techniqueId: String): String {
         return "technique_detail/$techniqueId"
     }
 
@@ -35,7 +35,7 @@ object NavRoutes {
     /**
      * Gera a rota para edição de técnica existente
      */
-    fun techniqueEdit(techniqueId: Int): String {
+    fun techniqueEdit(techniqueId: String): String {
         return "technique_edit/$techniqueId"
     }
 } 

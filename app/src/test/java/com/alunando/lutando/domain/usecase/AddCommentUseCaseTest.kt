@@ -5,10 +5,10 @@ import com.alunando.lutando.domain.model.Comment
 import kotlinx.coroutines.test.runTest
 import org.junit.Before
 import org.junit.Test
-import org.mockito.kotlin.mock
-import org.mockito.kotlin.whenever
-import org.mockito.kotlin.verify
-import kotlin.test.assertEquals
+import io.mockk.coEvery
+import io.mockk.mockk
+import io.mockk.coVerify
+import org.junit.Assert.assertEquals
 
 class AddCommentUseCaseTest {
     
@@ -17,31 +17,31 @@ class AddCommentUseCaseTest {
     
     @Before
     fun setup() {
-        commentRepository = mock()
+        commentRepository = mockk()
         addCommentUseCase = AddCommentUseCase(commentRepository)
     }
     
     @Test
     fun `invoke should add comment and return comment id`() = runTest {
         // Given
-        val techniqueId = 1L
+        val techniqueId = "tech123"
         val author = "João"
         val text = "Ótima técnica!"
-        val expectedCommentId = 123L
+        val expectedCommentId = "comment456"
         
-        whenever(commentRepository.addComment(any())).thenReturn(expectedCommentId)
+        coEvery { commentRepository.addComment(any()) } returns expectedCommentId
         
         // When
         val result = addCommentUseCase(techniqueId, author, text)
         
         // Then
         assertEquals(expectedCommentId, result)
-        verify(commentRepository).addComment(
+        coVerify { commentRepository.addComment(
             Comment(
                 techniqueId = techniqueId,
                 author = author,
                 text = text
             )
-        )
+        ) }
     }
 } 

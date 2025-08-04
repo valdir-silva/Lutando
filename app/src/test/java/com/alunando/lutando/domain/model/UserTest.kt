@@ -17,7 +17,7 @@ class UserTest {
         val user = User(name = name)
 
         // Then
-        assertEquals(0L, user.id)
+        assertEquals("", user.id)
         assertEquals(name, user.name)
         assertNull(user.email)
         assertTrue(user.createdAt > 0)
@@ -27,7 +27,7 @@ class UserTest {
     @Test
     fun `deve criar User com todos os valores customizados`() {
         // Given
-        val id = 1L
+        val id = "1"
         val name = "Maria Santos"
         val email = "maria@email.com"
         val createdAt = 1000L

@@ -25,9 +25,9 @@ class GetAllMartialArtsUseCaseTest {
     fun `deve retornar lista de artes marciais do repositório`() = runTest {
         // Given
         val martialArts = listOf(
-            MartialArt(id = 1L, name = "Jiu-Jitsu"),
-            MartialArt(id = 2L, name = "Muay Thai"),
-            MartialArt(id = 3L, name = "Boxe")
+            MartialArt(id = "1", name = "Jiu-Jitsu"),
+            MartialArt(id = "2", name = "Muay Thai"),
+            MartialArt(id = "3", name = "Boxe")
         )
 
         coEvery { mockRepository.getAllMartialArts() } returns flowOf(martialArts)
@@ -61,7 +61,7 @@ class GetAllMartialArtsUseCaseTest {
     @Test
     fun `deve retornar lista com uma arte marcial`() = runTest {
         // Given
-        val martialArt = MartialArt(id = 1L, name = "Karatê", description = "Arte marcial japonesa")
+        val martialArt = MartialArt(id = "1", name = "Karatê", description = "Arte marcial japonesa")
         coEvery { mockRepository.getAllMartialArts() } returns flowOf(listOf(martialArt))
 
         // When

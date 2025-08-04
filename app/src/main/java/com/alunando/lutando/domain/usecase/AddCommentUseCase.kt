@@ -19,10 +19,10 @@ class AddCommentUseCase(
      * @return ID do comentário criado
      */
     suspend operator fun invoke(
-        techniqueId: Long,
+        techniqueId: String,
         author: String,
         text: String
-    ): Long {
+    ): String {
         val comment = Comment(
             techniqueId = techniqueId,
             author = author,

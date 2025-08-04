@@ -1,8 +1,5 @@
 package com.alunando.lutando.domain.model
 
-import androidx.room.Entity
-import androidx.room.PrimaryKey
-
 /**
  * Modelo que representa uma técnica de arte marcial.
  *
@@ -19,13 +16,11 @@ import androidx.room.PrimaryKey
  * @property createdAt Data de criação da técnica
  * @property updatedAt Data da última atualização da técnica
  */
-@Entity(tableName = "techniques")
 data class Technique(
-    @PrimaryKey(autoGenerate = true)
-    val id: Long = 0,
+    val id: String = "",
     val name: String,
     val description: String = "",
-    val martialArtId: Long,
+    val martialArtId: String,
     val hasVideo: Boolean = false,
     val hasPhoto: Boolean = false,
     val hasAudio: Boolean = false,

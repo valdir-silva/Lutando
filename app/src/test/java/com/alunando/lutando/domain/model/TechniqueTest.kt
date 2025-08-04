@@ -12,13 +12,13 @@ class TechniqueTest {
     fun `deve criar Technique com valores padrão`() {
         // Given
         val name = "Kimura"
-        val martialArtId = 1L
+        val martialArtId = "1"
 
         // When
         val technique = Technique(name = name, martialArtId = martialArtId)
 
         // Then
-        assertEquals(0L, technique.id)
+        assertEquals("", technique.id)
         assertEquals(name, technique.name)
         assertEquals("", technique.description)
         assertEquals(martialArtId, technique.martialArtId)
@@ -35,10 +35,10 @@ class TechniqueTest {
     @Test
     fun `deve criar Technique com todos os valores customizados`() {
         // Given
-        val id = 1L
+        val id = "1"
         val name = "Armbar"
         val description = "Chave de braço"
-        val martialArtId = 2L
+        val martialArtId = "2"
         val hasVideo = true
         val hasPhoto = true
         val hasAudio = false
@@ -82,7 +82,7 @@ class TechniqueTest {
     @Test
     fun `deve copiar Technique com novos valores`() {
         // Given
-        val original = Technique(name = "Triangle", martialArtId = 1L)
+        val original = Technique(name = "Triangle", martialArtId = "1")
 
         // When
         val copy = original.copy(

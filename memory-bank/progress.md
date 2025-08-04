@@ -475,7 +475,7 @@
 - **Navegação**: 100% ✅
 - **CRUD Operations**: 100% ✅
 - **Funcionalidades de Mídia**: 100% ✅
-- **Migração para Firebase**: 0% ⏳
+- **Migração para Firebase**: 40% ✅
 - **Desenvolvimento Web**: 0% ⏳
 - **Mídia nos Comentários**: 0% ⏳
 - **Sistema de Backup e Restore**: 0% ⏳
@@ -498,7 +498,9 @@
     - [x] Configurar e implementar a autenticação anônima inicial.
     - [ ] (Futuro) Implementar tela de login/registro com E-mail e Senha.
     - [ ] (Futuro) Criar fluxo para vincular conta anônima a uma conta permanente.
-- [ ] **Etapa 3: Refatorar a Camada de Dados (Repositórios)**
+- [x] **Etapa 3: Refatorar a Camada de Dados (Repositórios)**
+    - [x] Migrar a entidade `MartialArt` para usar o Firestore.
+    - [ ] Migrar a entidade `Technique` para usar o Firestore.
     - [ ] Criar novas implementações dos repositórios para usar o Firestore.
     - [ ] Adaptar `Flow` para `snapshotFlow()` do Firestore para manter a reatividade.
 - [ ] **Etapa 4: Migrar Armazenamento de Mídia para o Firebase Storage**

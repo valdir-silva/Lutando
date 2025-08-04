@@ -25,11 +25,11 @@ class GetTechniquesByMartialArtUseCaseTest {
     @Test
     fun `deve retornar técnicas de uma arte marcial específica`() = runTest {
         // Given
-        val martialArtId = 1L
+        val martialArtId = "1"
         val techniques = listOf(
-            Technique(id = 1L, name = "Kimura", martialArtId = martialArtId),
-            Technique(id = 2L, name = "Armbar", martialArtId = martialArtId),
-            Technique(id = 3L, name = "Triangle", martialArtId = martialArtId)
+            Technique(id = "1", name = "Kimura", martialArtId = martialArtId),
+            Technique(id = "2", name = "Armbar", martialArtId = martialArtId),
+            Technique(id = "3", name = "Triangle", martialArtId = martialArtId)
         )
 
         coEvery { mockRepository.getTechniquesByMartialArt(martialArtId) } returns flowOf(techniques)
@@ -52,7 +52,7 @@ class GetTechniquesByMartialArtUseCaseTest {
     @Test
     fun `deve retornar lista vazia quando não há técnicas para a arte marcial`() = runTest {
         // Given
-        val martialArtId = 999L
+        val martialArtId = "999"
         coEvery { mockRepository.getTechniquesByMartialArt(martialArtId) } returns flowOf(emptyList())
 
         // When
@@ -67,9 +67,9 @@ class GetTechniquesByMartialArtUseCaseTest {
     @Test
     fun `deve retornar técnica com mídia`() = runTest {
         // Given
-        val martialArtId = 2L
+        val martialArtId = "2"
         val technique = Technique(
-            id = 1L,
+            id = "1",
             name = "Omoplata",
             description = "Chave de ombro",
             martialArtId = martialArtId,
@@ -104,7 +104,7 @@ class GetTechniquesByMartialArtUseCaseTest {
     @Test
     fun `deve chamar repositório com ID correto`() = runTest {
         // Given
-        val martialArtId = 5L
+        val martialArtId = "5"
         coEvery { mockRepository.getTechniquesByMartialArt(martialArtId) } returns flowOf(emptyList())
 
         // When

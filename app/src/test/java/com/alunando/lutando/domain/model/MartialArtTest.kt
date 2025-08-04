@@ -16,32 +16,26 @@ class MartialArtTest {
         val martialArt = MartialArt(name = name)
 
         // Then
-        assertEquals(0L, martialArt.id)
+        assertEquals("", martialArt.id)
         assertEquals(name, martialArt.name)
         assertEquals("", martialArt.description)
-        assertEquals("#FF6200EE", martialArt.color)
-        assertTrue(martialArt.createdAt > 0)
-        assertTrue(martialArt.updatedAt > 0)
+        assertEquals(null, martialArt.color)
     }
 
     @Test
     fun `deve criar MartialArt com todos os valores customizados`() {
         // Given
-        val id = 1L
+        val id = "1"
         val name = "Muay Thai"
         val description = "Arte marcial tailandesa"
         val color = "#FF0000"
-        val createdAt = 1000L
-        val updatedAt = 2000L
 
         // When
         val martialArt = MartialArt(
             id = id,
             name = name,
             description = description,
-            color = color,
-            createdAt = createdAt,
-            updatedAt = updatedAt
+            color = color
         )
 
         // Then
@@ -49,8 +43,6 @@ class MartialArtTest {
         assertEquals(name, martialArt.name)
         assertEquals(description, martialArt.description)
         assertEquals(color, martialArt.color)
-        assertEquals(createdAt, martialArt.createdAt)
-        assertEquals(updatedAt, martialArt.updatedAt)
     }
 
     @Test
@@ -81,7 +73,5 @@ class MartialArtTest {
         assertEquals("Aikido", copy.name)
         assertEquals("Arte marcial japonesa", copy.description)
         assertEquals(original.color, copy.color)
-        assertEquals(original.createdAt, copy.createdAt)
-        assertEquals(original.updatedAt, copy.updatedAt)
     }
 } 

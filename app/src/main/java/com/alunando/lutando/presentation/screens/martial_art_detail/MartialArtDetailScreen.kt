@@ -57,7 +57,7 @@ fun MartialArtDetailScreen(
     martialArtId: String,
     onBackClick: () -> Unit,
     onAddTechniqueClick: (String) -> Unit,
-    onTechniqueClick: (Long) -> Unit,
+    onTechniqueClick: (String) -> Unit,
     viewModel: MartialArtDetailViewModel = koinViewModel()
 ) {
     val uiState by viewModel.uiState.collectAsState()
@@ -82,7 +82,7 @@ fun MartialArtDetailContent(
     uiState: MartialArtDetailUiState,
     onBackClick: () -> Unit,
     onAddTechniqueClick: () -> Unit,
-    onTechniqueClick: (Long) -> Unit,
+    onTechniqueClick: (String) -> Unit,
     onRetry: () -> Unit = {}
 ) {
     Scaffold(
@@ -325,20 +325,20 @@ fun MartialArtDetailScreenPreview() {
     )
     val sampleTechniques = listOf(
         Technique(
-            id = 1L,
+            id = "1",
             name = "Kimura",
             description = "Chave de braço clássica do Jiu-Jitsu",
-            martialArtId = 1L,
+            martialArtId = "1",
             createdAt = "2024-01-27",
             hasVideo = true,
             hasPhoto = true,
             hasAudio = false
         ),
         Technique(
-            id = 2L,
+            id = "2",
             name = "Triângulo",
             description = "Finalização com as pernas",
-            martialArtId = 1L,
+            martialArtId = "1",
             createdAt = "2024-01-26",
             hasVideo = true,
             hasPhoto = false,

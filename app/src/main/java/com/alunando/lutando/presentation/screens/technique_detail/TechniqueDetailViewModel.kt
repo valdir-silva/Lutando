@@ -48,7 +48,7 @@ class TechniqueDetailViewModel(
     private val _uiState = MutableStateFlow(TechniqueDetailUiState())
     val uiState: StateFlow<TechniqueDetailUiState> = _uiState.asStateFlow()
 
-    fun loadTechnique(techniqueId: Long) {
+    fun loadTechnique(techniqueId: String) {
         viewModelScope.launch {
             _uiState.update { it.copy(isLoading = true, error = null) }
 
@@ -102,7 +102,7 @@ class TechniqueDetailViewModel(
         }
     }
     
-    private fun loadComments(techniqueId: Long) {
+    private fun loadComments(techniqueId: String) {
         viewModelScope.launch {
             try {
                 getCommentsByTechniqueUseCase(techniqueId).collect { comments ->
@@ -116,7 +116,7 @@ class TechniqueDetailViewModel(
         }
     }
 
-    fun deleteTechnique(techniqueId: Long) {
+    fun deleteTechnique(techniqueId: String) {
         viewModelScope.launch {
             _uiState.update { it.copy(isDeleting = true) }
 

@@ -1,8 +1,5 @@
 package com.alunando.lutando.domain.model
 
-import androidx.room.Entity
-import androidx.room.PrimaryKey
-
 /**
  * Modelo que representa um usuário do aplicativo Lutando.
  *
@@ -12,10 +9,8 @@ import androidx.room.PrimaryKey
  * @property createdAt Data de criação do perfil
  * @property updatedAt Data da última atualização do perfil
  */
-@Entity(tableName = "users")
 data class User(
-    @PrimaryKey(autoGenerate = true)
-    val id: Long = 0,
+    val id: String = "",
     val name: String,
     val email: String? = null,
     val createdAt: Long = System.currentTimeMillis(),

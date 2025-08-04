@@ -49,7 +49,7 @@ import org.koin.androidx.compose.koinViewModel
 @Composable
 fun TechniqueFormScreen(
     martialArtId: String? = null,
-    techniqueId: Int? = null,
+    techniqueId: String? = null,
     onSaveClick: () -> Unit,
     onCancelClick: () -> Unit,
     viewModel: TechniqueFormViewModel = koinViewModel()
@@ -59,11 +59,11 @@ fun TechniqueFormScreen(
     // Configurar martialArtId e carregar técnica se for edição
     LaunchedEffect(martialArtId, techniqueId) {
         martialArtId?.let { id ->
-            viewModel.setMartialArtId(id.toLong())
+            viewModel.setMartialArtId(id)
         }
         techniqueId?.let { id ->
-            if (id > 0) {
-                viewModel.loadTechniqueForEdit(id.toLong())
+            if (id.isNotBlank()) {
+                viewModel.loadTechniqueForEdit(id)
             }
         }
     }
@@ -77,7 +77,7 @@ fun TechniqueFormScreen(
 
     TechniqueFormContent(
         uiState = uiState,
-        isEditMode = techniqueId != null && techniqueId > 0,
+        isEditMode = techniqueId != null && techniqueId.isNotBlank(),
         onSaveClick = { viewModel.saveTechnique() },
         onCancelClick = onCancelClick,
         onNameChange = { viewModel.setName(it) },
@@ -334,7 +334,7 @@ fun TechniqueFormScreenPreview() {
     val uiState = TechniqueFormUiState(
         name = "Kimura",
         description = "Técnica de finalização do jiu-jitsu brasileiro",
-        martialArtId = 1L,
+        martialArtId = "1",
         hasPhoto = true,
         hasVideo = false,
         hasAudio = true,

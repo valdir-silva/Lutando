@@ -17,7 +17,7 @@ class GetCommentsByTechniqueUseCase(
      * @param techniqueId ID da técnica
      * @return Flow com lista de comentários ordenados por data de criação (mais recentes primeiro)
      */
-    operator fun invoke(techniqueId: Long): Flow<List<Comment>> {
+    operator fun invoke(techniqueId: String): Flow<List<Comment>> {
         return commentRepository.getCommentsByTechniqueId(techniqueId)
     }
 } 
