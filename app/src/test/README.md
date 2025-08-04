@@ -6,7 +6,7 @@ Este diretório contém todos os testes unitários do aplicativo Lutando, organi
 
 ```
 test/
-├── java/com/example/lutando/
+├── java/com/alunando/lutando/
 │   ├── TestSuite.kt                           # Suíte principal de testes
 │   ├── domain/
 │   │   ├── model/

@@ -35,7 +35,7 @@ O projeto segue uma estrutura de Clean Architecture, separando as responsabilida
 
 ```
 app/
-  └─ src/main/java/com/example/lutando/
+  └─ src/main/java/com/alunando/lutando/
       ├─ data/         # Implementação de repositórios, DAOs, Database, MediaManager
       ├─ domain/       # Modelos de negócio, interfaces de repositório e Use Cases
       └─ presentation/ # UI (Telas, ViewModels, Componentes) e Navegação
