@@ -7,16 +7,17 @@ import androidx.sqlite.db.SupportSQLiteDatabase
 import com.alunando.lutando.data.local.CommentDao
 import com.alunando.lutando.data.local.InitialData
 import com.alunando.lutando.data.local.LutandoDatabase
-import com.alunando.lutando.data.local.MartialArtDao
 import com.alunando.lutando.data.local.TechniqueDao
 import com.alunando.lutando.data.local.UserDao
 import com.alunando.lutando.data.media.MediaManager
 import com.alunando.lutando.data.media.PermissionManager
+import com.alunando.lutando.data.repository.AuthRepositoryImpl
 import com.alunando.lutando.data.repository.CommentRepositoryImpl
-import com.alunando.lutando.data.repository.MartialArtRepositoryImpl
+import com.alunando.lutando.data.repository.MartialArtRepositoryFirebaseImpl
 import com.alunando.lutando.data.repository.MediaRepositoryImpl
 import com.alunando.lutando.data.repository.TechniqueRepositoryImpl
 import com.alunando.lutando.data.repository.UserRepositoryImpl
+import com.alunando.lutando.domain.repository.AuthRepository
 import com.alunando.lutando.domain.repository.CommentRepository
 import com.alunando.lutando.domain.repository.MartialArtRepository
 import com.alunando.lutando.domain.repository.MediaRepository
@@ -32,12 +33,15 @@ import com.alunando.lutando.domain.usecase.GetCurrentUserUseCase
 import com.alunando.lutando.domain.usecase.GetMediaUriUseCase
 import com.alunando.lutando.domain.usecase.GetTechniquesByMartialArtUseCase
 import com.alunando.lutando.domain.usecase.SaveMediaFileUseCase
+import com.alunando.lutando.domain.usecase.SignInAnonymouslyUseCase
 import com.alunando.lutando.domain.usecase.UpdateCommentUseCase
 import com.alunando.lutando.presentation.screens.home.HomeViewModel
 import com.alunando.lutando.presentation.screens.martial_art_detail.MartialArtDetailViewModel
 import com.alunando.lutando.presentation.screens.martial_art_form.MartialArtFormViewModel
 import com.alunando.lutando.presentation.screens.technique_detail.TechniqueDetailViewModel
 import com.alunando.lutando.presentation.screens.technique_form.TechniqueFormViewModel
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -50,6 +54,10 @@ import org.koin.dsl.module
  * Módulo Koin para injeção de dependência do aplicativo Lutando.
  */
 val appModule = module {
+
+    // Firebase
+    single { FirebaseAuth.getInstance() }
+    single { FirebaseFirestore.getInstance() }
 
     // Database
     single {
@@ -67,12 +75,7 @@ val appModule = module {
                     CoroutineScope(Dispatchers.IO).launch {
                         val database = get<LutandoDatabase>()
                         val userDao = database.userDao()
-                        val martialArtDao = database.martialArtDao()
-
                         userDao.insertUser(InitialData.defaultUser)
-                        InitialData.martialArts.forEach { martialArt ->
-                            martialArtDao.insertMartialArt(martialArt)
-                        }
                     }
                 }
             })
@@ -81,7 +84,6 @@ val appModule = module {
 
     // DAOs
     single<UserDao> { get<LutandoDatabase>().userDao() }
-    single<MartialArtDao> { get<LutandoDatabase>().martialArtDao() }
     single<TechniqueDao> { get<LutandoDatabase>().techniqueDao() }
     single<CommentDao> { get<LutandoDatabase>().commentDao() }
 
@@ -91,10 +93,12 @@ val appModule = module {
 
     // Repositories
     single<UserRepository> { UserRepositoryImpl(get()) }
-    single<MartialArtRepository> { MartialArtRepositoryImpl(get()) }
+    single<MartialArtRepository> { MartialArtRepositoryFirebaseImpl(get(), get()) }
     single<TechniqueRepository> { TechniqueRepositoryImpl(get()) }
     single<MediaRepository> { MediaRepositoryImpl(get(), get()) }
     single<CommentRepository> { CommentRepositoryImpl(get()) }
+    single<AuthRepository> { AuthRepositoryImpl(get()) }
+
 
     // Use Cases
     single { GetAllMartialArtsUseCase(get()) }
@@ -108,6 +112,7 @@ val appModule = module {
     single { UpdateCommentUseCase(get()) }
     single { DeleteCommentUseCase(get()) }
     single { AddMartialArtUseCase(get()) }
+    single { SignInAnonymouslyUseCase(get()) }
 
     // ViewModels
     viewModel { HomeViewModel(get()) }
