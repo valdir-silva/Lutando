@@ -10,7 +10,7 @@ class AddMartialArtUseCase(
     private val martialArtRepository: MartialArtRepository
 ) {
 
-    suspend operator fun invoke(martialArt: MartialArt): Long {
+    suspend operator fun invoke(martialArt: MartialArt): String {
         return martialArtRepository.insertMartialArt(martialArt)
     }
 } 

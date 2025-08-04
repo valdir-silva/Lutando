@@ -41,7 +41,7 @@ import org.koin.androidx.compose.koinViewModel
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomeScreen(
-    onMartialArtClick: (Long) -> Unit,
+    onMartialArtClick: (String) -> Unit,
     onAddMartialArtClick: () -> Unit,
     viewModel: HomeViewModel = koinViewModel()
 ) {

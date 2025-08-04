@@ -42,12 +42,10 @@ class MartialArtFormViewModel(
             try {
                 val now = System.currentTimeMillis()
                 val martialArt = MartialArt(
-                    id = 0L, // Será gerado pelo banco
+                    id = "", // Será gerado pelo Firestore
                     name = currentState.name.trim(),
                     description = currentState.description.trim(),
                     color = "#FF6200EE", // Cor padrão
-                    createdAt = now,
-                    updatedAt = now
                 )
 
                 addMartialArtUseCase(martialArt)

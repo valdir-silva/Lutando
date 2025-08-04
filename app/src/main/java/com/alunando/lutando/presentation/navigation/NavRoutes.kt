@@ -14,7 +14,7 @@ object NavRoutes {
     /**
      * Gera a rota para detalhes da modalidade de arte marcial
      */
-    fun martialArtDetail(martialArtId: Int): String {
+    fun martialArtDetail(martialArtId: String): String {
         return "martial_art_detail/$martialArtId"
     }
 
@@ -28,7 +28,7 @@ object NavRoutes {
     /**
      * Gera a rota para formulário de nova técnica
      */
-    fun techniqueForm(martialArtId: Int): String {
+    fun techniqueForm(martialArtId: String): String {
         return "technique_form/$martialArtId"
     }
 

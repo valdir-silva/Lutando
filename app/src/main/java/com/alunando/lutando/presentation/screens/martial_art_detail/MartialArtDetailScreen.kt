@@ -54,9 +54,9 @@ import org.koin.androidx.compose.koinViewModel
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MartialArtDetailScreen(
-    martialArtId: Int,
+    martialArtId: String,
     onBackClick: () -> Unit,
-    onAddTechniqueClick: (Int) -> Unit,
+    onAddTechniqueClick: (String) -> Unit,
     onTechniqueClick: (Long) -> Unit,
     viewModel: MartialArtDetailViewModel = koinViewModel()
 ) {
@@ -64,7 +64,7 @@ fun MartialArtDetailScreen(
 
     // Carregar dados quando a tela é criada
     LaunchedEffect(martialArtId) {
-        viewModel.loadMartialArt(martialArtId.toLong())
+        viewModel.loadMartialArt(martialArtId)
     }
 
     MartialArtDetailContent(
@@ -72,7 +72,7 @@ fun MartialArtDetailScreen(
         onBackClick = onBackClick,
         onAddTechniqueClick = { onAddTechniqueClick(martialArtId) },
         onTechniqueClick = onTechniqueClick,
-        onRetry = { viewModel.loadMartialArt(martialArtId.toLong()) }
+        onRetry = { viewModel.loadMartialArt(martialArtId) }
     )
 }
 
@@ -319,7 +319,7 @@ private fun ErrorState(
 @Composable
 fun MartialArtDetailScreenPreview() {
     val sampleMartialArt = MartialArt(
-        id = 1L,
+        id = "1",
         name = "Jiu-Jitsu",
         description = "Arte marcial brasileira"
     )

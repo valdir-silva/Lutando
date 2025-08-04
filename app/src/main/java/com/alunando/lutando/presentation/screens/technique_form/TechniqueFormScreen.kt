@@ -48,7 +48,7 @@ import org.koin.androidx.compose.koinViewModel
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun TechniqueFormScreen(
-    martialArtId: Int? = null,
+    martialArtId: String? = null,
     techniqueId: Int? = null,
     onSaveClick: () -> Unit,
     onCancelClick: () -> Unit,

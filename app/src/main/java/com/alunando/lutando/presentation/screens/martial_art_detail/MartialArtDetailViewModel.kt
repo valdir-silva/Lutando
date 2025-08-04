@@ -4,7 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.alunando.lutando.domain.model.MartialArt
 import com.alunando.lutando.domain.model.Technique
-import com.alunando.lutando.domain.usecase.GetAllMartialArtsUseCase
+import com.alunando.lutando.domain.repository.MartialArtRepository
 import com.alunando.lutando.domain.usecase.GetTechniquesByMartialArtUseCase
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -21,40 +21,36 @@ data class MartialArtDetailUiState(
 
 class MartialArtDetailViewModel(
     private val getTechniquesByMartialArtUseCase: GetTechniquesByMartialArtUseCase,
-    private val getAllMartialArtsUseCase: GetAllMartialArtsUseCase
+    private val martialArtRepository: MartialArtRepository
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(MartialArtDetailUiState())
     val uiState: StateFlow<MartialArtDetailUiState> = _uiState.asStateFlow()
 
-    fun loadMartialArt(martialArtId: Long) {
+    fun loadMartialArt(martialArtId: String) {
         viewModelScope.launch {
             _uiState.update { it.copy(isLoading = true, error = null) }
 
             try {
-                // Carregar a modalidade
-                getAllMartialArtsUseCase().collect { martialArts ->
-                    val martialArt = martialArts.find { it.id == martialArtId }
-
-                    if (martialArt != null) {
-                        _uiState.update { it.copy(martialArt = martialArt) }
-
-                        // Carregar as técnicas
-                        getTechniquesByMartialArtUseCase(martialArtId).collect { techniques ->
-                            _uiState.update {
-                                it.copy(
-                                    techniques = techniques,
-                                    isLoading = false
-                                )
-                            }
-                        }
-                    } else {
-                        _uiState.update {
-                            it.copy(
-                                error = "Modalidade não encontrada",
-                                isLoading = false
-                            )
-                        }
+                val martialArt = martialArtRepository.getMartialArtById(martialArtId)
+                if (martialArt != null) {
+                    _uiState.update { it.copy(martialArt = martialArt) }
+                    // TODO: Techniques are still using Long, this will need to be migrated
+                    // getTechniquesByMartialArtUseCase(martialArtId).collect { techniques ->
+                    //     _uiState.update {
+                    //         it.copy(
+                    //             techniques = techniques,
+                    //             isLoading = false
+                    //         )
+                    //     }
+                    // }
+                    _uiState.update { it.copy(isLoading = false) } // Temporary
+                } else {
+                    _uiState.update {
+                        it.copy(
+                            error = "Modalidade não encontrada",
+                            isLoading = false
+                        )
                     }
                 }
             } catch (e: Exception) {
@@ -68,19 +64,21 @@ class MartialArtDetailViewModel(
         }
     }
 
-    fun loadMartialArtDetail(martialArtId: Long) {
+    fun loadMartialArtDetail(martialArtId: String) {
         viewModelScope.launch {
             _uiState.update { it.copy(isLoading = true, error = null) }
 
             try {
-                getTechniquesByMartialArtUseCase(martialArtId).collect { techniques ->
-                    _uiState.update {
-                        it.copy(
-                            techniques = techniques,
-                            isLoading = false
-                        )
-                    }
-                }
+                // TODO: Techniques are still using Long, this will need to be migrated
+                // getTechniquesByMartialArtUseCase(martialArtId).collect { techniques ->
+                //     _uiState.update {
+                //         it.copy(
+                //             techniques = techniques,
+                //             isLoading = false
+                //         )
+                //     }
+                // }
+                 _uiState.update { it.copy(isLoading = false) } // Temporary
             } catch (e: Exception) {
                 _uiState.update {
                     it.copy(

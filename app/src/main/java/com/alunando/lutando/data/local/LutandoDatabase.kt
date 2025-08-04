@@ -6,7 +6,6 @@ import androidx.room.TypeConverters
 import androidx.room.migration.Migration
 import androidx.sqlite.db.SupportSQLiteDatabase
 import com.alunando.lutando.domain.model.Comment
-import com.alunando.lutando.domain.model.MartialArt
 import com.alunando.lutando.domain.model.Technique
 import com.alunando.lutando.domain.model.User
 
@@ -16,7 +15,6 @@ import com.alunando.lutando.domain.model.User
 @Database(
     entities = [
         User::class,
-        MartialArt::class,
         Technique::class,
         Comment::class
     ],
@@ -27,7 +25,6 @@ import com.alunando.lutando.domain.model.User
 abstract class LutandoDatabase : RoomDatabase() {
 
     abstract fun userDao(): UserDao
-    abstract fun martialArtDao(): MartialArtDao
     abstract fun techniqueDao(): TechniqueDao
     abstract fun commentDao(): CommentDao
 

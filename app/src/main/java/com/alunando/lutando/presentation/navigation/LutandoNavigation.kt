@@ -29,7 +29,7 @@ fun LutandoNavigation(
         composable(NavRoutes.HOME) {
             HomeScreen(
                 onMartialArtClick = { martialArtId ->
-                    navController.navigate(NavRoutes.martialArtDetail(martialArtId.toInt()))
+                    navController.navigate(NavRoutes.martialArtDetail(martialArtId))
                 },
                 onAddMartialArtClick = {
                     navController.navigate(NavRoutes.MARTIAL_ART_FORM)
@@ -54,11 +54,11 @@ fun LutandoNavigation(
             route = NavRoutes.MARTIAL_ART_DETAIL,
             arguments = listOf(
                 navArgument("martialArtId") {
-                    type = NavType.IntType
+                    type = NavType.StringType
                 }
             )
         ) { backStackEntry ->
-            val martialArtId = backStackEntry.arguments?.getInt("martialArtId") ?: 0
+            val martialArtId = backStackEntry.arguments?.getString("martialArtId") ?: ""
             MartialArtDetailScreen(
                 martialArtId = martialArtId,
                 onTechniqueClick = { techniqueId ->
@@ -103,11 +103,11 @@ fun LutandoNavigation(
             route = NavRoutes.TECHNIQUE_FORM,
             arguments = listOf(
                 navArgument("martialArtId") {
-                    type = NavType.IntType
+                    type = NavType.StringType
                 }
             )
         ) { backStackEntry ->
-            val martialArtId = backStackEntry.arguments?.getInt("martialArtId") ?: 0
+            val martialArtId = backStackEntry.arguments?.getString("martialArtId") ?: ""
             TechniqueFormScreen(
                 martialArtId = martialArtId,
                 onSaveClick = {

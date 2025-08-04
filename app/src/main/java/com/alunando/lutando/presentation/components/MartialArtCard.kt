@@ -99,7 +99,7 @@ fun MartialArtCardPreview() {
     MaterialTheme {
         MartialArtCard(
             martialArt = MartialArt(
-                id = 1,
+                id = "1",
                 name = "Jiu-Jitsu Brasileiro",
                 description = "Arte marcial focada em luta no chão e finalizações",
                 color = "#FF6200EE"
