@@ -1,5 +1,7 @@
 package com.alunando.lutando.presentation.screens.martial_art_detail
 
+import com.alunando.lutando.domain.repository.MartialArtRepository
+
 import app.cash.turbine.test
 import com.alunando.lutando.domain.model.MartialArt
 import com.alunando.lutando.domain.model.Technique
@@ -27,14 +29,14 @@ class MartialArtDetailViewModelTest {
 
     private lateinit var viewModel: MartialArtDetailViewModel
     private lateinit var mockGetTechniquesByMartialArtUseCase: GetTechniquesByMartialArtUseCase
-    private lateinit var mockGetAllMartialArtsUseCase: GetAllMartialArtsUseCase
+    private lateinit var mockMartialArtRepository: MartialArtRepository
     private val testDispatcher = StandardTestDispatcher()
 
     @Before
     fun setup() {
         Dispatchers.setMain(testDispatcher)
         mockGetTechniquesByMartialArtUseCase = mockk(relaxed = true)
-        mockGetAllMartialArtsUseCase = mockk(relaxed = true)
+        mockMartialArtRepository = mockk(relaxed = true)
     }
 
     @After
@@ -45,21 +47,21 @@ class MartialArtDetailViewModelTest {
     @Test
     fun `deve carregar modalidade e técnicas com sucesso`() = runTest(testDispatcher) {
         // Given
-        val martialArtId = 1L
+        val martialArtId = "1"
         val martialArt = MartialArt(id = martialArtId, name = "Jiu-Jitsu")
         val martialArts = listOf(martialArt)
         val techniques = listOf(
-            Technique(id = 1L, name = "Kimura", martialArtId = martialArtId),
-            Technique(id = 2L, name = "Armbar", martialArtId = martialArtId)
+            Technique(id = "1", name = "Kimura", martialArtId = martialArtId),
+            Technique(id = "2", name = "Armbar", martialArtId = martialArtId)
         )
 
-        coEvery { mockGetAllMartialArtsUseCase() } returns flowOf(martialArts)
+        coEvery { mockMartialArtRepository.getMartialArtById(martialArtId) } returns martialArt
         coEvery { mockGetTechniquesByMartialArtUseCase(martialArtId) } returns flowOf(techniques)
 
         // When
         viewModel = MartialArtDetailViewModel(
             mockGetTechniquesByMartialArtUseCase,
-            mockGetAllMartialArtsUseCase
+            mockMartialArtRepository
         )
         viewModel.loadMartialArt(martialArtId)
         testDispatcher.scheduler.advanceUntilIdle()
@@ -78,15 +80,13 @@ class MartialArtDetailViewModelTest {
     @Test
     fun `deve mostrar erro quando modalidade não é encontrada`() = runTest(testDispatcher) {
         // Given
-        val martialArtId = 999L
-        val martialArts = listOf(MartialArt(id = 1L, name = "Jiu-Jitsu"))
-
-        coEvery { mockGetAllMartialArtsUseCase() } returns flowOf(martialArts)
+        val martialArtId = "999"
+        coEvery { mockMartialArtRepository.getMartialArtById(martialArtId) } returns null
 
         // When
         viewModel = MartialArtDetailViewModel(
             mockGetTechniquesByMartialArtUseCase,
-            mockGetAllMartialArtsUseCase
+            mockMartialArtRepository
         )
         viewModel.loadMartialArt(martialArtId)
         testDispatcher.scheduler.advanceUntilIdle()
@@ -103,10 +103,10 @@ class MartialArtDetailViewModelTest {
     @Test
     fun `deve carregar detalhes da modalidade com sucesso`() = runTest(testDispatcher) {
         // Given
-        val martialArtId = 2L
+        val martialArtId = "2"
         val techniques = listOf(
-            Technique(id = 1L, name = "Triangle", martialArtId = martialArtId),
-            Technique(id = 2L, name = "Omoplata", martialArtId = martialArtId)
+            Technique(id = "1", name = "Triangle", martialArtId = martialArtId),
+            Technique(id = "2", name = "Omoplata", martialArtId = martialArtId)
         )
 
         coEvery { mockGetTechniquesByMartialArtUseCase(martialArtId) } returns flowOf(techniques)
@@ -114,7 +114,7 @@ class MartialArtDetailViewModelTest {
         // When
         viewModel = MartialArtDetailViewModel(
             mockGetTechniquesByMartialArtUseCase,
-            mockGetAllMartialArtsUseCase
+            mockMartialArtRepository
         )
         viewModel.loadMartialArtDetail(martialArtId)
         testDispatcher.scheduler.advanceUntilIdle()
@@ -132,7 +132,7 @@ class MartialArtDetailViewModelTest {
     @Test
     fun `deve mostrar erro quando carregamento de técnicas falha`() = runTest(testDispatcher) {
         // Given
-        val martialArtId = 3L
+        val martialArtId = "3"
         val errorMessage = "Erro ao carregar técnicas"
 
         coEvery { mockGetTechniquesByMartialArtUseCase(martialArtId) } throws Exception(errorMessage)
@@ -140,7 +140,7 @@ class MartialArtDetailViewModelTest {
         // When
         viewModel = MartialArtDetailViewModel(
             mockGetTechniquesByMartialArtUseCase,
-            mockGetAllMartialArtsUseCase
+            mockMartialArtRepository
         )
         viewModel.loadMartialArtDetail(martialArtId)
         testDispatcher.scheduler.advanceUntilIdle()
@@ -156,10 +156,10 @@ class MartialArtDetailViewModelTest {
     @Test
     fun `deve definir modalidade e carregar técnicas`() = runTest(testDispatcher) {
         // Given
-        val martialArt = MartialArt(id = 4L, name = "Muay Thai")
+        val martialArt = MartialArt(id = "4", name = "Muay Thai")
         val techniques = listOf(
-            Technique(id = 1L, name = "Jab", martialArtId = martialArt.id),
-            Technique(id = 2L, name = "Cross", martialArtId = martialArt.id)
+            Technique(id = "1", name = "Jab", martialArtId = martialArt.id),
+            Technique(id = "2", name = "Cross", martialArtId = martialArt.id)
         )
 
         coEvery { mockGetTechniquesByMartialArtUseCase(martialArt.id) } returns flowOf(techniques)
@@ -167,7 +167,7 @@ class MartialArtDetailViewModelTest {
         // When
         viewModel = MartialArtDetailViewModel(
             mockGetTechniquesByMartialArtUseCase,
-            mockGetAllMartialArtsUseCase
+            mockMartialArtRepository
         )
         viewModel.setMartialArt(martialArt)
         testDispatcher.scheduler.advanceUntilIdle()
@@ -185,12 +185,12 @@ class MartialArtDetailViewModelTest {
     @Test
     fun `deve recarregar técnicas quando refresh é chamado`() = runTest(testDispatcher) {
         // Given
-        val martialArt = MartialArt(id = 5L, name = "Boxe")
+        val martialArt = MartialArt(id = "5", name = "Boxe")
         val initialTechniques =
-            listOf(Technique(id = 1L, name = "Jab", martialArtId = martialArt.id))
+            listOf(Technique(id = "1", name = "Jab", martialArtId = martialArt.id))
         val refreshedTechniques = listOf(
-            Technique(id = 1L, name = "Jab", martialArtId = martialArt.id),
-            Technique(id = 2L, name = "Hook", martialArtId = martialArt.id)
+            Technique(id = "1", name = "Jab", martialArtId = martialArt.id),
+            Technique(id = "2", name = "Hook", martialArtId = martialArt.id)
         )
 
         var callCount = 0
@@ -202,7 +202,7 @@ class MartialArtDetailViewModelTest {
         // When
         viewModel = MartialArtDetailViewModel(
             mockGetTechniquesByMartialArtUseCase,
-            mockGetAllMartialArtsUseCase
+            mockMartialArtRepository
         )
         viewModel.setMartialArt(martialArt)
         testDispatcher.scheduler.advanceUntilIdle()
@@ -229,17 +229,17 @@ class MartialArtDetailViewModelTest {
     @Test
     fun `deve mostrar lista vazia quando não há técnicas`() = runTest(testDispatcher) {
         // Given
-        val martialArtId = 6L
+        val martialArtId = "6"
         val martialArt = MartialArt(id = martialArtId, name = "Karatê")
         val martialArts = listOf(martialArt)
 
-        coEvery { mockGetAllMartialArtsUseCase() } returns flowOf(martialArts)
+        coEvery { mockMartialArtRepository.getMartialArtById(martialArtId) } returns martialArt
         coEvery { mockGetTechniquesByMartialArtUseCase(martialArtId) } returns flowOf(emptyList())
 
         // When
         viewModel = MartialArtDetailViewModel(
             mockGetTechniquesByMartialArtUseCase,
-            mockGetAllMartialArtsUseCase
+            mockMartialArtRepository
         )
         viewModel.loadMartialArt(martialArtId)
         testDispatcher.scheduler.advanceUntilIdle()

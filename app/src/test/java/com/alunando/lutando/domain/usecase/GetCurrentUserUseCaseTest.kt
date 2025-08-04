@@ -1,10 +1,10 @@
 package com.alunando.lutando.domain.usecase
 
-import com.alunando.lutando.domain.model.User
-import com.alunando.lutando.domain.repository.UserRepository
-import io.mockk.coEvery
+import com.alunando.lutando.domain.repository.AuthRepository
+
+import com.google.firebase.auth.FirebaseUser
+import io.mockk.every
 import io.mockk.mockk
-import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNull
@@ -14,7 +14,7 @@ import org.junit.Test
 class GetCurrentUserUseCaseTest {
 
     private lateinit var useCase: GetCurrentUserUseCase
-    private lateinit var mockRepository: UserRepository
+    private lateinit var mockRepository: AuthRepository
 
     @Before
     fun setup() {
@@ -25,62 +25,57 @@ class GetCurrentUserUseCaseTest {
     @Test
     fun `deve retornar usuário atual`() = runTest {
         // Given
-        val user = User(
-            id = 1L,
-            name = "João Silva",
-            email = "joao@email.com"
-        )
+        val mockFirebaseUser = mockk<FirebaseUser>()
+        every { mockFirebaseUser.uid } returns "1"
+        every { mockFirebaseUser.displayName } returns "João Silva"
+        every { mockFirebaseUser.email } returns "joao@email.com"
 
-        coEvery { mockRepository.getCurrentUser() } returns flowOf(user)
+        every { mockRepository.getCurrentUser() } returns mockFirebaseUser
 
         // When
         val result = useCase()
 
         // Then
-        result.collect { currentUser ->
-            assertEquals(1L, currentUser?.id)
-            assertEquals("João Silva", currentUser?.name)
-            assertEquals("joao@email.com", currentUser?.email)
-        }
+        assertEquals("1", result?.uid)
+        assertEquals("João Silva", result?.displayName)
+        assertEquals("joao@email.com", result?.email)
     }
 
     @Test
     fun `deve retornar usuário sem email`() = runTest {
         // Given
-        val user = User(
-            id = 2L,
-            name = "Maria Santos",
-            email = null
-        )
+        val mockFirebaseUser = mockk<FirebaseUser>()
+        every { mockFirebaseUser.uid } returns "2"
+        every { mockFirebaseUser.displayName } returns "Maria Santos"
+        every { mockFirebaseUser.email } returns null
 
-        coEvery { mockRepository.getCurrentUser() } returns flowOf(user)
+        every { mockRepository.getCurrentUser() } returns mockFirebaseUser
 
         // When
         val result = useCase()
 
         // Then
-        result.collect { currentUser ->
-            assertEquals(2L, currentUser?.id)
-            assertEquals("Maria Santos", currentUser?.name)
-            assertNull(currentUser?.email)
-        }
+        assertEquals("2", result?.uid)
+        assertEquals("Maria Santos", result?.displayName)
+        assertNull(result?.email)
     }
 
     @Test
     fun `deve retornar usuário com dados mínimos`() = runTest {
         // Given
-        val user = User(name = "Pedro Costa")
+        val mockFirebaseUser = mockk<FirebaseUser>()
+        every { mockFirebaseUser.uid } returns ""
+        every { mockFirebaseUser.displayName } returns "Pedro Costa"
+        every { mockFirebaseUser.email } returns null
 
-        coEvery { mockRepository.getCurrentUser() } returns flowOf(user)
+        every { mockRepository.getCurrentUser() } returns mockFirebaseUser
 
         // When
         val result = useCase()
 
         // Then
-        result.collect { currentUser ->
-            assertEquals(0L, currentUser?.id)
-            assertEquals("Pedro Costa", currentUser?.name)
-            assertNull(currentUser?.email)
-        }
+        assertEquals("", result?.uid)
+        assertEquals("Pedro Costa", result?.displayName)
+        assertNull(result?.email)
     }
 } 

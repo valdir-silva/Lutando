@@ -35,16 +35,14 @@ class MartialArtDetailViewModel(
                 val martialArt = martialArtRepository.getMartialArtById(martialArtId)
                 if (martialArt != null) {
                     _uiState.update { it.copy(martialArt = martialArt) }
-                    // TODO: Techniques are still using Long, this will need to be migrated
-                    // getTechniquesByMartialArtUseCase(martialArtId).collect { techniques ->
-                    //     _uiState.update {
-                    //         it.copy(
-                    //             techniques = techniques,
-                    //             isLoading = false
-                    //         )
-                    //     }
-                    // }
-                    _uiState.update { it.copy(isLoading = false) } // Temporary
+                    getTechniquesByMartialArtUseCase(martialArt.id).collect { techniques ->
+                        _uiState.update {
+                            it.copy(
+                                techniques = techniques,
+                                isLoading = false
+                            )
+                        }
+                    }
                 } else {
                     _uiState.update {
                         it.copy(
@@ -69,16 +67,14 @@ class MartialArtDetailViewModel(
             _uiState.update { it.copy(isLoading = true, error = null) }
 
             try {
-                // TODO: Techniques are still using Long, this will need to be migrated
-                // getTechniquesByMartialArtUseCase(martialArtId).collect { techniques ->
-                //     _uiState.update {
-                //         it.copy(
-                //             techniques = techniques,
-                //             isLoading = false
-                //         )
-                //     }
-                // }
-                 _uiState.update { it.copy(isLoading = false) } // Temporary
+                getTechniquesByMartialArtUseCase(martialArtId).collect { techniques ->
+                    _uiState.update {
+                        it.copy(
+                            techniques = techniques,
+                            isLoading = false
+                        )
+                    }
+                }
             } catch (e: Exception) {
                 _uiState.update {
                     it.copy(
