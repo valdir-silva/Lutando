@@ -1,15 +1,16 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
+    alias(libs.plugins.google.gms.google.services)
     id("kotlin-kapt")
 }
 
 android {
-    namespace = "com.example.lutando"
+    namespace = "com.alunando.lutando"
     compileSdk = 36
 
     defaultConfig {
-        applicationId = "com.example.lutando"
+        applicationId = "com.alunando.lutando"
         minSdk = 24
         targetSdk = 36
         versionCode = 1
@@ -54,7 +55,7 @@ dependencies {
     implementation(libs.androidx.ui.graphics)
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
-    implementation("androidx.compose.material:material-icons-extended")
+    implementation(libs.androidx.compose.material.icons.extended)
 
     // Navigation Compose
     implementation(libs.androidx.navigation.compose)
@@ -85,6 +86,12 @@ dependencies {
 
     // Coil
     implementation(libs.coil.compose)
+
+    // Firebase
+    implementation(platform(libs.firebase.bom))
+    implementation(libs.firebase.auth)
+    implementation(libs.firebase.firestore)
+    implementation(libs.firebase.storage)
 
     // Testing
     testImplementation(libs.junit)
