@@ -11,10 +11,11 @@ package com.alunando.lutando.domain.model
  * @property updatedAt Data da última atualização do comentário
  */
 data class Comment(
-    val id: String = "",
-    val techniqueId: String,
-    val author: String,
-    val text: String,
+    var id: String = "",
+    val techniqueId: String = "",
+    val authorId: String = "",
+    val authorName: String = "",
+    val text: String = "",
     val createdAt: String = "",
     val updatedAt: String = ""
 ) 

@@ -17,10 +17,11 @@ package com.alunando.lutando.domain.model
  * @property updatedAt Data da última atualização da técnica
  */
 data class Technique(
-    val id: String = "",
-    val name: String,
+    var id: String = "",
+    val name: String = "",
     val description: String = "",
-    val martialArtId: String,
+    val martialArtId: String = "",
+    var creatorUid: String? = null, // Adicionado para rastrear o criador
     val hasVideo: Boolean = false,
     val hasPhoto: Boolean = false,
     val hasAudio: Boolean = false,

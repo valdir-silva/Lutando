@@ -21,7 +21,7 @@ import java.util.*
 @Composable
 fun CommentCard(
     comment: Comment,
-    currentUser: String,
+    currentUserId: String,
     onEditComment: (Comment) -> Unit,
     onDeleteComment: (Comment) -> Unit,
     modifier: Modifier = Modifier
@@ -44,7 +44,7 @@ fun CommentCard(
                 // Autor e data
                 Column {
                     Text(
-                        text = comment.author,
+                        text = comment.authorName,
                         style = MaterialTheme.typography.titleMedium,
                         fontWeight = FontWeight.Bold
                     )
@@ -56,7 +56,7 @@ fun CommentCard(
                 }
                 
                 // Botões de ação (apenas para o autor do comentário)
-                if (comment.author == currentUser) {
+                if (comment.authorId == currentUserId) {
                     Row(
                         horizontalArrangement = Arrangement.spacedBy(8.dp)
                     ) {

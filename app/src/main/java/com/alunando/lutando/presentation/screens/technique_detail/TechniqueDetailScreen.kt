@@ -169,6 +169,7 @@ fun TechniqueDetailContent(
                         mediaUris = uiState.mediaUris,
                         comments = uiState.comments,
                         currentUser = uiState.currentUser,
+                        currentUserId = uiState.currentUserId,
                         onAddComment = onAddComment,
                         onEditComment = onEditComment,
                         onDeleteComment = onDeleteComment,
@@ -219,6 +220,7 @@ private fun TechniqueContent(
     mediaUris: Map<MediaType, Uri?>,
     comments: List<Comment>,
     currentUser: String,
+    currentUserId: String,
     onAddComment: (String) -> Unit,
     onEditComment: (Comment) -> Unit,
     onDeleteComment: (Comment) -> Unit,
@@ -299,7 +301,7 @@ private fun TechniqueContent(
             items(comments) { comment ->
                 CommentCard(
                     comment = comment,
-                    currentUser = currentUser,
+                    currentUserId = currentUserId,
                     onEditComment = { onEditComment(comment) },
                     onDeleteComment = { onDeleteComment(comment) }
                 )

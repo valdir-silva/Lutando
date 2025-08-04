@@ -24,7 +24,7 @@ class CommentRepositoryImpl(
         println("Buscando comentários para técnica ID: $techniqueId")
         val registration = commentsCollection
             .whereEqualTo("techniqueId", techniqueId)
-            .orderBy("createdAt", Query.Direction.ASCENDING)
+            .orderBy("createdAt", Query.Direction.DESCENDING)
             .addSnapshotListener { snapshot, e ->
                 if (e != null) {
                     println("Erro ao buscar comentários: ${e.message}")

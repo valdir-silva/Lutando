@@ -9,23 +9,17 @@ import com.alunando.lutando.domain.repository.CommentRepository
 class AddCommentUseCase(
     private val commentRepository: CommentRepository
 ) {
-    
-    /**
-     * Executa o use case para adicionar um comentário.
-     *
-     * @param techniqueId ID da técnica
-     * @param author Nome do autor do comentário
-     * @param text Texto do comentário
-     * @return ID do comentário criado
-     */
+
     suspend operator fun invoke(
         techniqueId: String,
-        author: String,
+        authorId: String,
+        authorName: String,
         text: String
     ): String {
         val comment = Comment(
             techniqueId = techniqueId,
-            author = author,
+            authorId = authorId,
+            authorName = authorName,
             text = text
         )
         return commentRepository.addComment(comment)

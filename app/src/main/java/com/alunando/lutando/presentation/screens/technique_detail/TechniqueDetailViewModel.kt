@@ -14,6 +14,7 @@ import com.alunando.lutando.domain.usecase.GetCommentsByTechniqueUseCase
 import com.alunando.lutando.domain.usecase.GetCurrentUserUseCase
 import com.alunando.lutando.domain.usecase.GetMediaUriUseCase
 import com.alunando.lutando.domain.usecase.UpdateCommentUseCase
+import com.google.firebase.auth.FirebaseAuth
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -28,6 +29,7 @@ data class TechniqueDetailUiState(
     val isDeleting: Boolean = false,
     val comments: List<Comment> = emptyList(),
     val currentUser: String = "Usuário",
+    val currentUserId: String = "", // Adicionado para o ID do usuário logado
     val isAddingComment: Boolean = false,
     val isEditingComment: Boolean = false,
     val commentToEdit: Comment? = null,
@@ -42,7 +44,7 @@ class TechniqueDetailViewModel(
     private val addCommentUseCase: AddCommentUseCase,
     private val updateCommentUseCase: UpdateCommentUseCase,
     private val deleteCommentUseCase: DeleteCommentUseCase,
-    private val getCurrentUserUseCase: GetCurrentUserUseCase
+    private val firebaseAuth: FirebaseAuth
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(TechniqueDetailUiState())
@@ -53,8 +55,9 @@ class TechniqueDetailViewModel(
             _uiState.update { it.copy(isLoading = true, error = null) }
 
             try {
-                // Carrega usuário atual (temporariamente fixo)
-                val currentUser = "Usuário"
+                val firebaseUser = firebaseAuth.currentUser
+                val authorId = firebaseUser?.uid ?: ""
+                val authorName = firebaseUser?.displayName ?: "Anônimo"
                 
                 val technique = techniqueRepository.getTechniqueById(techniqueId)
                 technique?.let { tech ->
@@ -83,7 +86,8 @@ class TechniqueDetailViewModel(
                         it.copy(
                             technique = tech,
                             mediaUris = mediaUris,
-                            currentUser = currentUser,
+                            currentUser = authorName,
+                            currentUserId = authorId,
                             isLoading = false
                         )
                     }
@@ -155,14 +159,16 @@ class TechniqueDetailViewModel(
     // Funções para comentários
     fun addComment(text: String) {
         val techniqueId = _uiState.value.technique?.id ?: return
-        
+        val currentUser = firebaseAuth.currentUser ?: return
+
         viewModelScope.launch {
             _uiState.update { it.copy(isAddingComment = true) }
-            
+
             try {
                 val commentId = addCommentUseCase(
                     techniqueId = techniqueId,
-                    author = _uiState.value.currentUser,
+                    authorId = currentUser.uid,
+                    authorName = currentUser.displayName ?: "Anônimo",
                     text = text
                 )
                 println("Comentário adicionado com ID: $commentId")

@@ -61,7 +61,7 @@ val appModule = module {
     // Repositories
     single<UserRepository> { UserRepositoryImpl(get()) }
     single<MartialArtRepository> { MartialArtRepositoryFirebaseImpl(get(), get()) }
-    single<TechniqueRepository> { TechniqueRepositoryImpl(get()) }
+    single<TechniqueRepository> { TechniqueRepositoryImpl(get(), get()) }
     single<MediaRepository> { MediaRepositoryImpl(get(), get()) }
     single<CommentRepository> { CommentRepositoryImpl(get()) }
     single<AuthRepository> { AuthRepositoryImpl(get()) }

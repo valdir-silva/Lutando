@@ -25,21 +25,23 @@ class AddCommentUseCaseTest {
     fun `invoke should add comment and return comment id`() = runTest {
         // Given
         val techniqueId = "tech123"
-        val author = "João"
+        val authorId = "user123"
+        val authorName = "João"
         val text = "Ótima técnica!"
         val expectedCommentId = "comment456"
         
         coEvery { commentRepository.addComment(any()) } returns expectedCommentId
         
         // When
-        val result = addCommentUseCase(techniqueId, author, text)
+        val result = addCommentUseCase(techniqueId, authorId, authorName, text)
         
         // Then
         assertEquals(expectedCommentId, result)
         coVerify { commentRepository.addComment(
             Comment(
                 techniqueId = techniqueId,
-                author = author,
+                authorId = authorId,
+                authorName = authorName,
                 text = text
             )
         ) }

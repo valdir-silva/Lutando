@@ -16,9 +16,12 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 data class TechniqueFormUiState(
+    val id: String? = null,
     val name: String = "",
     val description: String = "",
     val martialArtId: String = "",
+    val createdAt: String = "",
+    val creatorUid: String? = null, // Adicionado para manter o ID do criador
     val hasVideo: Boolean = false,
     val hasPhoto: Boolean = false,
     val hasAudio: Boolean = false,
@@ -96,22 +99,30 @@ class TechniqueFormViewModel(
 
             try {
                 val now = System.currentTimeMillis()
+                val isEditing = currentState.id != null
+
                 val technique = Technique(
-                    id = "", // Será gerado pelo Firestore
+                    id = currentState.id ?: "",
                     name = currentState.name,
                     description = currentState.description,
                     martialArtId = currentState.martialArtId,
+                    creatorUid = currentState.creatorUid, // Preservar o ID do criador na edição
                     hasVideo = currentState.hasVideo,
                     hasPhoto = currentState.hasPhoto,
                     hasAudio = currentState.hasAudio,
                     videoPath = currentState.videoPath,
                     photoPath = currentState.photoPath,
                     audioPath = currentState.audioPath,
-                    createdAt = now.toString(),
+                    createdAt = if (isEditing) currentState.createdAt else now.toString(),
                     updatedAt = now.toString()
                 )
 
-                techniqueRepository.insertTechnique(technique)
+                if (isEditing) {
+                    techniqueRepository.updateTechnique(technique)
+                } else {
+                    techniqueRepository.insertTechnique(technique)
+                }
+
                 _uiState.update { it.copy(isSuccess = true, isLoading = false) }
             } catch (e: Exception) {
                 _uiState.update {
@@ -133,9 +144,12 @@ class TechniqueFormViewModel(
                 technique?.let { tech ->
                     _uiState.update {
                         it.copy(
+                            id = tech.id, // Armazenar o ID da técnica
                             name = tech.name,
                             description = tech.description,
                             martialArtId = tech.martialArtId,
+                            createdAt = tech.createdAt, // Armazenar a data de criação
+                            creatorUid = tech.creatorUid, // Armazenar o ID do criador
                             hasVideo = tech.hasVideo,
                             hasPhoto = tech.hasPhoto,
                             hasAudio = tech.hasAudio,

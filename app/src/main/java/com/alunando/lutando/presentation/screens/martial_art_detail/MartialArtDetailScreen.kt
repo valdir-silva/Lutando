@@ -137,15 +137,17 @@ fun MartialArtDetailContent(
                         modifier = Modifier.align(Alignment.Center)
                     )
                 }
-                uiState.error != null -> {
+                uiState.error != null && uiState.techniques.isNotEmpty() -> {
                     ErrorState(
                         error = uiState.error!!,
                         onRetry = onRetry,
                         modifier = Modifier.align(Alignment.Center)
                     )
                 }
-                uiState.martialArt == null -> {
-                    CircularProgressIndicator(
+                uiState.martialArt == null && !uiState.isLoading -> {
+                    // Show empty state if martial art is null and not loading
+                    EmptyTechniquesState(
+                        martialArtName = "",
                         modifier = Modifier.align(Alignment.Center)
                     )
                 }
