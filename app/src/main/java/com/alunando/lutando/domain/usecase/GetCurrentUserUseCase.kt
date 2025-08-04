@@ -1,16 +1,7 @@
 package com.alunando.lutando.domain.usecase
 
-import com.alunando.lutando.domain.model.User
-import com.alunando.lutando.domain.repository.UserRepository
-import kotlinx.coroutines.flow.Flow
+import com.alunando.lutando.domain.repository.AuthRepository
 
-/**
- * Use case para obter o usuário atual.
- */
-class GetCurrentUserUseCase(
-    private val userRepository: UserRepository
-) {
-    operator fun invoke(): Flow<User?> {
-        return userRepository.getCurrentUser()
-    }
-} 
+class GetCurrentUserUseCase(private val authRepository: AuthRepository) {
+    operator fun invoke() = authRepository.getCurrentUser()
+}

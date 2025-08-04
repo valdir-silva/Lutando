@@ -167,6 +167,14 @@
     - Configuração para incluir/excluir favoritas, por faixa, etc.
     - Histórico das técnicas revisadas aleatoriamente.
 
+- [ ] **Análise de Progresso com IA (Gemini/ChatGPT)** (5-7 dias)
+    - **Resumo:** Integrar um modelo de linguagem (Gemini ou ChatGPT) para fornecer feedback inteligente ao usuário. A funcionalidade exigirá login (Google Sign-In) para associar o uso da API ao usuário.
+    - **Análise de Anotações:** A IA analisará as anotações de uma técnica e fornecerá insights, corrigindo possíveis erros conceituais e sugerindo melhorias.
+    - **Feedback de Evolução:** Com base no histórico de uso, nível de domínio e anotações, a IA fornecerá um relatório de progresso, destacando pontos fortes e áreas para focar.
+    - **Componentes a Serem Criados:** `GeminiAuthManager`, `ChatGPTAuthManager`, `AnalysisRepository`, `AnalyzeTechniqueUseCase`, `GetProgressFeedbackUseCase`.
+    - **Componentes de UI:** `AnalysisScreen`, `FeedbackCard`, `LoginScreen` (com opção de Google Sign-In).
+    - **Integração:** Google Sign-In para autenticação, Gemini API e/ou ChatGPT API.
+
 - [ ] **Funcionalidades Sociais e Gamificação**
     - **Registro de Treino Diário** (2 dias)
         - Usuário pode marcar que treinou em determinado dia.
@@ -482,13 +490,14 @@
 ## 🎯 Próximos Milestones
 
 ### Milestone 1: Migrar para Firebase (5-7 dias)
-- [ ] **Etapa 1: Configuração do Projeto Firebase**
-    - [ ] Adicionar as dependências do Firebase (Firestore, Storage, Auth) ao arquivo `app/build.gradle.kts`.
-    - [ ] Criar um projeto no console do Firebase e baixar o arquivo `google-services.json`, adicionando-o ao diretório `app/`.
-    - [ ] Inicializar o Firebase na classe `LutandoApplication`.
-- [ ] **Etapa 2: Implementar Autenticação de Usuários**
-    - [ ] Configurar o Firebase Authentication (sugestão: anônima ou e-mail/senha).
-    - [ ] Criar uma tela de login/registro simples.
+- [x] **Etapa 1: Configuração do Projeto Firebase** ✅
+    - [x] Adicionar as dependências do Firebase (Firestore, Storage, Auth) ao arquivo `app/build.gradle.kts`.
+    - [x] Criar um projeto no console do Firebase e baixar o arquivo `google-services.json`, adicionando-o ao diretório `app/`.
+    - [x] Inicializar o Firebase na classe `LutandoApplication`.
+- [x] **Etapa 2: Implementar Autenticação de Usuários** ✅
+    - [x] Configurar e implementar a autenticação anônima inicial.
+    - [ ] (Futuro) Implementar tela de login/registro com E-mail e Senha.
+    - [ ] (Futuro) Criar fluxo para vincular conta anônima a uma conta permanente.
 - [ ] **Etapa 3: Refatorar a Camada de Dados (Repositórios)**
     - [ ] Criar novas implementações dos repositórios para usar o Firestore.
     - [ ] Adaptar `Flow` para `snapshotFlow()` do Firestore para manter a reatividade.
