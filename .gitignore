@@ -126,3 +126,6 @@ docs/tasks/
 
 # Arquivos do Cursor IDE
 .cursor/cursorignore
+
+# Ignore fastlane directory
+fastlane/
