@@ -15,8 +15,15 @@ import com.alunando.lutando.domain.repository.CommentRepository
 import com.alunando.lutando.domain.repository.MartialArtRepository
 import com.alunando.lutando.domain.repository.MediaRepository
 import com.alunando.lutando.domain.repository.TechniqueRepository
+import com.alunando.lutando.domain.repository.AcademyRepository
 import com.alunando.lutando.domain.repository.UserRepository
+import com.alunando.lutando.domain.usecase.AddAcademyUseCase
 import com.alunando.lutando.domain.usecase.AddCommentUseCase
+import com.alunando.lutando.domain.usecase.DeleteAcademyUseCase
+import com.alunando.lutando.domain.usecase.GetAllAcademiesUseCase
+import com.alunando.lutando.domain.usecase.GetAcademyByIdUseCase
+import com.alunando.lutando.domain.usecase.UpdateAcademyUseCase
+import com.alunando.lutando.data.repository.AcademyRepositoryFirebaseImpl
 import com.alunando.lutando.domain.usecase.AddMartialArtUseCase
 import com.alunando.lutando.domain.usecase.DeleteCommentUseCase
 import com.alunando.lutando.domain.usecase.DeleteMediaFileUseCase
@@ -34,6 +41,7 @@ import com.alunando.lutando.presentation.screens.martial_art_form.MartialArtForm
 import com.alunando.lutando.presentation.screens.technique_detail.TechniqueDetailViewModel
 import com.alunando.lutando.presentation.screens.technique_form.TechniqueFormViewModel
 import com.alunando.lutando.presentation.screens.martial_arts_list.MartialArtsListViewModel
+import com.alunando.lutando.presentation.screens.academy.AcademyViewModel
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.CoroutineScope
@@ -66,6 +74,7 @@ val appModule = module {
     single<MediaRepository> { MediaRepositoryImpl(get(), get()) }
     single<CommentRepository> { CommentRepositoryImpl(get()) }
     single<AuthRepository> { AuthRepositoryImpl(get()) }
+    single<AcademyRepository> { AcademyRepositoryFirebaseImpl(get(), get()) }
 
 
     // Use Cases
@@ -81,6 +90,11 @@ val appModule = module {
     single { DeleteCommentUseCase(get()) }
     single { AddMartialArtUseCase(get()) }
     single { SignInAnonymouslyUseCase(get()) }
+    single { AddAcademyUseCase(get()) }
+    single { GetAllAcademiesUseCase(get()) }
+    single { GetAcademyByIdUseCase(get()) }
+    single { UpdateAcademyUseCase(get()) }
+    single { DeleteAcademyUseCase(get()) }
 
     // ViewModels
     viewModel { HomeViewModel(get()) }
@@ -89,6 +103,7 @@ val appModule = module {
     viewModel { TechniqueFormViewModel(get(), get(), get(), get()) }
     viewModel { MartialArtFormViewModel(get()) }
     viewModel { MartialArtsListViewModel(get()) }
+    viewModel { AcademyViewModel(get(), get(), get(), get(), get()) }
 }
 
 /**
