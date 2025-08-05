@@ -256,6 +256,19 @@
         - Acessibilidade iOS (VoiceOver, Dynamic Type).
     - **Total estimado:** 19 dias
 
+- [ ] **Sistema de Check-in** (3 dias)
+    - **Tela de Check-in para Atleta:** Interface simples com botão para registrar presença.
+        - **Melhoria:** Exibir lista de academias por nome para seleção.
+        - **Futuro:** Opção de pesquisar academias por nome ou ID.
+    - **Visualização de Check-ins para Atleta:** Lista dos próprios check-ins (data, hora).
+    - **Visualização de Check-ins para Dono da Academia:** Lista de todos os check-ins da academia.
+    - **Armazenamento:** Firebase Firestore (coleção `checkins` com `athleteId`, `academyId`, `timestamp`).
+
+- [ ] **Geração e Leitura de QR Code para Check-in (PoC)** (2 dias)
+    - **Geração:** Dono da academia gera QR code contendo `academyId`.
+    - **Leitura:** Atleta escaneia QR code para realizar check-in.
+    - **Simplificação para PoC:** QR code pode exibir `academyId` em texto para entrada manual inicial; leitura via câmera será implementada posteriormente.
+
     ## 🔧 Sistema de Backup e Restore (Planejado)
 
 ### Componentes a Serem Criados

@@ -42,6 +42,14 @@ import com.alunando.lutando.presentation.screens.technique_detail.TechniqueDetai
 import com.alunando.lutando.presentation.screens.technique_form.TechniqueFormViewModel
 import com.alunando.lutando.presentation.screens.martial_arts_list.MartialArtsListViewModel
 import com.alunando.lutando.presentation.screens.academy.AcademyViewModel
+import com.alunando.lutando.data.repository.CheckinRepositoryFirebaseImpl
+import com.alunando.lutando.domain.repository.CheckinRepository
+import com.alunando.lutando.domain.usecase.AddCheckinUseCase
+import com.alunando.lutando.domain.usecase.GetCheckinsByAcademyUseCase
+import com.alunando.lutando.domain.usecase.GetCheckinsByAthleteUseCase
+import com.alunando.lutando.presentation.screens.academy_checkins.AcademyCheckinsViewModel
+import com.alunando.lutando.presentation.screens.athlete_checkins.AthleteCheckinsViewModel
+import com.alunando.lutando.presentation.screens.checkin.CheckinViewModel
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.CoroutineScope
@@ -75,6 +83,7 @@ val appModule = module {
     single<CommentRepository> { CommentRepositoryImpl(get()) }
     single<AuthRepository> { AuthRepositoryImpl(get()) }
     single<AcademyRepository> { AcademyRepositoryFirebaseImpl(get(), get()) }
+    single<CheckinRepository> { CheckinRepositoryFirebaseImpl(get()) }
 
 
     // Use Cases
@@ -95,6 +104,9 @@ val appModule = module {
     single { GetAcademyByIdUseCase(get()) }
     single { UpdateAcademyUseCase(get(), get()) }
     single { DeleteAcademyUseCase(get()) }
+    single { AddCheckinUseCase(get()) }
+    single { GetCheckinsByAthleteUseCase(get()) }
+    single { GetCheckinsByAcademyUseCase(get()) }
 
     // ViewModels
     viewModel { HomeViewModel(get()) }
@@ -104,6 +116,9 @@ val appModule = module {
     viewModel { MartialArtFormViewModel(get()) }
     viewModel { MartialArtsListViewModel(get()) }
     viewModel { AcademyViewModel(get(), get(), get(), get(), get()) }
+    viewModel { CheckinViewModel(get(), get(), get()) }
+    viewModel { AthleteCheckinsViewModel(get(), get()) }
+    viewModel { AcademyCheckinsViewModel(get(), get(), get()) }
 }
 
 /**

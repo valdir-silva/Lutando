@@ -36,7 +36,9 @@ import androidx.compose.ui.unit.dp
 fun HomeScreen(
     onMartialArtsListClick: () -> Unit,
     onCreateAcademyClick: () -> Unit,
-    onCheckInClick: () -> Unit
+    onCheckInClick: () -> Unit,
+    onAthleteCheckinsClick: () -> Unit,
+    onAcademyCheckinsClick: () -> Unit
 ) {
     Scaffold(
         topBar = {
@@ -82,6 +84,22 @@ fun HomeScreen(
                 description = "Registre sua presença nos treinos",
                 icon = Icons.Filled.CheckCircle,
                 onClick = onCheckInClick
+            )
+
+            // Card para Meus Check-ins
+            ActionCard(
+                title = "Meus Check-ins",
+                description = "Visualize seu histórico de presenças",
+                icon = Icons.Filled.List,
+                onClick = onAthleteCheckinsClick
+            )
+
+            // Card para Check-ins da Academia
+            ActionCard(
+                title = "Check-ins da Academia",
+                description = "Visualize os check-ins de todos os atletas da sua academia",
+                icon = Icons.Filled.List,
+                onClick = onAcademyCheckinsClick
             )
         }
     }

@@ -15,6 +15,9 @@ import com.alunando.lutando.presentation.screens.technique_detail.TechniqueDetai
 import com.alunando.lutando.presentation.screens.technique_form.TechniqueFormScreen
 import com.alunando.lutando.presentation.screens.academy.AcademyScreen
 import com.alunando.lutando.presentation.screens.academy_form.AcademyFormScreen
+import com.alunando.lutando.presentation.screens.checkin.CheckinScreen
+import com.alunando.lutando.presentation.screens.athlete_checkins.AthleteCheckinsScreen
+import com.alunando.lutando.presentation.screens.academy_checkins.AcademyCheckinsScreen
 
 /**
  * Componente principal de navegação do aplicativo Lutando
@@ -40,6 +43,12 @@ fun LutandoNavigation(
                 },
                 onCheckInClick = {
                     navController.navigate(NavRoutes.CHECK_IN)
+                },
+                onAthleteCheckinsClick = {
+                    navController.navigate(NavRoutes.ATHLETE_CHECKINS)
+                },
+                onAcademyCheckinsClick = {
+                    navController.navigate(NavRoutes.ACADEMY_CHECKINS)
                 }
             )
         }
@@ -98,8 +107,17 @@ fun LutandoNavigation(
 
         // Placeholder para Fazer Check-in
         composable(NavRoutes.CHECK_IN) {
-            // TODO: Implementar tela de check-in
-            Text("Tela de Check-in (Em Breve)")
+            CheckinScreen(navController = navController)
+        }
+
+        // Tela de Meus Check-ins
+        composable(NavRoutes.ATHLETE_CHECKINS) {
+            AthleteCheckinsScreen(navController = navController)
+        }
+
+        // Tela de Check-ins da Academia
+        composable(NavRoutes.ACADEMY_CHECKINS) {
+            AcademyCheckinsScreen(navController = navController)
         }
 
         // Tela de formulário de nova modalidade

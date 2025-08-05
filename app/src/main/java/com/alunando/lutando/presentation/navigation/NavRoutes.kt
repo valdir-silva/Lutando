@@ -13,6 +13,8 @@ object NavRoutes {
     const val TECHNIQUE_EDIT = "technique_edit/{techniqueId}"
     
     const val CHECK_IN = "check_in"
+    const val ATHLETE_CHECKINS = "athlete_checkins"
+    const val ACADEMY_CHECKINS = "academy_checkins"
     const val ACADEMY_LIST = "academy_list"
     const val ACADEMY_FORM = "academy_form?academyId={academyId}"
     
