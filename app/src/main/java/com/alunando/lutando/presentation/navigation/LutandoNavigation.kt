@@ -5,8 +5,10 @@ import androidx.navigation.NavHostController
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import androidx.compose.material3.Text
 import androidx.navigation.navArgument
 import com.alunando.lutando.presentation.screens.home.HomeScreen
+import com.alunando.lutando.presentation.screens.martial_arts_list.MartialArtsListScreen
 import com.alunando.lutando.presentation.screens.martial_art_detail.MartialArtDetailScreen
 import com.alunando.lutando.presentation.screens.martial_art_form.MartialArtFormScreen
 import com.alunando.lutando.presentation.screens.technique_detail.TechniqueDetailScreen
@@ -25,9 +27,24 @@ fun LutandoNavigation(
         navController = navController,
         startDestination = startDestination
     ) {
-        // Tela inicial - Lista de modalidades
+        // Nova Tela Inicial (Dashboard)
         composable(NavRoutes.HOME) {
             HomeScreen(
+                onMartialArtsListClick = {
+                    navController.navigate(NavRoutes.MARTIAL_ARTS_LIST)
+                },
+                onCreateAcademyClick = {
+                    navController.navigate(NavRoutes.CREATE_ACADEMY)
+                },
+                onCheckInClick = {
+                    navController.navigate(NavRoutes.CHECK_IN)
+                }
+            )
+        }
+
+        // Tela de Listagem de Artes Marciais (antiga HOME)
+        composable(NavRoutes.MARTIAL_ARTS_LIST) {
+            MartialArtsListScreen(
                 onMartialArtClick = { martialArtId ->
                     navController.navigate(NavRoutes.martialArtDetail(martialArtId))
                 },
@@ -35,6 +52,18 @@ fun LutandoNavigation(
                     navController.navigate(NavRoutes.MARTIAL_ART_FORM)
                 }
             )
+        }
+
+        // Placeholder para Criar Academia/Dojo
+        composable(NavRoutes.CREATE_ACADEMY) {
+            // TODO: Implementar tela de criação de academia/dojo
+            Text("Tela de Criação de Academia/Dojo (Em Breve)")
+        }
+
+        // Placeholder para Fazer Check-in
+        composable(NavRoutes.CHECK_IN) {
+            // TODO: Implementar tela de check-in
+            Text("Tela de Check-in (Em Breve)")
         }
 
         // Tela de formulário de nova modalidade

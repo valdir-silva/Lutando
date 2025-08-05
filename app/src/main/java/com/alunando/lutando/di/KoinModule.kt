@@ -33,6 +33,7 @@ import com.alunando.lutando.presentation.screens.martial_art_detail.MartialArtDe
 import com.alunando.lutando.presentation.screens.martial_art_form.MartialArtFormViewModel
 import com.alunando.lutando.presentation.screens.technique_detail.TechniqueDetailViewModel
 import com.alunando.lutando.presentation.screens.technique_form.TechniqueFormViewModel
+import com.alunando.lutando.presentation.screens.martial_arts_list.MartialArtsListViewModel
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.CoroutineScope
@@ -87,6 +88,7 @@ val appModule = module {
     viewModel { TechniqueDetailViewModel(get(), get(), get(), get(), get(), get(), get(), get()) }
     viewModel { TechniqueFormViewModel(get(), get(), get(), get()) }
     viewModel { MartialArtFormViewModel(get()) }
+    viewModel { MartialArtsListViewModel(get()) }
 }
 
 /**
