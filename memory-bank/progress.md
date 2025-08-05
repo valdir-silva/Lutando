@@ -21,7 +21,7 @@
     - **Componentes a Serem Criados:** `BackupManager`, `BackupRepository`, `CreateBackupUseCase`, `RestoreBackupUseCase`, `CloudBackupManager`, `GoogleDriveBackupManager`, etc.
     - **Componentes de UI:** `BackupSettingsScreen`, `BackupHistoryScreen`, `CloudBackupSetupScreen`, etc.
     - **Integração:** WorkManager para jobs em background, Google Drive API, permissões.
-- [ ] **Restrição de Criação de Academia:** Implementar lógica para que cada usuário possa criar apenas uma academia.
+- [x] **Restrição de Criação de Academia:** Implementar lógica para que cada usuário possa criar apenas uma academia. ✅
 
 ### Melhorias de UX
 - [ ] Animações de transição (1 dia)

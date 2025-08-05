@@ -90,10 +90,10 @@ val appModule = module {
     single { DeleteCommentUseCase(get()) }
     single { AddMartialArtUseCase(get()) }
     single { SignInAnonymouslyUseCase(get()) }
-    single { AddAcademyUseCase(get()) }
+    single { AddAcademyUseCase(get(), get()) }
     single { GetAllAcademiesUseCase(get()) }
     single { GetAcademyByIdUseCase(get()) }
-    single { UpdateAcademyUseCase(get()) }
+    single { UpdateAcademyUseCase(get(), get()) }
     single { DeleteAcademyUseCase(get()) }
 
     // ViewModels

@@ -8,6 +8,7 @@ import com.alunando.lutando.domain.usecase.DeleteAcademyUseCase
 import com.alunando.lutando.domain.usecase.GetAllAcademiesUseCase
 import com.alunando.lutando.domain.usecase.GetAcademyByIdUseCase
 import com.alunando.lutando.domain.usecase.UpdateAcademyUseCase
+import com.alunando.lutando.domain.usecase.UserAlreadyHasAcademyException
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -27,8 +28,23 @@ class AcademyViewModel(
     private val _currentAcademy = MutableStateFlow<Academy?>(null)
     val currentAcademy: StateFlow<Academy?> = _currentAcademy.asStateFlow()
 
+    private val _hasAcademy = MutableStateFlow(false)
+    val hasAcademy: StateFlow<Boolean> = _hasAcademy.asStateFlow()
+
+    private val _errorMessage = MutableStateFlow<String?>(null)
+    val errorMessage: StateFlow<String?> = _errorMessage.asStateFlow()
+
     init {
         loadAcademies()
+        checkIfUserHasAcademy()
+    }
+
+    private fun checkIfUserHasAcademy() {
+        viewModelScope.launch {
+            getAllAcademiesUseCase().collect { academies ->
+                _hasAcademy.value = academies.isNotEmpty()
+            }
+        }
     }
 
     fun loadAcademies() {
@@ -47,7 +63,14 @@ class AcademyViewModel(
 
     fun addAcademy(academy: Academy) {
         viewModelScope.launch {
-            addAcademyUseCase(academy)
+            try {
+                addAcademyUseCase(academy)
+                _errorMessage.value = null // Clear any previous error
+            } catch (e: UserAlreadyHasAcademyException) {
+                _errorMessage.value = e.message
+            } catch (e: Exception) {
+                _errorMessage.value = "An unexpected error occurred: ${e.message}"
+            }
         }
     }
 
@@ -65,5 +88,9 @@ class AcademyViewModel(
 
     fun resetCurrentAcademy() {
         _currentAcademy.value = null
+    }
+
+    fun clearErrorMessage() {
+        _errorMessage.value = null
     }
 }
