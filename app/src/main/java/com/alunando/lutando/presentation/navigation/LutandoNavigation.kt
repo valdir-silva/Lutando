@@ -13,6 +13,8 @@ import com.alunando.lutando.presentation.screens.martial_art_detail.MartialArtDe
 import com.alunando.lutando.presentation.screens.martial_art_form.MartialArtFormScreen
 import com.alunando.lutando.presentation.screens.technique_detail.TechniqueDetailScreen
 import com.alunando.lutando.presentation.screens.technique_form.TechniqueFormScreen
+import com.alunando.lutando.presentation.screens.academy.AcademyScreen
+import com.alunando.lutando.presentation.screens.academy_form.AcademyFormScreen
 
 /**
  * Componente principal de navegação do aplicativo Lutando
@@ -34,7 +36,7 @@ fun LutandoNavigation(
                     navController.navigate(NavRoutes.MARTIAL_ARTS_LIST)
                 },
                 onCreateAcademyClick = {
-                    navController.navigate(NavRoutes.CREATE_ACADEMY)
+                    navController.navigate(NavRoutes.ACADEMY_LIST)
                 },
                 onCheckInClick = {
                     navController.navigate(NavRoutes.CHECK_IN)
@@ -54,11 +56,45 @@ fun LutandoNavigation(
             )
         }
 
-        // Placeholder para Criar Academia/Dojo
-        composable(NavRoutes.CREATE_ACADEMY) {
-            // TODO: Implementar tela de criação de academia/dojo
-            Text("Tela de Criação de Academia/Dojo (Em Breve)")
+        // Tela de Listagem de Academias
+        composable(NavRoutes.ACADEMY_LIST) {
+            AcademyScreen(
+                onAddAcademyClick = {
+                    navController.navigate(NavRoutes.academyForm())
+                },
+                onEditAcademyClick = { academyId ->
+                    navController.navigate(NavRoutes.academyForm(academyId))
+                },
+                onBackClick = {
+                    navController.popBackStack()
+                }
+            )
         }
+
+        // Tela de formulário de Academia (Adição/Edição)
+        composable(
+            route = NavRoutes.ACADEMY_FORM,
+            arguments = listOf(
+                navArgument("academyId") {
+                    type = NavType.StringType
+                    nullable = true
+                    defaultValue = null
+                }
+            )
+        ) { backStackEntry ->
+            val academyId = backStackEntry.arguments?.getString("academyId")
+            AcademyFormScreen(
+                academyId = academyId,
+                onSaveClick = {
+                    navController.popBackStack()
+                },
+                onCancelClick = {
+                    navController.popBackStack()
+                }
+            )
+        }
+
+        
 
         // Placeholder para Fazer Check-in
         composable(NavRoutes.CHECK_IN) {

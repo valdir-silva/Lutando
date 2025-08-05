@@ -11,8 +11,12 @@ object NavRoutes {
     const val TECHNIQUE_DETAIL = "technique_detail/{techniqueId}"
     const val TECHNIQUE_FORM = "technique_form/{martialArtId}"
     const val TECHNIQUE_EDIT = "technique_edit/{techniqueId}"
-    const val CREATE_ACADEMY = "create_academy"
+    
     const val CHECK_IN = "check_in"
+    const val ACADEMY_LIST = "academy_list"
+    const val ACADEMY_FORM = "academy_form?academyId={academyId}"
+    
+    
 
     /**
      * Gera a rota para detalhes da modalidade de arte marcial
@@ -40,5 +44,12 @@ object NavRoutes {
      */
     fun techniqueEdit(techniqueId: String): String {
         return "technique_edit/$techniqueId"
+    }
+
+    /**
+     * Gera a rota para o formulário de academia (adição/edição)
+     */
+    fun academyForm(academyId: String? = null): String {
+        return if (academyId == null) "academy_form" else "academy_form?academyId=$academyId"
     }
 } 
