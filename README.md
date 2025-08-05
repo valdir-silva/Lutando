@@ -10,6 +10,7 @@ O **Lutando** é um aplicativo Android para praticantes de artes marciais regist
 
 ## ✨ Funcionalidades Principais
 
+- **Tela Inicial (Super App)**: Acesso rápido a diversas funcionalidades, incluindo a gestão de modalidades e técnicas.
 - **CRUD Completo**: Crie, visualize, edite e delete modalidades e técnicas.
 - **Gestão de Mídia**: Anexe fotos, vídeos e áudios a cada técnica, com players integrados para visualização.
 - **Sistema de Comentários**: Adicione, edite e delete comentários em cada técnica para anotações adicionais.
@@ -24,7 +25,7 @@ O **Lutando** é um aplicativo Android para praticantes de artes marciais regist
 - **UI**: [Jetpack Compose](https://developer.android.com/jetpack/compose)
 - **Arquitetura**: Clean Architecture + MVVM
 - **Navegação**: [Navigation Compose](https://developer.android.com/jetpack/compose/navigation)
-- **Persistência de Dados**: [Room](https://developer.android.com/training/data-storage/room)
+- **Persistência de Dados**: [Room](https://developer.android.com/training/data-storage/room) (em migração para [Firebase Firestore](https://firebase.google.com/docs/firestore))
 - **Injeção de Dependência**: [Koin](https://insert-koin.io/)
 - **Programação Assíncrona**: Kotlin Coroutines & Flow
 - **Desenvolvimento Assistido**: Cursor IDE + Framework RIPER
@@ -62,7 +63,7 @@ O aplicativo já vem com dados iniciais (modalidades e técnicas) para facilitar
 
 - **Fase:** Prova de Conceito (POC)
 - **Status:** Estável e funcional.
-- **Próximos Passos:** Implementação de testes automatizados e migração para Firebase.
+- **Próximos Passos:** Migração para Firebase (em andamento) e início do desenvolvimento multiplataforma (Web).
 
 ## 💡 Como Contribuir
 

@@ -3,56 +3,6 @@
 *Created: 2025-01-27*
 *Last Updated: 2025-08-01*
 
-## 🏁 Resumo das Entregas Concluídas
-
-- **Foundation:** Clean Architecture, MVVM, Jetpack Compose, Room, Koin, Material Design 3.
-- **Core Features:** Modelos de dados (User, MartialArt, Technique), DAOs, repositórios, use cases, ViewModels reativos, dados iniciais.
-- **UI Components:** HomeScreen, MartialArtDetailScreen, TechniqueDetailScreen, TechniqueFormScreen, MartialArtCard, Previews.
-- **Navegação:** Navigation Compose, rotas, argumentos, callbacks, MainActivity, NavRoutes, LutandoNavigation, telas e ViewModels integrados.
-- **CRUD:** Criar, ler, atualizar e deletar técnicas.
-- **Funcionalidades de Mídia:** Captura de foto/vídeo/áudio, armazenamento local, visualização, permissões, componentes reutilizáveis, integração com formulários, preview, remoção, ícones customizados, MediaRecorder, seleção de áudio.
-- **Funcionalidade de Comentários:** Adicionar, visualizar, editar e deletar comentários em técnicas.
-
-## ✅ O que está funcionando
-
-### Foundation (100% Concluído)
-- ✅ Clean Architecture implementada
-- ✅ MVVM pattern implementado
-- ✅ Jetpack Compose configurado
-- ✅ Room Database configurado
-- ✅ Koin para injeção de dependência
-- ✅ Material Design 3 implementado
-
-### Core Features (100% Concluído)
-- ✅ Entidades de dados (User, MartialArt, Technique, Comment)
-- ✅ DAOs para acesso a dados
-- ✅ Repositórios implementados
-- ✅ Use Cases criados
-- ✅ ViewModels com estado reativo
-- ✅ Dados iniciais (8 modalidades de artes marciais)
-
-### UI Components (100% Concluído)
-- ✅ HomeScreen - Lista de modalidades
-- ✅ MartialArtDetailScreen - Lista de técnicas da modalidade
-- ✅ TechniqueDetailScreen - Detalhes da técnica com seção de comentários
-- ✅ TechniqueFormScreen - Formulário para adicionar/editar técnicas
-- ✅ Componentes de Comentários (Card, Input, Dialogs)
-- ✅ MartialArtCard - Componente reutilizável
-- ✅ Previews do Jetpack Compose implementados
-
-### Navegação (100% Concluído)
-- ✅ Navigation Compose 2.7.7 implementado
-- ✅ Navegação completa entre todas as telas
-
-### CRUD Operations (100% Concluído)
-- ✅ CRUD completo de técnicas
-- ✅ CRUD completo de comentários
-
-### Funcionalidades de Mídia (100% Concluído)
-- ✅ Captura, armazenamento e visualização de fotos, vídeos e áudios para técnicas.
-
-## 🔄 O que está em desenvolvimento
-
 ### Testes (30% Concluído)
 - [x] Testes unitários (modelos, use cases, conversores, ViewModels principais)
 - [ ] Testes de UI
@@ -71,6 +21,7 @@
     - **Componentes a Serem Criados:** `BackupManager`, `BackupRepository`, `CreateBackupUseCase`, `RestoreBackupUseCase`, `CloudBackupManager`, `GoogleDriveBackupManager`, etc.
     - **Componentes de UI:** `BackupSettingsScreen`, `BackupHistoryScreen`, `CloudBackupSetupScreen`, etc.
     - **Integração:** WorkManager para jobs em background, Google Drive API, permissões.
+- [ ] **Restrição de Criação de Academia:** Implementar lógica para que cada usuário possa criar apenas uma academia.
 
 ### Melhorias de UX
 - [ ] Animações de transição (1 dia)
