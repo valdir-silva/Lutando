@@ -66,9 +66,10 @@ class UserTest {
     @Test
     fun `deve comparar User corretamente`() {
         // Given
-        val user1 = User(name = "Ana", email = "ana@email.com")
-        val user2 = User(name = "Ana", email = "ana@email.com")
-        val user3 = User(name = "Ana", email = "outro@email.com")
+        val fixedTimestamp = 12345L // Usando um timestamp fixo para comparação
+        val user1 = User(name = "Ana", email = "ana@email.com", createdAt = fixedTimestamp, updatedAt = fixedTimestamp)
+        val user2 = User(name = "Ana", email = "ana@email.com", createdAt = fixedTimestamp, updatedAt = fixedTimestamp)
+        val user3 = User(name = "Ana", email = "outro@email.com", createdAt = fixedTimestamp, updatedAt = fixedTimestamp)
 
         // When & Then
         assertEquals(user1, user2)
